@@ -140,12 +140,12 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="text-2xl font-bold text-blue-600">AI Support Pro</div>
             </div>
-            <div className="hidden md:block">
+            <div className="block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Features</a>
                 <a href="#benefits" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Benefits</a>
@@ -153,7 +153,7 @@ export default function Home() {
                 <a href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Contact</a>
               </div>
             </div>
-            <div className="md:hidden">
+            <div className="hidden">
               <button className="text-gray-600 hover:text-blue-600">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -166,16 +166,16 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-6xl font-bold text-gray-900 mb-6">
               Transform Your Customer Service with
               <span className="text-blue-600 block">AI-Powered Auto-Reply</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Reduce response times by 90%, increase customer satisfaction, and scale your support team effortlessly with our intelligent AI customer service system.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-row gap-4 justify-center">
               <button className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                 Start Free Trial
               </button>
@@ -183,7 +183,7 @@ export default function Home() {
                 Watch Demo
               </button>
             </div>
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="mt-12 grid grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600 mb-2">90%</div>
                 <div className="text-gray-600">Faster Response Time</div>
@@ -203,16 +203,16 @@ export default function Home() {
 
       {/* Features Section */}
       <section id="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Powerful AI Features
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Our advanced AI technology understands context, learns from interactions, and provides human-like responses.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8">
             <div className="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,17 +285,11 @@ export default function Home() {
 
       {/* Benefits Section */}
       <section id="benefits" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid grid-cols-3 gap-12">
             {/* Left Column - Dynamic Header */}
-            <div className="lg:col-span-1">
+            <div className="col-span-1">
               <div className="sticky top-24">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Why Choose AI Support Pro?
-                </h2>
-                <p className="text-xl text-gray-600 mb-8">
-                  Join thousands of businesses that have transformed their customer service with our AI-powered solution.
-                </p>
 
                 {/* Dynamic Article Summary */}
                 <div className="bg-white p-6 rounded-2xl shadow-lg mb-6 transition-all duration-700 ease-in-out">
@@ -340,7 +334,7 @@ export default function Home() {
             </div>
 
             {/* Right Column - Article Content */}
-            <div className="lg:col-span-2">
+            <div className="col-span-2">
               <div className="space-y-12">
                 <article
                   id="article-0"
@@ -441,16 +435,16 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               What Our Customers Say
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Don't just take our word for it. See how AI Support Pro has transformed businesses like yours.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8">
             <div className="bg-gray-50 p-8 rounded-xl">
               <div className="flex items-center mb-4">
                 <div className="flex text-yellow-400">
@@ -526,16 +520,16 @@ export default function Home() {
 
       {/* Pricing Section */}
       <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Simple, Transparent Pricing
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Choose the plan that fits your business needs. All plans include our core AI features.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Starter</h3>
@@ -665,14 +659,14 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-20 bg-blue-600">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+        <div className="max-w-4xl mx-auto text-center px-8">
+          <h2 className="text-4xl font-bold text-white mb-6">
             Ready to Transform Your Customer Service?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
             Join thousands of businesses that have already revolutionized their customer support with AI Support Pro.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-row gap-4 justify-center">
             <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
               Start Your Free Trial
             </button>
@@ -688,9 +682,9 @@ export default function Home() {
 
       {/* Footer */}
       <footer id="contact" className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid grid-cols-4 gap-8">
+            <div className="col-span-2">
               <div className="text-2xl font-bold text-white mb-4">AI Support Pro</div>
               <p className="text-gray-400 mb-6 max-w-md">
                 Transform your customer service with AI-powered auto-reply system. Reduce response times, increase satisfaction, and scale your support effortlessly.
