@@ -159,86 +159,122 @@ export default function Home() {
       {/* Benefits Section */}
       <section id="benefits" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose AI Support Pro?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Join thousands of businesses that have transformed their customer service with our AI-powered solution.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="space-y-8">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Reduce Support Costs by 60%</h3>
-                    <p className="text-gray-600">Automate routine inquiries and free up your team to focus on complex issues that require human expertise.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Scale Without Hiring</h3>
-                    <p className="text-gray-600">Handle 10x more customer inquiries without expanding your support team or increasing costs.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Improve Customer Experience</h3>
-                    <p className="text-gray-600">Provide instant, accurate responses that make customers feel valued and supported 24/7.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Increase Revenue</h3>
-                    <p className="text-gray-600">Faster response times and better service quality lead to higher customer retention and increased sales.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Left Column - Header */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-24">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  Why Choose AI Support Pro?
+                </h2>
+                <p className="text-xl text-gray-600 mb-8">
+                  Join thousands of businesses that have transformed their customer service with our AI-powered solution.
+                </p>
+                <div className="bg-white p-6 rounded-2xl shadow-lg">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600 mb-4">Before vs After</div>
+                    <div className="space-y-4">
+                      <div className="border-l-4 border-red-400 pl-3">
+                        <h4 className="font-semibold text-gray-900 text-sm">Before AI Support Pro</h4>
+                        <ul className="text-xs text-gray-600 mt-1 space-y-1">
+                          <li>• 4-6 hour response time</li>
+                          <li>• Limited to business hours</li>
+                          <li>• High support team costs</li>
+                          <li>• Inconsistent service quality</li>
+                        </ul>
+                      </div>
+                      <div className="border-l-4 border-green-400 pl-3">
+                        <h4 className="font-semibold text-gray-900 text-sm">After AI Support Pro</h4>
+                        <ul className="text-xs text-gray-600 mt-1 space-y-1">
+                          <li>• Instant response time</li>
+                          <li>• 24/7 availability</li>
+                          <li>• 60% cost reduction</li>
+                          <li>• Consistent, high-quality service</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-4">Before vs After</div>
-                <div className="space-y-6">
-                  <div className="border-l-4 border-red-400 pl-4">
-                    <h4 className="font-semibold text-gray-900">Before AI Support Pro</h4>
-                    <ul className="text-sm text-gray-600 mt-2 space-y-1">
-                      <li>• 4-6 hour response time</li>
-                      <li>• Limited to business hours</li>
-                      <li>• High support team costs</li>
-                      <li>• Inconsistent service quality</li>
-                    </ul>
+
+            {/* Right Column - Article Content */}
+            <div className="lg:col-span-2">
+              <div className="space-y-12">
+                <article className="bg-white p-8 rounded-2xl shadow-lg">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Reduce Support Costs by 60%</h3>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        Automate routine inquiries and free up your team to focus on complex issues that require human expertise. Our AI handles the majority of common customer questions instantly, reducing the workload on your support staff.
+                      </p>
+                      <p className="text-gray-600 leading-relaxed">
+                        This dramatic cost reduction comes from eliminating the need for round-the-clock human support while maintaining the same level of service quality. Your team can now focus on strategic initiatives and complex problem-solving.
+                      </p>
+                    </div>
                   </div>
-                  <div className="border-l-4 border-green-400 pl-4">
-                    <h4 className="font-semibold text-gray-900">After AI Support Pro</h4>
-                    <ul className="text-sm text-gray-600 mt-2 space-y-1">
-                      <li>• Instant response time</li>
-                      <li>• 24/7 availability</li>
-                      <li>• 60% cost reduction</li>
-                      <li>• Consistent, high-quality service</li>
-                    </ul>
+                </article>
+
+                <article className="bg-white p-8 rounded-2xl shadow-lg">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Scale Without Hiring</h3>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        Handle 10x more customer inquiries without expanding your support team or increasing costs. Our AI system can process thousands of conversations simultaneously, something that would require dozens of human agents.
+                      </p>
+                      <p className="text-gray-600 leading-relaxed">
+                        As your business grows, your AI support scales automatically. No need to recruit, train, or manage additional staff. The system learns and improves with every interaction, becoming more efficient over time.
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </article>
+
+                <article className="bg-white p-8 rounded-2xl shadow-lg">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Improve Customer Experience</h3>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        Provide instant, accurate responses that make customers feel valued and supported 24/7. Our AI understands context and provides personalized responses that feel natural and helpful.
+                      </p>
+                      <p className="text-gray-600 leading-relaxed">
+                        Customers no longer have to wait hours or days for responses. They get immediate help whenever they need it, leading to higher satisfaction scores and stronger brand loyalty.
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="bg-white p-8 rounded-2xl shadow-lg">
+                  <div className="flex items-start space-x-4 mb-6">
+                    <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Increase Revenue</h3>
+                      <p className="text-gray-600 leading-relaxed mb-4">
+                        Faster response times and better service quality lead to higher customer retention and increased sales. Satisfied customers are more likely to make repeat purchases and recommend your business to others.
+                      </p>
+                      <p className="text-gray-600 leading-relaxed">
+                        Our AI can also identify upselling and cross-selling opportunities during conversations, helping you maximize revenue from every customer interaction while providing genuine value.
+                      </p>
+                    </div>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
