@@ -3,13 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
   const [activeArticle, setActiveArticle] = useState(0);
   const articleRefs = useRef<(HTMLElement | null)[]>([]);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   // Intersection Observer for article tracking
   useEffect(() => {
@@ -48,22 +43,7 @@ export default function Home() {
         <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
         </svg>
-      ),
-      summary: "Automate routine inquiries and free up your team to focus on complex issues that require human expertise.",
-      beforeAfter: {
-        before: [
-          "High support team costs",
-          "Manual response handling",
-          "Limited coverage hours",
-          "Inconsistent service quality"
-        ],
-        after: [
-          "60% cost reduction",
-          "Automated responses",
-          "24/7 coverage",
-          "Consistent quality"
-        ]
-      }
+      )
     },
     {
       title: "Scale Without Hiring",
@@ -71,21 +51,7 @@ export default function Home() {
         <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
         </svg>
-      ),
-      summary: "Handle 10x more customer inquiries without expanding your support team or increasing costs.",
-      beforeAfter: {
-        before: [
-          "Limited by team size",
-          "Manual scaling required",
-          "Training new staff",
-          "Increased overhead"
-        ],
-        after: [
-          "Unlimited scaling",
-          "Automatic scaling",
-          "No training needed",
-        ]
-      }
+      )
     },
     {
       title: "Improve Customer Experience",
@@ -93,23 +59,7 @@ export default function Home() {
         <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
-      ),
-      summary: "Provide instant, accurate responses that make customers feel valued and supported 24/7.",
-      beforeAfter: {
-        before: [
-          "4-6 hour response time",
-          "Limited availability",
-          "Human error risk",
-          "Inconsistent responses",
-          "12345"
-        ],
-        after: [
-          "Instant responses",
-          "24/7 availability",
-          "99.9% accuracy",
-          "Consistent quality"
-        ]
-      }
+      )
     },
     {
       title: "Increase Revenue",
@@ -117,22 +67,7 @@ export default function Home() {
         <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-      ),
-      summary: "Faster response times and better service quality lead to higher customer retention and increased sales.",
-      beforeAfter: {
-        before: [
-          "Low customer retention",
-          "Missed sales opportunities",
-          "Poor service reputation",
-          "Limited growth potential"
-        ],
-        after: [
-          "Higher retention rates",
-          "Upselling opportunities",
-          "Excellent reputation",
-          "Unlimited growth"
-        ]
-      }
+      )
     }
   ];
 
@@ -140,8 +75,8 @@ export default function Home() {
     <div className="min-h-screen bg-white">
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-8">
+      <section id="benefits" className="py-20">
+        <div>
           <div className="grid grid-cols-3 gap-12">
             {/* Left Column - Dynamic Header */}
             <div className="col-span-1">
@@ -157,35 +92,8 @@ export default function Home() {
                       {benefitData[activeArticle].title}
                     </h3>
                   </div>
-                  <p className="text-gray-600 leading-relaxed transition-all duration-700 ease-in-out">
-                    {benefitData[activeArticle].summary}
-                  </p>
                 </div>
 
-                {/* Dynamic Before vs After */}
-                <div className="bg-white p-6 rounded-2xl shadow-lg transition-all duration-700 ease-in-out">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600 mb-4 transition-all duration-700 ease-in-out">Before vs After</div>
-                    <div className="space-y-4">
-                      <div className="border-l-4 border-red-400 pl-3 transition-all duration-700 ease-in-out">
-                        <h4 className="font-semibold text-gray-900 text-sm">Before AI Support Pro</h4>
-                        <ul className="text-xs text-gray-600 mt-1 space-y-1">
-                          {benefitData[activeArticle].beforeAfter.before.map((item, index) => (
-                            <li key={index} className="transition-all duration-700 ease-in-out">• {item}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="border-l-4 border-green-400 pl-3 transition-all duration-700 ease-in-out">
-                        <h4 className="font-semibold text-gray-900 text-sm">After AI Support Pro</h4>
-                        <ul className="text-xs text-gray-600 mt-1 space-y-1">
-                          {benefitData[activeArticle].beforeAfter.after.map((item, index) => (
-                            <li key={index} className="transition-all duration-700 ease-in-out">• {item}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
