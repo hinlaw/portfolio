@@ -148,7 +148,18 @@ export default function CategoriesSection() {
                                     {category.subcategories.map((subcategory, subIndex) => (
                                         <div key={subcategory.id} className="group">
                                             <button
-                                                onClick={() => setActiveSubcategory(subIndex)}
+                                                onClick={() => {
+                                                    if (activeCategory !== categoryIndex) {
+                                                        setIsFading(true);
+                                                        setTimeout(() => {
+                                                            setActiveCategory(categoryIndex);
+                                                            setActiveSubcategory(subIndex);
+                                                            setIsFading(false);
+                                                        }, 300);
+                                                    } else {
+                                                        setActiveSubcategory(subIndex);
+                                                    }
+                                                }}
                                                 className={`w-full text-left p-4 rounded-lg transition-all duration-300 ${activeSubcategory === subIndex && activeCategory === categoryIndex
                                                     ? 'bg-blue-100 border-2 border-blue-300'
                                                     : 'bg-white border-2 border-gray-200 hover:border-gray-300'
