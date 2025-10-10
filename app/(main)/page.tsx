@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
   const [activeArticle, setActiveArticle] = useState(0);
+  const [isFading, setIsFading] = useState(false);
   const titleRefs = useRef<(HTMLElement | null)[]>([]);
 
   // Intersection Observer for title tracking
@@ -14,7 +15,15 @@ export default function Home() {
           if (entry.isIntersecting) {
             const titleId = entry.target.id;
             const titleIndex = parseInt(titleId.split('-')[1]);
-            setActiveArticle(titleIndex);
+
+            // 如果切換到不同的文章，觸發淡出效果
+            if (titleIndex !== activeArticle) {
+              setIsFading(true);
+              setTimeout(() => {
+                setActiveArticle(titleIndex);
+                setIsFading(false);
+              }, 300); // 300ms 淡出時間
+            }
           }
         });
       },
@@ -67,7 +76,12 @@ export default function Home() {
                   ref={(el) => { titleRefs.current[index] = el; }}
                   className="text-center px-8"
                 >
-                  <div className="text-3xl font-bold text-gray-900 transition-all duration-500">
+                  <div
+                    className={`text-3xl font-bold text-gray-900 transition-all duration-1500 ease-in ${activeArticle === index
+                      ? 'opacity-100'
+                      : 'opacity-70'
+                      }`}
+                  >
                     {benefit.title}
                   </div>
                 </div>
@@ -78,7 +92,7 @@ export default function Home() {
           {/* Right Content - Fixed Article */}
           <div className="w-1/2 sticky top-0 h-screen flex items-center">
             <article className="p-8 w-full">
-              <div className="space-y-6 text-gray-600 leading-relaxed text-xl">
+              <div className={`space-y-6 text-gray-600 leading-relaxed text-xl transition-opacity duration-500 ease-in ${isFading ? 'opacity-0' : 'opacity-100'}`}>
                 {activeArticle === 0 && (
                   <>
                     <p>
