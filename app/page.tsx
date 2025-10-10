@@ -4,32 +4,32 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
   const [activeArticle, setActiveArticle] = useState(0);
-  const articleRefs = useRef<(HTMLElement | null)[]>([]);
+  const titleRefs = useRef<(HTMLElement | null)[]>([]);
 
-  // Intersection Observer for article tracking
+  // Intersection Observer for title tracking
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const articleId = entry.target.id;
-            const articleIndex = parseInt(articleId.split('-')[1]);
-            setActiveArticle(articleIndex);
+            const titleId = entry.target.id;
+            const titleIndex = parseInt(titleId.split('-')[1]);
+            setActiveArticle(titleIndex);
           }
         });
       },
       {
-        threshold: 0.5,
-        rootMargin: '-100px 0px'
+        threshold: 0.6,
+        rootMargin: '-200px 0px -200px 0px'
       }
     );
 
-    articleRefs.current.forEach((ref) => {
+    titleRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
 
     return () => {
-      articleRefs.current.forEach((ref) => {
+      titleRefs.current.forEach((ref) => {
         if (ref) observer.unobserve(ref);
       });
     };
@@ -60,7 +60,11 @@ export default function Home() {
           <div className="w-1/2">
             {benefitData.map((benefit, index) => (
               <div key={index} className="min-h-screen flex items-center justify-center">
-                <div className="text-center px-8">
+                <div
+                  id={`title-${index}`}
+                  ref={(el) => { titleRefs.current[index] = el; }}
+                  className="text-center px-8"
+                >
                   <h2 className="text-4xl font-bold text-gray-900 transition-all duration-500">
                     {benefit.title}
                   </h2>
