@@ -21,6 +21,9 @@ export default function CategoriesSection() {
     const [isFading, setIsFading] = useState(false);
     const categoryRefs = useRef<(HTMLElement | null)[]>([]);
 
+    // Separate state for scroll-based category highlighting
+    const [visibleCategory, setVisibleCategory] = useState(0);
+
     // Sample data - replace with your actual categories and subcategories
     const categoriesData: Category[] = [
         {
@@ -94,11 +97,13 @@ export default function CategoriesSection() {
                         const categoryId = entry.target.id;
                         const categoryIndex = parseInt(categoryId.split('-')[1]);
 
-                        if (categoryIndex !== activeCategory) {
+                        if (categoryIndex !== visibleCategory) {
+                            setVisibleCategory(categoryIndex);
+                            // Also update active category and reset to first subcategory
                             setIsFading(true);
                             setTimeout(() => {
                                 setActiveCategory(categoryIndex);
-                                setActiveSubcategory(0); // Reset to first subcategory
+                                setActiveSubcategory(0);
                                 setIsFading(false);
                             }, 300);
                         }
@@ -136,7 +141,7 @@ export default function CategoriesSection() {
                                 className="text-center px-8 w-full"
                             >
                                 <div
-                                    className={`text-4xl font-bold text-gray-900 mb-8 transition-all duration-1500 ease-in ${activeCategory === categoryIndex
+                                    className={`text-4xl font-bold text-gray-900 mb-8 transition-all duration-1500 ease-in ${visibleCategory === categoryIndex
                                         ? 'opacity-100'
                                         : 'opacity-70'
                                         }`}
@@ -149,16 +154,12 @@ export default function CategoriesSection() {
                                         <div key={subcategory.id} className="group">
                                             <button
                                                 onClick={() => {
-                                                    if (activeCategory !== categoryIndex) {
-                                                        setIsFading(true);
-                                                        setTimeout(() => {
-                                                            setActiveCategory(categoryIndex);
-                                                            setActiveSubcategory(subIndex);
-                                                            setIsFading(false);
-                                                        }, 300);
-                                                    } else {
+                                                    setIsFading(true);
+                                                    setTimeout(() => {
+                                                        setActiveCategory(categoryIndex);
                                                         setActiveSubcategory(subIndex);
-                                                    }
+                                                        setIsFading(false);
+                                                    }, 300);
                                                 }}
                                                 className={`w-full text-left p-4 rounded-lg transition-all duration-300 ${activeSubcategory === subIndex && activeCategory === categoryIndex
                                                     ? 'bg-blue-100 border-2 border-blue-300'
