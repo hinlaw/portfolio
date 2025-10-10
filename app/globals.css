@@ -8,6 +8,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: #FF953D;
+  
+  /* Custom responsive breakpoints */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 960px;
+  --breakpoint-xl: 1340px;
 }
 
 @media (prefers-color-scheme: dark) {
