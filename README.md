@@ -18,9 +18,6 @@ portfolio/
 │   │   ├── models/          # Data models
 │   │   └── middleware/      # Middleware functions
 │   └── go.mod              # Go module dependencies
-├── docker-compose.yml        # Local development environment
-├── Dockerfile.frontend       # Frontend Docker image
-├── Dockerfile.backend        # Backend Docker image
 └── README.md                # This file
 ```
 
@@ -30,7 +27,6 @@ portfolio/
 
 - Node.js 18+ and npm
 - Go 1.21+
-- Docker and Docker Compose (optional)
 
 ### Local Development
 
@@ -54,17 +50,6 @@ portfolio/
    npm run dev
    ```
    The frontend will be available at `http://localhost:3000`
-
-### Docker Development
-
-1. **Build and start all services**
-   ```bash
-   docker-compose up --build
-   ```
-
-2. **Access the applications**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8080
 
 ## 📡 API Endpoints
 
@@ -119,21 +104,6 @@ cd backend
 air
 ```
 
-## 🐳 Docker Deployment
-
-### Production Build
-
-1. **Build Docker images**
-   ```bash
-   docker build -f Dockerfile.backend -t portfolio-backend .
-   docker build -f Dockerfile.frontend -t portfolio-frontend .
-   ```
-
-2. **Run with Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
-
 ### Environment Variables
 
 Copy `env.example` to `.env` and configure:
@@ -141,7 +111,7 @@ Copy `env.example` to `.env` and configure:
 ```bash
 # Backend
 PORT=8080
-GIN_MODE=release
+GIN_MODE=debug
 
 # Frontend
 NEXT_PUBLIC_API_URL=http://localhost:8080/api
@@ -160,9 +130,9 @@ NEXT_PUBLIC_API_URL=http://localhost:8080/api
 - **Gin** - Web framework
 - **CORS** - Cross-origin resource sharing
 
-### DevOps
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
+### Development Tools
+- **Air** - Hot reload for Go development
+- **Postman/Thunder Client** - API testing
 
 ## 📝 API Response Format
 

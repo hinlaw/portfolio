@@ -113,8 +113,9 @@ export default function ApiStatusSection() {
                             <li>Start backend: <code className="bg-blue-100 px-1 rounded">cd backend && go run cmd/api/main.go</code></li>
                             <li>Start frontend: <code className="bg-blue-100 px-1 rounded">cd frontend && npm run dev</code></li>
                         </ul>
-                        <p className="mt-4"><strong>To run with Docker:</strong></p>
-                        <p><code className="bg-blue-100 px-1 rounded">docker-compose up --build</code></p>
+                        <p className="mt-4"><strong>For hot reload:</strong></p>
+                        <p>Install Air: <code className="bg-blue-100 px-1 rounded">go install github.com/cosmtrek/air@latest</code></p>
+                        <p>Run: <code className="bg-blue-100 px-1 rounded">cd backend && air</code></p>
                     </div>
                 </div>
             </div>
