@@ -41,7 +41,7 @@ portfolio/
    cd backend
    go run cmd/api/main.go
    ```
-   The backend will be available at `http://localhost:8080`
+   The backend will be available at `http://localhost:5000`
 
 3. **Start the frontend** (in a new terminal)
    ```bash
@@ -110,11 +110,11 @@ Copy `env.example` to `.env` and configure:
 
 ```bash
 # Backend
-PORT=8080
+PORT=5000
 GIN_MODE=debug
 
 # Frontend
-NEXT_PUBLIC_API_URL=http://localhost:8080/api
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ## 🔧 Technologies Used

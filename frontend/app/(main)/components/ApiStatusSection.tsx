@@ -110,7 +110,7 @@ export default function ApiStatusSection() {
                     <div className="text-blue-800 space-y-2">
                         <p><strong>To run locally:</strong></p>
                         <ul className="list-disc list-inside ml-4 space-y-1">
-                            <li>Start backend: <code className="bg-blue-100 px-1 rounded">cd backend && go run cmd/api/main.go</code></li>
+                            <li>Start backend: <code className="bg-blue-100 px-1 rounded">cd backend && go run cmd/api/main.go</code> (port 5000)</li>
                             <li>Start frontend: <code className="bg-blue-100 px-1 rounded">cd frontend && npm run dev</code></li>
                         </ul>
                         <p className="mt-4"><strong>For hot reload:</strong></p>

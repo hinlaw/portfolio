@@ -33,7 +33,7 @@ func main() {
 	// 啟動伺服器
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "5000"
 	}
 
 	log.Printf("Server starting on port %s", port)
