@@ -36,20 +36,31 @@ portfolio/
    cd portfolio
    ```
 
-2. **Start the backend**
+2. **Install dependencies**
    ```bash
-   cd backend
-   go run cmd/api/main.go
-   ```
-   The backend will be available at `http://localhost:5000`
-
-3. **Start the frontend** (in a new terminal)
-   ```bash
-   cd frontend
    npm install
+   cd frontend && npm install
+   ```
+
+3. **Start development environment**
+   
+   **Option 1: One command (recommended)**
+   ```bash
    npm run dev
    ```
-   The frontend will be available at `http://localhost:3000`
+   
+   **Option 2: Manual start**
+   ```bash
+   # Terminal 1: Start backend
+   cd backend && go run cmd/api/main.go
+   
+   # Terminal 2: Start frontend
+   cd frontend && npm run dev
+   ```
+
+4. **Access the applications**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5000
 
 ## 📡 API Endpoints
 
