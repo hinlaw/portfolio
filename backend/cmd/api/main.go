@@ -36,8 +36,8 @@ func main() {
 		port = "5000"
 	}
 
-	log.Printf("Server starting on port %s", port)
-	if err := r.Run(":" + port); err != nil {
+    log.Printf("Server starting on http://127.0.0.1:%s", port)
+    if err := r.Run("127.0.0.1:" + port); err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
 }

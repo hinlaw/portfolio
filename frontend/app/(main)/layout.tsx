@@ -13,12 +13,7 @@ export default function MainLayout({
                 backgroundAttachment: "fixed",
             }}
         >
-            <div
-                style={{
-                    background: "rgba(255, 255, 255, 0.25)",
-                    backdropFilter: "blur(40px) saturate(250%)",
-                }}
-            >
+            <div>
                 <div className="max-w-7xl mx-auto px-4">
                     {children}
                 </div>
