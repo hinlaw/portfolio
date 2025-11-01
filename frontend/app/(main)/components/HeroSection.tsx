@@ -88,9 +88,11 @@ export default function HeroSection() {
 
                     {/* Description */}
                     <p className="text-lg sm:text-xl md:text-2xl text-foreground/70 mb-12 max-w-3xl mx-auto leading-relaxed">
-                        Crafting beautiful and functional web experiences with modern technologies.
+                        Building functional web experiences with a focus on UX and usability.
                         <br className="hidden sm:block" />
-                        Passionate about clean code, great design, and user experience.
+                        Writing human-readable code that's
+                        <br className="hidden sm:block" />
+                        easy to understand and simple to modify.
                     </p>
 
                     {/* Skills Tags */}
