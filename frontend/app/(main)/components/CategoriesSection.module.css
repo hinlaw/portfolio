@@ -1,0 +1,61 @@
+/* Categories Section Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animateGradient {
+  background-size: 200% 200%;
+  animation: gradient 5s ease infinite;
+}
+
+.delay1000 {
+  animation-delay: 1s;
+}
+
+.delay2000 {
+  animation-delay: 2s;
+}
+
+.colorfulShadow {
+  box-shadow: 
+    0 0 35px rgba(236, 72, 153, 0.1),
+    0 0 50px rgba(139, 92, 246, 0.1);
+}
+
+.glassCard {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glassCardActive {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 149, 61, 0.15);
+  border: 1px solid rgba(255, 149, 61, 0.3);
+  box-shadow: 
+    0 0 20px rgba(255, 149, 61, 0.2),
+    0 0 40px rgba(59, 130, 246, 0.1);
+}
+
+.imageContainer {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
