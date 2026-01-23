@@ -129,12 +129,13 @@ export default function CategoriesSection() {
             }
         );
 
-        categoryRefs.current.forEach((ref) => {
+        const currentRefs = categoryRefs.current;
+        currentRefs.forEach((ref) => {
             if (ref) observer.observe(ref);
         });
 
         return () => {
-            categoryRefs.current.forEach((ref) => {
+            currentRefs.forEach((ref) => {
                 if (ref) observer.unobserve(ref);
             });
         };

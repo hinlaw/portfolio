@@ -33,12 +33,13 @@ export default function BenefitsSection() {
             }
         );
 
-        titleRefs.current.forEach((ref) => {
+        const currentRefs = titleRefs.current;
+        currentRefs.forEach((ref) => {
             if (ref) observer.observe(ref);
         });
 
         return () => {
-            titleRefs.current.forEach((ref) => {
+            currentRefs.forEach((ref) => {
                 if (ref) observer.unobserve(ref);
             });
         };

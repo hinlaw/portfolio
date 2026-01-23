@@ -7,7 +7,7 @@ export default function FooterSection() {
                     <div className="md:col-span-2">
                         <h3 className="text-2xl font-bold mb-4">AI Support Solutions</h3>
                         <p className="text-gray-400 mb-6 leading-relaxed">
-                            We're revolutionizing customer support with cutting-edge AI technology.
+                            We&apos;re revolutionizing customer support with cutting-edge AI technology.
                             Join thousands of businesses that have transformed their customer service experience.
                         </p>
                         <div className="flex space-x-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowRight, Download, Mail, Github, Linkedin, Sparkles } from 'lucide-react';
+import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import styles from './sections.module.css';
 
@@ -69,7 +69,7 @@ export default function HeroSection() {
                     {/* Main Heading */}
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
                         <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
-                            Hi, I'm{' '}
+                            Hi, I&apos;m{' '}
                             <span className="relative inline-block">
                                 <span className="relative z-10">Developer</span>
                                 {/* <span className="absolute bottom-2 left-0 right-0 h-3 bg-primary/30 -skew-x-12 blur-sm"></span> */}
@@ -90,7 +90,7 @@ export default function HeroSection() {
                     <p className="text-lg sm:text-xl md:text-2xl text-foreground/70 mb-12 max-w-3xl mx-auto leading-relaxed">
                         Building functional web experiences with a focus on UX and usability.
                         <br className="hidden sm:block" />
-                        Writing human-readable code that's
+                        Writing human-readable code that&apos;s
                         <br className="hidden sm:block" />
                         easy to understand and simple to modify.
                     </p>
