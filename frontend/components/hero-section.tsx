@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Download, Mail, Github, Linkedin, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import styles from './HeroSection.module.css';
+import styles from './sections.module.css';
 
 export default function HeroSection() {
     const [mounted, setMounted] = useState(false);
@@ -47,7 +47,7 @@ export default function HeroSection() {
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Gradient Orbs */}
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-                <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse ${styles.delay1000}`}></div>
+                <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse ${styles['delay-1000']}`}></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl"></div>
 
             </div>
@@ -59,7 +59,7 @@ export default function HeroSection() {
                         }`}
                 >
                     {/* Greeting Badge */}
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 ${styles.colorfulShadow}`}>
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 ${styles['colorful-shadow']}`}>
                         {/* <Sparkles className="w-4 h-4 text-primary" /> */}
                         <span className="text-sm font-medium text-foreground/80">
                             Welcome to My Portfolio
@@ -68,7 +68,7 @@ export default function HeroSection() {
 
                     {/* Main Heading */}
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-                        <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${styles.animateGradient}`}>
+                        <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
                             Hi, I'm{' '}
                             <span className="relative inline-block">
                                 <span className="relative z-10">Developer</span>
@@ -81,7 +81,7 @@ export default function HeroSection() {
                                 <span className="bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent">
                                     {currentText}
                                 </span>
-                                <span className={`inline-block w-0.5 h-8 bg-primary ${styles.animateBlink} ml-1`}></span>
+                                <span className={`inline-block w-0.5 h-8 bg-primary ${styles['hero-animate-blink']} ml-1`}></span>
                             </span>
                         </span>
                     </h1>

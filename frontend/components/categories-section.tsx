@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-import styles from './CategoriesSection.module.css';
+import styles from './sections.module.css';
 
 interface Subcategory {
     id: string;
@@ -146,8 +146,8 @@ export default function CategoriesSection() {
             {/* Animated Background Elements */}
             <div className="fixed inset-0 pointer-events-none -z-10">
                 {/* Gradient Orbs */}
-                <div className={`absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse ${styles.delay1000}`}></div>
-                <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse ${styles.delay2000}`}></div>
+                <div className={`absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse ${styles['delay-1000']}`}></div>
+                <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse ${styles['delay-2000']}`}></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl"></div>
             </div>
 
@@ -185,8 +185,8 @@ export default function CategoriesSection() {
                                                     }, 300);
                                                 }}
                                                 className={`w-full text-left p-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] ${activeSubcategory === subIndex && activeCategory === categoryIndex
-                                                    ? `${styles.glassCardActive} ${styles.colorfulShadow}`
-                                                    : `${styles.glassCard} hover:bg-white/20`
+                                                    ? `${styles['categories-glass-card-active']} ${styles['colorful-shadow']}`
+                                                    : `${styles['categories-glass-card']} hover:bg-white/20`
                                                     }`}
                                             >
                                                 <div className="flex items-center justify-between">
@@ -224,9 +224,9 @@ export default function CategoriesSection() {
                 <div className="w-1/2 sticky top-0 h-[60vh] flex items-center">
                     <div className="p-8 w-full">
                         <div className={`transition-opacity duration-500 ease-in ${isFading ? 'opacity-0' : 'opacity-100'}`}>
-                            <div className={`${styles.imageContainer} rounded-lg h-96 flex items-center justify-center shadow-xl ${styles.colorfulShadow}`}>
+                            <div className={`${styles['categories-image-container']} rounded-lg h-96 flex items-center justify-center shadow-xl ${styles['colorful-shadow']}`}>
                                 <div className="text-center px-8">
-                                    <div className={`text-2xl md:text-3xl font-semibold mb-3 bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent ${styles.animateGradient}`}>
+                                    <div className={`text-2xl md:text-3xl font-semibold mb-3 bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
                                         {categoriesData[activeCategory]?.subcategories[activeSubcategory]?.imagePlaceholder}
                                     </div>
                                     <div className="text-sm md:text-base text-foreground/60">

@@ -1,4 +1,7 @@
-/* Categories Section Animations */
+/* ============================================
+   Shared Animations & Utilities
+   ============================================ */
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0px) translateX(0px);
@@ -7,6 +10,26 @@
   50% {
     transform: translateY(-20px) translateX(10px);
     opacity: 0.8;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
   }
 }
 
@@ -19,32 +42,49 @@
   }
 }
 
-.animateGradient {
+/* Shared Classes */
+.animate-gradient {
   background-size: 200% 200%;
   animation: gradient 5s ease infinite;
 }
 
-.delay1000 {
+.delay-1000 {
   animation-delay: 1s;
 }
 
-.delay2000 {
+.delay-2000 {
   animation-delay: 2s;
 }
 
-.colorfulShadow {
+.colorful-shadow {
   box-shadow: 
     0 0 35px rgba(236, 72, 153, 0.1),
     0 0 50px rgba(139, 92, 246, 0.1);
 }
 
-.glassCard {
+/* ============================================
+   Hero Section Styles
+   ============================================ */
+
+.hero-animate-blink {
+  animation: blink 1s infinite;
+}
+
+.hero-animate-scroll {
+  animation: scroll 2s infinite;
+}
+
+/* ============================================
+   Categories Section Styles
+   ============================================ */
+
+.categories-glass-card {
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.glassCardActive {
+.categories-glass-card-active {
   backdrop-filter: blur(10px);
   background: rgba(255, 149, 61, 0.15);
   border: 1px solid rgba(255, 149, 61, 0.3);
@@ -53,10 +93,8 @@
     0 0 40px rgba(59, 130, 246, 0.1);
 }
 
-.imageContainer {
+.categories-image-container {
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-
