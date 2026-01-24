@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import styles from './sections.module.css';
-
+import { useRouter } from 'next/navigation';
 export default function HeroSection() {
     const [mounted, setMounted] = useState(false);
     const [currentText, setCurrentText] = useState('');
     const fullText = 'Frontend Developer';
     const [textIndex, setTextIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
@@ -106,9 +107,10 @@ export default function HeroSection() {
                         <Button
                             size="lg"
                             className="group relative overflow-hidden bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                            onClick={() => router.push('/')}
                         >
                             <span className="relative z-10 flex items-center gap-2">
-                                View My Work
+                                Back to Home
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </span>
                             <span className="absolute inset-0 bg-gradient-to-r from-primary via-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
