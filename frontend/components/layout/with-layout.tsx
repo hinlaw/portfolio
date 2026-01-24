@@ -15,7 +15,7 @@ export default function WithLayout({ children }: WithLayoutProps) {
     // Define which routes should use which layout
     const getLayout = () => {
         // Routes that should use plain-animated-background
-        if (pathname === '/archive' || pathname === '/gen-qr') {
+        if (pathname === '/labs' || pathname === '/apps/gen-qr') {
             return <PlainAnimatedBackground />;
         }
         
