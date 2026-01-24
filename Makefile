@@ -22,9 +22,6 @@ clean: ## 清理建置檔案
 	rm -rf frontend/node_modules/.cache
 	rm -rf backend/bin
 
----------------------------------
----------------------------------
-
 install-frontend: ## 安裝前端依賴
 	@echo "安裝前端依賴..."
 	cd frontend && npm install
