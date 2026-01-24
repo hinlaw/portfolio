@@ -50,7 +50,7 @@ export default function HeroSection() {
                         }`}
                 >
                     {/* Greeting Badge */}
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 ${styles['colorful-shadow']}`}>
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 colorful-shadow`}>
                         {/* <Sparkles className="w-4 h-4 text-primary" /> */}
                         <span className="text-sm font-medium text-foreground/80">
                             Welcome to My Portfolio
@@ -59,7 +59,7 @@ export default function HeroSection() {
 
                     {/* Main Heading */}
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-                        <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
+                        <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-gradient`}>
                             Hi, I&apos;m{' '}
                             <span className="relative inline-block">
                                 <span className="relative z-10">Developer</span>

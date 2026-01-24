@@ -129,3 +129,86 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================
+   Shared Animations & Utilities
+   ============================================ */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.8;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* Shared Classes */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 5s ease infinite;
+}
+
+.delay-1000 {
+  animation-delay: 1s;
+}
+
+.delay-2000 {
+  animation-delay: 2s;
+}
+
+.colorful-shadow {
+  box-shadow: 
+    0 0 35px rgba(236, 72, 153, 0.1),
+    0 0 50px rgba(139, 92, 246, 0.1);
+}
+
+/* Glass Card Classes */
+.glass-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-card-active {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 149, 61, 0.15);
+  border: 1px solid rgba(255, 149, 61, 0.3);
+  box-shadow: 
+    0 0 20px rgba(255, 149, 61, 0.2),
+    0 0 40px rgba(59, 130, 246, 0.1);
+}

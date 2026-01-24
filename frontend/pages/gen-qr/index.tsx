@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Download, Copy, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import styles from '@/components/archive/sections.module.css';
 
 export default function QRGenerator() {
     const [url, setUrl] = useState('');
@@ -72,13 +71,13 @@ export default function QRGenerator() {
                 >
                     {/* Header */}
                     <div className="text-center mb-12">
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 ${styles['colorful-shadow']}`}>
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 mb-8 backdrop-blur-md rounded-full border border-white/20 colorful-shadow`}>
                             <span className="text-sm font-medium text-foreground/80">
                                 QR Code Generator
                             </span>
                         </div>
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
-                            <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
+                            <span className={`block bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-gradient`}>
                                 Generate QR Code
                             </span>
                         </h1>
@@ -88,7 +87,7 @@ export default function QRGenerator() {
                     </div>
 
                     {/* Input Section */}
-                    <div className={`${styles['categories-glass-card']} ${styles['colorful-shadow']} p-8 rounded-2xl mb-8`}>
+                    <div className={`glass-card colorful-shadow p-8 rounded-2xl mb-8`}>
                         <div className="space-y-4">
                             <label htmlFor="url-input" className="block text-sm font-semibold text-foreground/90 mb-2">
                                 Enter URL or Text
@@ -115,7 +114,7 @@ export default function QRGenerator() {
 
                     {/* QR Code Display */}
                     {qrValue && (
-                        <div className={`${styles['categories-glass-card']} ${styles['colorful-shadow']} p-8 rounded-2xl mb-8`}>
+                        <div className={`glass-card colorful-shadow p-8 rounded-2xl mb-8`}>
                             <div className="flex flex-col items-center">
                                 <div className="flex items-center justify-center p-6 bg-white rounded-xl mb-6 shadow-xl">
                                     <QRCodeSVG
@@ -126,7 +125,7 @@ export default function QRGenerator() {
                                         includeMargin={true}
                                     />
                                 </div>
-                                
+
                                 {/* QR Value Display */}
                                 <div className="w-full mb-6">
                                     <div className="px-4 py-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 break-all">

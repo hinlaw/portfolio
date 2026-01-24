@@ -178,8 +178,8 @@ export default function CategoriesSection() {
                                                     }, 300);
                                                 }}
                                                 className={`w-full text-left p-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] ${activeSubcategory === subIndex && activeCategory === categoryIndex
-                                                    ? `${styles['categories-glass-card-active']} ${styles['colorful-shadow']}`
-                                                    : `${styles['categories-glass-card']} hover:bg-white/20`
+                                                    ? `glass-card-active colorful-shadow`
+                                                    : `glass-card hover:bg-white/20`
                                                     }`}
                                             >
                                                 <div className="flex items-center justify-between">
@@ -217,9 +217,9 @@ export default function CategoriesSection() {
                 <div className="w-1/2 sticky top-0 h-[60vh] flex items-center">
                     <div className="p-8 w-full">
                         <div className={`transition-opacity duration-500 ease-in ${isFading ? 'opacity-0' : 'opacity-100'}`}>
-                            <div className={`${styles['categories-image-container']} rounded-lg h-96 flex items-center justify-center shadow-xl ${styles['colorful-shadow']}`}>
+                            <div className={`${styles['categories-image-container']} rounded-lg h-96 flex items-center justify-center shadow-xl colorful-shadow`}>
                                 <div className="text-center px-8">
-                                    <div className={`text-2xl md:text-3xl font-semibold mb-3 bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent ${styles['animate-gradient']}`}>
+                                    <div className={`text-2xl md:text-3xl font-semibold mb-3 bg-gradient-to-r from-primary via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient`}>
                                         {categoriesData[activeCategory]?.subcategories[activeSubcategory]?.imagePlaceholder}
                                     </div>
                                     <div className="text-sm md:text-base text-foreground/60">
