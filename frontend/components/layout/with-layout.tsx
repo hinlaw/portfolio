@@ -18,7 +18,7 @@ export default function WithLayout({ children }: WithLayoutProps) {
         if (pathname === '/labs' || pathname === '/apps/gen-qr') {
             return <PlainAnimatedBackground />;
         }
-        
+
         // Default: no layout
         return null;
     };

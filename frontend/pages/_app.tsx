@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>AI Support Pro - Intelligent Customer Service Solutions</title>
+        <title>Dexter's Portfolio</title>
       </Head>
       <div className={manrope.className}>
         <WithLayout>
