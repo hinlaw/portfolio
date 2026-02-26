@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 單據 Table
+model Expense {
+  id        String   @id @default(cuid())
+  merchant  String?  // 商戶名稱 (例如: 7-Eleven)
+  amount    Float?   // 金額 (例如: 105.5)
+  date      String?  // 日期 (例如: 2023-10-25)
+  imageUrl  String   // 圖片喺 Supabase Storage 嘅網址
+  createdAt DateTime @default(now())
+}
