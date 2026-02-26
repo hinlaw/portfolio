@@ -1,172 +1,40 @@
-# Dexter's Portfolio
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-A modern portfolio website built with Next.js frontend and Go backend using a monorepo architecture.
+## Getting Started
 
-## 🏗️ Project Structure
-
-```
-portfolio/
-├── frontend/                 # Next.js frontend application
-│   ├── app/                 # App Router pages and components
-│   ├── components/           # Reusable UI components
-│   ├── lib/                 # Utility functions and API client
-│   └── package.json         # Frontend dependencies
-├── backend/                  # Go backend API
-│   ├── cmd/api/             # Application entry point
-│   ├── internal/            # Internal packages
-│   │   ├── handlers/        # HTTP request handlers
-│   │   ├── models/          # Data models
-│   │   └── middleware/      # Middleware functions
-│   └── go.mod              # Go module dependencies
-└── README.md                # This file
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+ and npm
-- Go 1.21+
-
-### Local Development
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd portfolio
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   cd frontend && npm install
-   ```
-
-3. **Start development environment**
-   
-   **Option 1: One command (recommended)**
-   ```bash
-   npm run dev
-   ```
-   
-   **Option 2: Manual start**
-   ```bash
-   # Terminal 1: Start backend
-   cd backend && go run cmd/api/main.go
-   
-   # Terminal 2: Start frontend
-   cd frontend && npm run dev
-   ```
-
-4. **Access the applications**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-
-## 📡 API Endpoints
-
-The Go backend provides the following REST API endpoints:
-
-### Health Check
-- `GET /api/health` - Check backend health status
-
-### Categories
-- `GET /api/categories` - Get portfolio categories
-
-### Contact Form
-- `POST /api/contact` - Submit contact form
-  ```json
-  {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "subject": "Project Inquiry",
-    "message": "I'm interested in your services..."
-  }
-  ```
-
-## 🛠️ Development
-
-### Backend Development
-
-The backend uses the Gin web framework and follows Go best practices:
-
-- **Handlers**: HTTP request handlers in `internal/handlers/`
-- **Models**: Data structures in `internal/models/`
-- **Middleware**: CORS and other middleware in `internal/middleware/`
-
-### Frontend Development
-
-The frontend uses Next.js 15 with:
-
-- **App Router**: Modern Next.js routing system
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first CSS framework
-- **API Client**: Type-safe API communication in `lib/api.ts`
-
-### Hot Reload Development
-
-For backend hot reload during development, you can use Air:
+First, run the development server:
 
 ```bash
-# Install Air
-go install github.com/cosmtrek/air@latest
-
-# Run with hot reload
-cd backend
-air
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-### Environment Variables
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Copy `env.example` to `.env` and configure:
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-```bash
-# Backend
-PORT=5000
-GIN_MODE=debug
+[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-# Frontend
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
 
-## 🔧 Technologies Used
+This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### Frontend
-- **Next.js 15** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Radix UI** - Component library
+## Learn More
 
-### Backend
-- **Go 1.21+** - Programming language
-- **Gin** - Web framework
-- **CORS** - Cross-origin resource sharing
+To learn more about Next.js, take a look at the following resources:
 
-### Development Tools
-- **Air** - Hot reload for Go development
-- **Postman/Thunder Client** - API testing
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
-## 📝 API Response Format
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-All API responses follow this standard format:
+## Deploy on Vercel
 
-```json
-{
-  "success": true,
-  "message": "Operation completed successfully",
-  "data": {
-    // Response data here
-  }
-}
-```
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
