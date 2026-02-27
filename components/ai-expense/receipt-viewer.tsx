@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { FileWithPreview } from './file-upload';
 import { isPdfUrl } from './file-utils';
 import { X, Plus, ZoomIn, ZoomOut, RotateCcw, RotateCw, Trash2, FileText, Scan, Loader2 } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 interface ReceiptViewerProps {
@@ -25,7 +25,7 @@ export default function ReceiptViewer({
     onAiScan,
     isScanning = false
 }: ReceiptViewerProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const [isVisible, setIsVisible] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
     const [imageScales, setImageScales] = useState<Record<number, number>>({});

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 
 interface ExpenseStatisticsMobileHeaderProps {
     onMenuClick: () => void;
@@ -12,7 +12,7 @@ interface ExpenseStatisticsMobileHeaderProps {
 export default function ExpenseStatisticsMobileHeader({
     onMenuClick,
 }: ExpenseStatisticsMobileHeaderProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
 
     return (
         <div className="sticky top-[0px] z-20 px-4 pt-4 pb-3 border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">

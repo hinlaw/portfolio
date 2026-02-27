@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { Plus, Loader2, MoveUp, Trash2, FileText, Star } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import FileThumbnail from '@/components/ai-expense/file-thumbnail';
 import { isPdfUrl } from '@/components/ai-expense/file-utils';
 
@@ -29,7 +29,7 @@ export default function MediaGallery({
     onRemoveMedia,
     onImageClick,
 }: MediaGalleryProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const handleAddMediaClick = () => {

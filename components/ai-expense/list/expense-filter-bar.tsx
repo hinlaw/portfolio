@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Filter, Search, RotateCcw } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { dayjs } from '@/lib/date';
 
 interface ExpenseFilterBarProps {
@@ -40,7 +40,7 @@ export default function ExpenseFilterBar({
     hasActiveFilters,
     onClearFilters,
 }: ExpenseFilterBarProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
 
     return (
         <div

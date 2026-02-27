@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { BarChart3, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { IoReceiptOutline } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
 
@@ -15,6 +16,7 @@ interface ExpenseSidebarProps {
 
 export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNavigate }: ExpenseSidebarProps) {
     const router = useRouter();
+    const t = useTranslations('aiExpense');
 
     const isExpensesActive = currentPath === '/apps/ai-expense' || (currentPath.startsWith('/apps/ai-expense/') && currentPath !== '/apps/ai-expense/statistics' && currentPath !== '/apps/ai-expense/new');
     const isReportsActive = currentPath === '/apps/ai-expense/statistics';
@@ -53,7 +55,7 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                     >
                         <div className="flex items-center gap-3 flex-1">
                             <IoReceiptOutline className="h-4 w-4" />
-                            <span>Expenses</span>
+                            <span>{t('expenses')}</span>
                         </div>
                         <Button
                             variant="ghost"
@@ -80,7 +82,7 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                     )}
                 >
                     <BarChart3 className="h-4 w-4" />
-                    <span>Reports</span>
+                    <span>{t('reports')}</span>
                 </Link>
             </nav>
         </aside>

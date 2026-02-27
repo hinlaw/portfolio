@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Upload, X, Image as ImageIcon, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { isPdfUrl, extractFilenameFromUrl } from './file-utils';
 import PdfPreview from './pdf-preview';
 
@@ -31,7 +31,7 @@ export default function FileUpload({
     accept = 'image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt',
     className,
 }: FileUploadProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [previewPdfUrl, setPreviewPdfUrl] = useState<string | null>(null);
@@ -64,19 +64,19 @@ export default function FileUpload({
             const isTXT = file.type === 'text/plain';
             
             if (!isImage && !isPDF && !isDOC && !isDOCX && !isXLS && !isXLSX && !isCSV && !isTXT) {
-                alert(`${file.name} ${t('file type not supported. Supported types: images, PDF, DOC, DOCX, XLS, XLSX, CSV, TXT')}`);
+                alert(`${file.name} ${t('toast.file type not supported. supported types: images, pdf, doc, docx, xls, xlsx, csv, txt')}`);
                 continue;
             }
 
             // Validate file size
             if (file.size > maxSizePerFile) {
-                alert(`${file.name} ${t('file exceeds maximum size')} ${maxSizePerFile / 1024 / 1024}MB`);
+                alert(`${file.name} ${t('toast.file exceeds maximum size')} ${maxSizePerFile / 1024 / 1024}MB`);
                 continue;
             }
 
             // Check max files limit
             if (files.length + newFiles.length >= maxFiles) {
-                alert(t('maximum files allowed').replace('{count}', String(maxFiles)));
+                alert(t('toast.maximum {count} files allowed', { count: maxFiles }));
                 break;
             }
 
@@ -91,7 +91,7 @@ export default function FileUpload({
                 });
             } catch (error) {
                 console.error(`Failed to process ${file.name}:`, error);
-                alert(`${t('failed to process file')} ${file.name}`);
+                alert(`${t('toast.failed to process file')} ${file.name}`);
             }
         }
 
@@ -281,7 +281,7 @@ export default function FileUpload({
                             {t('drag and drop files here, or click to select')}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                            {t('images and documents • max {size}mb per file • up to {count} files').replace('{size}', String(maxSizePerFile / 1024 / 1024)).replace('{count}', String(maxFiles))}
+                            {t('images and documents • max {size}mb per file • up to {count} files', { size: maxSizePerFile / 1024 / 1024, count: maxFiles })}
                         </p>
                     </div>
                 )}

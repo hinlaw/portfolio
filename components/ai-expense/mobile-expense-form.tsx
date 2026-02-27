@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { FileWithPreview } from './file-upload';
 import { Paperclip, Loader2, Search, Check } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { cn } from '@/lib/utils';
 import { ExpenseFormData } from './form/schema';
@@ -70,7 +70,7 @@ export default function MobileExpenseForm({
     onCurrencyPopoverOpenChange,
     onManualExchangeRateChange,
 }: MobileExpenseFormProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
 
     // Filter currencies based on search keyword

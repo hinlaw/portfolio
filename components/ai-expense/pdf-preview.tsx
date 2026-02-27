@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Download, ExternalLink, X } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 
 interface PdfPreviewProps {
     url: string;
@@ -14,7 +14,7 @@ interface PdfPreviewProps {
 }
 
 export default function PdfPreview({ url, filename, open, onOpenChange }: PdfPreviewProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const blobUrlRef = useRef<string | null>(null);
 

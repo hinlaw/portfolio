@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layout';
 import ExpenseSidebar from '@/components/ai-expense/layout/expense-sidebar';
@@ -19,6 +20,7 @@ import FirstExpenseLanding from '@/components/ai-expense/first-expense-landing';
 
 export default function AiExpenseListPage() {
     const router = useRouter();
+    const t = useTranslations('aiExpense');
     const [showFilters, setShowFilters] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [showFullscreenForm, setShowFullscreenForm] = useState(false);
@@ -103,13 +105,13 @@ export default function AiExpenseListPage() {
             const isTXT = file.type === 'text/plain';
 
             if (!isImage && !isPDF && !isDOC && !isDOCX && !isXLS && !isXLSX && !isCSV && !isTXT) {
-                toast.error(`${file.name} file type not supported. Supported types: images, PDF, DOC, DOCX, XLS, XLSX, CSV, TXT`);
+                toast.error(`${file.name} ${t('toast.file type not supported. supported types: images, pdf, doc, docx, xls, xlsx, csv, txt')}`);
                 continue;
             }
 
             // Check max files limit (10 files)
             if (newFiles.length >= 10) {
-                toast.error('Maximum files allowed: 10');
+                toast.error(t('toast.maximum files allowed: {count}', { count: '10' }));
                 break;
             }
 
@@ -122,7 +124,7 @@ export default function AiExpenseListPage() {
                 });
             } catch (error) {
                 console.error(`Failed to process ${file.name}:`, error);
-                toast.error(`Failed to process file ${file.name}`);
+                toast.error(`${t('toast.failed to process file')} ${file.name}`);
             }
         }
 
@@ -189,7 +191,7 @@ export default function AiExpenseListPage() {
             </Head>
 
             <ExpensePageLayout
-                title="Expenses"
+                title={t('title')}
             >
                 {/* Hidden file input (used by AI create / auto-scan) */}
                 <input
@@ -215,7 +217,7 @@ export default function AiExpenseListPage() {
                 ) : hasAnyExpenses === null ? (
                     <div className="p-6">
                         <div className="max-w-7xl mx-auto text-sm text-muted-foreground">
-                            Loading...
+                            {t('loading')}
                         </div>
                     </div>
                 ) : (
@@ -266,7 +268,7 @@ export default function AiExpenseListPage() {
                                                     </div>
                                                 </div>
                                                 <p className="text-base font-medium text-muted-foreground">
-                                                    Drag & drop receipts or click here to upload
+                                                    {t('drag & drop receipts or click here to upload')}
                                                 </p>
                                             </div>
                                         </div>
@@ -324,7 +326,7 @@ export default function AiExpenseListPage() {
                                 <Input
                                     value={keyword}
                                     onChange={(e) => setKeyword(e.target.value)}
-                                    placeholder="Search merchant, description..."
+                                    placeholder={t('search merchant, description...')}
                                     className="h-12 rounded-full pl-12 pr-4 bg-slate-100 border-slate-200 focus-visible:ring-slate-300"
                                 />
                             </div>

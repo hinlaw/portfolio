@@ -22,7 +22,7 @@ import {
 import { dayjs, formatChartDate } from '@/lib/date';
 import { toast } from 'sonner';
 import { Loader2, ChevronRight } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { useCurrencyFormatter } from '@/lib/currency';
 import ExpenseStatisticsFilterBar from './expense-statistics-filter-bar';
 import { Card } from '@/components/ui/card';
@@ -33,7 +33,7 @@ interface ExpenseStatisticsProps {
 }
 
 export default function ExpenseStatistics({ showFilters = false, onToggleFilters }: ExpenseStatisticsProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
     const [statistics, setStatistics] = useState<ExpenseStatisticItem[]>([]);
     const [loading, setLoading] = useState(false);
@@ -74,14 +74,14 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
 
     const loadStatistics = useCallback(async () => {
         if (!fromDate || !toDate) {
-            toast.error(t('please select both from and to dates'));
+            toast.error(t('toast.please select both from and to dates'));
             return;
         }
 
         const from = dayjs(fromDate);
         const to = dayjs(toDate);
         if (from.isAfter(to)) {
-            toast.error(t('from date must be less than or equal to to date'));
+            toast.error(t('toast.from date must be less than or equal to to date'));
             return;
         }
 
@@ -94,7 +94,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
             setStatistics(response.data.data || []);
         } catch (error: any) {
             console.error('Failed to load statistics:', error);
-            toast.error(t('failed to load statistics'));
+            toast.error(t('toast.failed to load statistics'));
         } finally {
             setLoading(false);
         }

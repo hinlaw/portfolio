@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Filter } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 
 interface ExpenseListDesktopHeaderProps {
     onNewExpenseClick: () => void;
@@ -14,7 +14,7 @@ export default function ExpenseListDesktopHeader({
     onNewExpenseClick,
     onFilterClick,
 }: ExpenseListDesktopHeaderProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
 
     return (
         <div className="sticky top-[0px] z-20 px-6 py-3 border-b border-slate-200 bg-white">

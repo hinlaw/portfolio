@@ -11,7 +11,7 @@ import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';
 import { toast } from 'sonner';
 import { Loader2, X, Upload, FileText, RotateCw, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw, Scan, Search, Check } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { formatDateYMD, todayYMD, parseToTimestamp, dayjs } from '@/lib/date';
@@ -60,7 +60,7 @@ export default function ExpenseForm({
     onClose,
     isMobile: isMobileProp
 }: ExpenseFormProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
 
     const detectedIsMobile = useIsMobile();
@@ -285,10 +285,10 @@ export default function ExpenseForm({
                     media,
                 };
                 result = await updateExpense(expense.id, updateRequest);
-                toast.success(t('expense updated successfully'));
+                toast.success(t('toast.expense updated successfully'));
             } else {
                 result = await createExpense(request);
-                toast.success(t('expense created successfully'));
+                toast.success(t('toast.expense created successfully'));
             }
 
             if (saveAndNew) {
@@ -299,7 +299,7 @@ export default function ExpenseForm({
             return true;
         } catch (error: any) {
             console.error('Failed to save expense:', error);
-            toast.error(error?.response?.data?.error || error?.message || t('failed to save expense'));
+            toast.error(error?.response?.data?.error || error?.message || t('toast.failed to save expense'));
             return false;
         } finally {
             setIsSubmitting(false);
@@ -346,12 +346,12 @@ export default function ExpenseForm({
             const isAudio = file.type.startsWith('audio/');
 
             if (!isImage && !isPDF && !isDOC && !isDOCX && !isXLS && !isXLSX && !isCSV && !isTXT && !isVideo && !isAudio) {
-                toast.error(`${file.name} ${t('file type not supported')}`);
+                toast.error(`${file.name} ${t('toast.file type not supported')}`);
                 continue;
             }
 
             if (files.length + newFiles.length >= 10) {
-                toast.error(t('maximum files allowed').replace('{count}', '10'));
+                toast.error(t('toast.maximum files allowed: {count}', { count: '10' }));
                 break;
             }
 
@@ -366,7 +366,7 @@ export default function ExpenseForm({
                 });
             } catch (error) {
                 console.error(`Failed to process ${file.name}:`, error);
-                toast.error(`${t('failed to process file')} ${file.name}`);
+                toast.error(`${t('toast.failed to process file')} ${file.name}`);
             }
         }
 
@@ -512,7 +512,7 @@ export default function ExpenseForm({
 
     const handleAiScan = async (imageIndex?: number) => {
         if (files.length === 0) {
-            toast.error(t('please upload at least one file'));
+            toast.error(t('toast.please upload at least one file'));
             return;
         }
 
@@ -520,7 +520,7 @@ export default function ExpenseForm({
         const indexToScan = imageIndex !== undefined ? imageIndex : selectedImageIndex;
         const currentFile = files[indexToScan];
         if (!currentFile) {
-            toast.error(t('please select a file'));
+            toast.error(t('toast.please select a file'));
             return;
         }
 
@@ -529,7 +529,7 @@ export default function ExpenseForm({
         const isAudio = currentFile.file.type.startsWith('audio/');
 
         if (isVideo || isAudio) {
-            toast.error(t('please select an image or document file'));
+            toast.error(t('toast.please select an image or document file'));
             return;
         }
 
@@ -565,7 +565,7 @@ export default function ExpenseForm({
             const media = [currentFile.base64];
             const createResponse = await createExpenseAiJob(media);
             const jobId = createResponse.job_id;
-            toast.success(t('ai scan started'));
+            toast.success(t('toast.ai scan started'));
 
             const pollInterval = 1000;
             const maxAttempts = 60;
@@ -575,7 +575,7 @@ export default function ExpenseForm({
                 try {
                     attempts++;
                     if (attempts > maxAttempts) {
-                        throw new Error(t('ai scan timeout'));
+                        throw new Error(t('toast.ai scan timeout'));
                     }
 
                     const job = await getExpenseAiJob(jobId);
@@ -598,7 +598,7 @@ export default function ExpenseForm({
                                 // Show red progress bar on error
                                 setScanFailed(true);
                                 setScanProgress(100);
-                                toast.error(err?.response?.data?.message || err?.message || t('ai scan failed'));
+                                toast.error(err?.response?.data?.message || err?.message || t('toast.ai scan failed'));
                                 setIsScanning(false);
                                 setTimeout(() => {
                                     setScanProgress(0);
@@ -638,7 +638,7 @@ export default function ExpenseForm({
                             // Reset form with all values, ensuring UI updates
                             reset(currentValues);
 
-                            toast.success(t('ai scan completed'));
+                            toast.success(t('toast.ai scan completed'));
                             setIsScanning(false);
                             // Force mobile form to re-render after scanning completes
                             setScanCompleteKey(prev => prev + 1);
@@ -660,7 +660,7 @@ export default function ExpenseForm({
 
                         // Show error message after a brief delay
                         setTimeout(() => {
-                            toast.error(t('ai scan failed'));
+                            toast.error(t('toast.ai scan failed'));
                             setIsScanning(false);
                             setTimeout(() => {
                                 setScanProgress(0);
@@ -679,7 +679,7 @@ export default function ExpenseForm({
                                 // Show red progress bar on error
                                 setScanFailed(true);
                                 setScanProgress(100);
-                                toast.error(err?.response?.data?.message || err?.message || t('ai scan failed'));
+                                toast.error(err?.response?.data?.message || err?.message || t('toast.ai scan failed'));
                                 setIsScanning(false);
                                 setTimeout(() => {
                                     setScanProgress(0);
@@ -704,7 +704,7 @@ export default function ExpenseForm({
             // Show red progress bar on error
             setScanFailed(true);
             setScanProgress(100);
-            toast.error(error?.response?.data?.message || error?.message || t('ai scan failed'));
+            toast.error(error?.response?.data?.message || error?.message || t('toast.ai scan failed'));
             setIsScanning(false);
             setTimeout(() => {
                 setScanProgress(0);

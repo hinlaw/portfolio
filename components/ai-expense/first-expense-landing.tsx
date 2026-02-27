@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Plus, Scan, Upload } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type FirstExpenseLandingProps = {
     onManualCreate: () => void;
@@ -16,6 +17,7 @@ export default function FirstExpenseLanding({
     onDrop,
     onDragOver,
 }: FirstExpenseLandingProps) {
+    const t = useTranslations('aiExpense');
     return (
         <div className="px-4 py-10 md:py-16">
             <div className="mx-auto max-w-5xl">
@@ -24,15 +26,15 @@ export default function FirstExpenseLanding({
                         <div className="inline-flex items-center gap-3 rounded-2xl bg-muted px-4 py-2">
 
                             <div className="text-sm font-semibold text-slate-900">
-                                AI Expense
+                                {t('ai expense')}
                             </div>
                         </div>
 
                         <h1 className="mt-5 text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
-                            Create your first expense
+                            {t('create your first expense')}
                         </h1>
                         <p className="mt-3 text-slate-600">
-                            Start by adding one manually, or scan a receipt with AI to auto-fill the form.
+                            {t('start by adding one manually, or scan a receipt with ai to auto-fill the form.')}
                         </p>
 
                         <div className="mt-6 flex flex-col sm:flex-row gap-3">
@@ -42,7 +44,7 @@ export default function FirstExpenseLanding({
                                 className="h-12 rounded-xl gap-2"
                             >
                                 <Scan className="h-5 w-5" />
-                                AI Create
+                                {t('ai create')}
                             </Button>
                             <Button
                                 type="button"
@@ -51,7 +53,7 @@ export default function FirstExpenseLanding({
                                 className="h-12 rounded-xl gap-2"
                             >
                                 <Plus className="h-5 w-5" />
-                                Manual Create
+                                {t('manual create')}
                             </Button>
                         </div>
                     </div>
@@ -69,10 +71,10 @@ export default function FirstExpenseLanding({
                                 </div>
                                 <div className="space-y-1">
                                     <div className="text-base font-medium text-slate-900">
-                                        Drag & drop receipts or click here to upload
+                                        {t('drag & drop receipts or click here to upload')}
                                     </div>
                                     <div className="text-sm text-slate-500">
-                                        We will auto-scan and open the expense form for you.
+                                        {t('we will auto-scan and open the expense form for you.')}
                                     </div>
                                 </div>
                             </div>

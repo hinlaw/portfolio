@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { dayjs } from '@/lib/date';
 import { Filter } from 'lucide-react';
-import { useTranslation } from '@/components/contexts/translation.context';
+import { useTranslations } from 'next-intl';
 
 interface DateRangePreset {
     value: string;
@@ -46,7 +46,7 @@ export default function ExpenseStatisticsFilterBar({
     hasActiveFilters,
     onClearFilters,
 }: ExpenseStatisticsFilterBarProps) {
-    const { t } = useTranslation();
+    const t = useTranslations('aiExpense');
 
     const handleFromDateChange = (date: Date | undefined) => {
         if (date) {
