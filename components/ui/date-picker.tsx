@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { format } from "date-fns"
+import dayjs from "dayjs"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
@@ -28,7 +28,7 @@ export function DatePicker({
   disabled = false,
   placeholder = "Pick a date",
   error = false,
-  dateFormat = "yyyy-MM-dd",
+  dateFormat = "YYYY-MM-DD",
   showIcon = false,
   className,
   buttonClassName,
@@ -50,7 +50,7 @@ export function DatePicker({
           )}
         >
           {showIcon && <CalendarIcon className="mr-2 h-4 w-4" />}
-          {date ? format(date, dateFormat) : <span>{placeholder}</span>}
+          {date ? dayjs(date).format(dateFormat) : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

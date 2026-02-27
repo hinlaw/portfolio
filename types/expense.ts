@@ -5,11 +5,11 @@ export interface ExpenseDTO {
   merchant: string | null;
   amount: number;
   original_amount?: number;
-  date: Date | string;
+  date: number; // Unix timestamp (seconds)
   currency?: string;
+  exchange_rate?: number;
   media?: string[];
   description?: string;
-  remark?: string;
   workspace_id?: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -21,11 +21,11 @@ export interface ApiExpenseCreateRequest {
   merchant?: string;
   amount: number;
   original_amount?: number;
-  date: string; // ISO date string
+  date: number; // Unix timestamp (seconds)
   currency?: string;
+  exchange_rate?: number;
   media?: string[];
   description?: string;
-  remark?: string;
   workspace_id?: string;
 }
 
@@ -33,11 +33,11 @@ export interface ApiExpenseUpdateRequest {
   merchant?: string;
   amount?: number;
   original_amount?: number;
-  date?: string; // ISO date string
+  date?: number; // Unix timestamp (seconds)
   currency?: string;
+  exchange_rate?: number;
   media?: string[];
   description?: string;
-  remark?: string;
 }
 
 export interface ExpenseStatisticItem {

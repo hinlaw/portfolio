@@ -74,6 +74,9 @@
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     font-size: 16px;
   }

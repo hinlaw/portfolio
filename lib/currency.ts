@@ -1,4 +1,17 @@
+/** Supported currencies (hardcoded, no API) */
+export const SUPPORTED_CURRENCIES = ['USD', 'CNY', 'HKD'] as const;
 
+/** Exchange rates to USD: 1 unit of currency = X USD (hardcoded) */
+export const EXCHANGE_RATES_TO_USD: Record<string, number> = {
+    USD: 1,
+    CNY: 0.14,   // ~7.14 CNY per 1 USD
+    HKD: 0.128,  // ~7.8 HKD per 1 USD
+};
+
+/** Get exchange rate from currency to USD */
+export function getExchangeRateToUsd(currency: string): number {
+    return EXCHANGE_RATES_TO_USD[currency] ?? 1;
+}
 
 /**
  * Format currency with a specific currency code
@@ -26,18 +39,10 @@ export function formatCurrencyWithCode(amount: number, currencyCode: string): st
 }
 
 /**
- * Hook to format currency based on workspace currency setting
+ * Hook to format currency based on workspace currency (USD)
  * @returns A function to format amounts as currency
  */
-// export function useCurrencyFormatter() {
-//     const { currentWorkspace } = useLocalStorage();
-    
-//     // Get currency from workspace, default to USD if not set
-//     const currency = currentWorkspace?.workspace?.currency?.trim() || 'USD';
-    
-//     const formatCurrency = (amount: number): string => {
-//         return formatCurrencyWithCode(amount, currency);
-//     };
-    
-//     return formatCurrency;
-// }
+export function useCurrencyFormatter(): (amount: number) => string {
+    const currency = 'USD';
+    return (amount: number) => formatCurrencyWithCode(amount, currency);
+}

@@ -31,8 +31,8 @@ export default function ExpensePageLayout({
     // Default product config
     const defaultProduct: ProductInfo = {
         name: 'AI Expense',
+        icon: '',
         description: 'Manage your expenses with AI',
-        icon: '/apps/app-ai-expense.png',
         accent: 'from-emerald-500 to-teal-500',
         actions: (
             <div className="flex items-center gap-3">

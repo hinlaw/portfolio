@@ -19,7 +19,7 @@ import {
     ChartLegendContent,
     type ChartConfig,
 } from '@/components/ui/chart';
-import { format, subDays, subMonths, subWeeks, subQuarters, subYears, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfQuarter, endOfQuarter, startOfYear, endOfYear, startOfDay, endOfDay } from 'date-fns';
+import { dayjs, formatChartDate } from '@/lib/date';
 import { toast } from 'sonner';
 import { Loader2, ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/components/contexts/translation.context';
@@ -37,13 +37,8 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     const formatCurrency = useCurrencyFormatter();
     const [statistics, setStatistics] = useState<ExpenseStatisticItem[]>([]);
     const [loading, setLoading] = useState(false);
-    const [fromDate, setFromDate] = useState(() => {
-        const date = subMonths(new Date(), 1);
-        return format(date, 'yyyy-MM-dd');
-    });
-    const [toDate, setToDate] = useState(() => {
-        return format(new Date(), 'yyyy-MM-dd');
-    });
+    const [fromDate, setFromDate] = useState(() => dayjs().subtract(1, 'month').format('YYYY-MM-DD'));
+    const [toDate, setToDate] = useState(() => dayjs().format('YYYY-MM-DD'));
     const [rangeType, setRangeType] = useState<'day' | 'month' | 'quarter'>('day');
     const [dateRangePreset, setDateRangePreset] = useState<string>('custom');
     const [isMobile, setIsMobile] = useState(false);
@@ -66,15 +61,12 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     // Auto-switch from custom to thisMonth on mobile (only once when mobile is detected)
     useEffect(() => {
         if (isMobile && dateRangePreset === 'custom' && !hasSwitchedFromCustomRef.current) {
-            const now = new Date();
-            const from = startOfMonth(now);
-            const to = endOfMonth(now);
+            const now = dayjs();
             setDateRangePreset('thisMonth');
-            setFromDate(format(from, 'yyyy-MM-dd'));
-            setToDate(format(to, 'yyyy-MM-dd'));
+            setFromDate(now.startOf('month').format('YYYY-MM-DD'));
+            setToDate(now.endOf('month').format('YYYY-MM-DD'));
             hasSwitchedFromCustomRef.current = true;
         }
-        // Reset ref when switching back to desktop
         if (!isMobile) {
             hasSwitchedFromCustomRef.current = false;
         }
@@ -86,18 +78,17 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
             return;
         }
 
-        // Validate date range
-        const from = new Date(fromDate + 'T00:00:00');
-        const to = new Date(toDate + 'T00:00:00');
-        if (from > to) {
+        const from = dayjs(fromDate);
+        const to = dayjs(toDate);
+        if (from.isAfter(to)) {
             toast.error(t('from date must be less than or equal to to date'));
             return;
         }
 
         setLoading(true);
         try {
-            const fromTimestamp = Math.floor(from.getTime() / 1000);
-            const toTimestamp = Math.floor(to.getTime() / 1000);
+            const fromTimestamp = from.startOf('day').unix();
+            const toTimestamp = to.endOf('day').unix();
 
             const response = await getExpenseStatistics(fromTimestamp, toTimestamp, rangeType);
             setStatistics(response.data.data || []);
@@ -113,19 +104,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
         loadStatistics();
     }, [loadStatistics]);
 
-    const formatChartDate = (timestamp: number) => {
-        const date = new Date(timestamp * 1000);
-        switch (rangeType) {
-            case 'day':
-                return format(date, 'MMM dd');
-            case 'month':
-                return format(date, 'MMM yyyy');
-            case 'quarter':
-                return format(date, 'QQQ yyyy');
-            default:
-                return format(date, 'MMM dd');
-        }
-    };
+    const formatChartDateLocal = (value: number | string) => formatChartDate(value, rangeType);
 
     // Format currency for chart display (no decimals)
     const formatCurrencyForChart = (value: number) => {
@@ -148,7 +127,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     const averageAmount = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
 
     const chartData = statistics.map((item) => ({
-        date: formatChartDate(item.date),
+        date: formatChartDateLocal(item.date),
         timestamp: item.date,
         amount: item.amount || 0,
         transactions: item.transactions || 0,
@@ -170,73 +149,71 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
 
     const applyDateRangePreset = (preset: string) => {
         setDateRangePreset(preset);
-        const now = new Date();
-        let from: Date;
-        let to: Date;
+        const now = dayjs();
+        let from: dayjs.Dayjs;
+        let to: dayjs.Dayjs;
 
         switch (preset) {
             case 'thisWeek':
-                from = startOfWeek(now, { weekStartsOn: 1 }); // Monday
-                to = endOfWeek(now, { weekStartsOn: 1 });
+                from = now.startOf('isoWeek');
+                to = now.endOf('isoWeek');
                 break;
             case 'thisMonth':
-                from = startOfMonth(now);
-                to = endOfMonth(now);
+                from = now.startOf('month');
+                to = now.endOf('month');
                 break;
             case 'thisQuarter':
-                from = startOfQuarter(now);
-                to = endOfQuarter(now);
+                from = now.startOf('quarter');
+                to = now.endOf('quarter');
                 break;
             case 'thisYear':
-                from = startOfYear(now);
-                to = endOfYear(now);
+                from = now.startOf('year');
+                to = now.endOf('year');
                 break;
             case 'today':
-                from = startOfDay(now);
-                to = endOfDay(now);
+                from = now.startOf('day');
+                to = now.endOf('day');
                 break;
             case 'yesterday':
-                const yesterday = subDays(now, 1);
-                from = startOfDay(yesterday);
-                to = endOfDay(yesterday);
+                const yesterday = now.subtract(1, 'day');
+                from = yesterday.startOf('day');
+                to = yesterday.endOf('day');
                 break;
             case 'previousWeek':
-                const lastWeek = subWeeks(now, 1);
-                from = startOfWeek(lastWeek, { weekStartsOn: 1 });
-                to = endOfWeek(lastWeek, { weekStartsOn: 1 });
+                const lastWeek = now.subtract(1, 'week');
+                from = lastWeek.startOf('isoWeek');
+                to = lastWeek.endOf('isoWeek');
                 break;
             case 'previousMonth':
-                const lastMonth = subMonths(now, 1);
-                from = startOfMonth(lastMonth);
-                to = endOfMonth(lastMonth);
+                const lastMonth = now.subtract(1, 'month');
+                from = lastMonth.startOf('month');
+                to = lastMonth.endOf('month');
                 break;
             case 'previousQuarter':
-                const lastQuarter = subQuarters(now, 1);
-                from = startOfQuarter(lastQuarter);
-                to = endOfQuarter(lastQuarter);
+                const lastQuarter = now.subtract(1, 'quarter');
+                from = lastQuarter.startOf('quarter');
+                to = lastQuarter.endOf('quarter');
                 break;
             case 'previousYear':
-                const lastYear = subYears(now, 1);
-                from = startOfYear(lastYear);
-                to = endOfYear(lastYear);
+                const lastYear = now.subtract(1, 'year');
+                from = lastYear.startOf('year');
+                to = lastYear.endOf('year');
                 break;
             case 'custom':
             default:
-                // Don't change dates for custom, user will select manually
                 return;
         }
 
-        setFromDate(format(from, 'yyyy-MM-dd'));
-        setToDate(format(to, 'yyyy-MM-dd'));
+        setFromDate(from.format('YYYY-MM-DD'));
+        setToDate(to.format('YYYY-MM-DD'));
     };
 
     const hasActiveFilters = !!(fromDate || toDate);
 
     const clearAllFilters = () => {
         setDateRangePreset('custom');
-        const date = subMonths(new Date(), 1);
-        setFromDate(format(date, 'yyyy-MM-dd'));
-        setToDate(format(new Date(), 'yyyy-MM-dd'));
+        setFromDate(dayjs().subtract(1, 'month').format('YYYY-MM-DD'));
+        setToDate(dayjs().format('YYYY-MM-DD'));
     };
 
     return (

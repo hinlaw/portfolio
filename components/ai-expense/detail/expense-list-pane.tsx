@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExpenseDTO } from '@/types/expense';
-import { format } from 'date-fns';
+import { formatDateLong } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -30,10 +30,7 @@ export default function ExpenseListPane({
 }: ExpenseListPaneProps) {
     const formatCurrency = useCurrencyFormatter();
 
-    const formatDate = (date: Date | string) => {
-        const dateObj = date instanceof Date ? date : new Date(date);
-        return format(dateObj, 'MMMM dd, yyyy');
-    };
+    const formatDate = (timestamp: number) => formatDateLong(timestamp);
 
     const totalPages = Math.ceil(total / size);
 

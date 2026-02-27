@@ -23,7 +23,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Plus, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatDateShort, parseToTimestamp, dayjs } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { Badge } from '@/components/ui/badge';
 import FileThumbnail from '../file-thumbnail';
@@ -74,7 +74,7 @@ export default function ExpenseList({
 
     const loadExpenses = useCallback(async () => {
         // Don't load if date range is invalid
-        if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
+        if (fromDate && toDate && dayjs(fromDate).isAfter(dayjs(toDate))) {
             return;
         }
 
@@ -83,10 +83,10 @@ export default function ExpenseList({
             const filters: ExpenseListFilters = {};
 
             if (fromDate) {
-                filters.fromDate = Math.floor(new Date(fromDate).getTime() / 1000);
+                filters.fromDate = parseToTimestamp(fromDate);
             }
             if (toDate) {
-                filters.toDate = Math.floor(new Date(toDate).getTime() / 1000);
+                filters.toDate = parseToTimestamp(toDate);
             }
             if (minAmount) {
                 filters.minAmount = parseFloat(minAmount);
@@ -157,10 +157,7 @@ export default function ExpenseList({
         router.push(`/apps/ai-expense/${expense.id}`);
     };
 
-    const formatDate = (date: Date | string) => {
-        const dateObj = date instanceof Date ? date : new Date(date);
-        return format(dateObj, 'MMM dd, yyyy');
-    };
+    const formatDate = (timestamp: number) => formatDateShort(timestamp);
 
     // Get first image URL from media array (prefer images over PDFs)
     const getFirstImageUrl = (media: string[] | undefined): string | null => {
@@ -241,7 +238,7 @@ export default function ExpenseList({
             }
 
             if (newMediaFiles.length > 0) {
-                const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+                const dateTimestamp = expense.date;
                 const updateRequest: ApiExpenseUpdateRequest = {
                     date: dateTimestamp,
                     merchant: expense.merchant,
@@ -250,9 +247,7 @@ export default function ExpenseList({
                     currency: expense.currency || workspaceCurrency,
                     exchange_rate: expense.exchange_rate || 1,
                     amount: expense.amount,
-                    note: expense.note || '',
                     media: newMedia,
-                    media_files: [...(expense.media?.map(() => '') || []), ...newMediaFiles],
                 };
 
                 await updateExpense(expense.id, updateRequest);
@@ -303,12 +298,12 @@ export default function ExpenseList({
     const hasActiveFilters = !!(keyword || fromDate || toDate || minAmount || maxAmount);
 
     // Date validation
-    const isDateRangeValid = !fromDate || !toDate || new Date(fromDate) <= new Date(toDate);
+    const isDateRangeValid = !fromDate || !toDate || !dayjs(fromDate).isAfter(dayjs(toDate));
 
     // Format date for display
     const formatDateDisplay = (dateString: string) => {
         if (!dateString) return '';
-        return format(new Date(dateString), 'MMM dd, yyyy');
+        return dayjs(dateString).format('MMM DD, YYYY');
     };
 
     // Format amount for display

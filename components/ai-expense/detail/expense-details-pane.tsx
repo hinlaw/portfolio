@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ExpenseDTO, ApiExpenseUpdateRequest } from '@/types/expense';
 import { updateExpense } from '@/lib/api-stubs';
 import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatDateLong, dayjs } from '@/lib/date';
 import { useCurrencyFormatter, formatCurrencyWithCode } from '@/lib/currency';
 import ImageViewer from '@/components/ai-expense/image-viewer';
 import { isPdfUrl, isImageUrl } from '@/components/ai-expense/file-utils';
@@ -44,10 +44,7 @@ export default function ExpenseDetailsPane({
     const mobileAttachmentsRef = useRef<HTMLDivElement | null>(null);
     const mobileFileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const formatDate = (date: Date | string) => {
-        const dateObj = date instanceof Date ? date : new Date(date);
-        return format(dateObj, 'MMMM dd, yyyy');
-    };
+    const formatDate = (timestamp: number) => formatDateLong(timestamp);
 
     const convertFileToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
@@ -96,7 +93,7 @@ export default function ExpenseDetailsPane({
             }
 
             if (newMediaFiles.length > 0) {
-                const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+                const dateTimestamp = expense.date;
                 const updateRequest: ApiExpenseUpdateRequest = {
                     date: dateTimestamp,
                     merchant: expense.merchant,
@@ -105,9 +102,7 @@ export default function ExpenseDetailsPane({
                     currency: expense.currency || workspaceCurrency,
                     exchange_rate: expense.exchange_rate || 1,
                     amount: expense.amount,
-                    note: expense.note || '',
                     media: newMedia,
-                    media_files: [...(expense.media?.map(() => '') || []), ...newMediaFiles],
                 };
 
                 await updateExpense(expense.id, updateRequest);
@@ -152,7 +147,7 @@ export default function ExpenseDetailsPane({
             newMedia.splice(selectedIndexInMedia, 1);
             newMedia.unshift(selectedMediaUrl);
 
-            const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+            const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
                 merchant: expense.merchant,
@@ -161,9 +156,7 @@ export default function ExpenseDetailsPane({
                 currency: expense.currency || workspaceCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
-                note: expense.note || '',
-                media: newMedia,
-                media_files: newMedia.map(() => ''),
+                    media: newMedia,
             };
 
             await updateExpense(expense.id, updateRequest);
@@ -188,7 +181,7 @@ export default function ExpenseDetailsPane({
             const selectedMediaUrl = allMediaUrls[selectedMediaIndex];
             const newMedia = (expense.media || []).filter(url => url !== selectedMediaUrl);
 
-            const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+            const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
                 merchant: expense.merchant,
@@ -197,9 +190,7 @@ export default function ExpenseDetailsPane({
                 currency: expense.currency || workspaceCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
-                note: expense.note || '',
-                media: newMedia,
-                media_files: newMedia.map(() => ''),
+                    media: newMedia,
             };
 
             await updateExpense(expense.id, updateRequest);
@@ -232,7 +223,7 @@ export default function ExpenseDetailsPane({
             newMedia.splice(selectedIndexInMedia, 1);
             newMedia.unshift(selectedMediaUrl);
 
-            const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+            const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
                 merchant: expense.merchant,
@@ -241,9 +232,7 @@ export default function ExpenseDetailsPane({
                 currency: expense.currency || workspaceCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
-                note: expense.note || '',
-                media: newMedia,
-                media_files: newMedia.map(() => ''),
+                    media: newMedia,
             };
 
             await updateExpense(expense.id, updateRequest);
@@ -372,7 +361,7 @@ export default function ExpenseDetailsPane({
                                         </div>
                                         <div className="flex items-center justify-between gap-3">
                                             <div className="text-base text-slate-500">
-                                                {format(expense.date instanceof Date ? expense.date : new Date(expense.date), 'dd MMM yyyy')}
+                                                {dayjs.unix(expense.date).format('DD MMM YYYY')}
                                             </div>
                                             {/* Attachments shortcut */}
                                             <button
@@ -421,12 +410,6 @@ export default function ExpenseDetailsPane({
                                         <div className="text-sm text-slate-500">Description</div>
                                         <div className="mt-1 text-base font-medium text-slate-900 whitespace-pre-wrap">
                                             {expense.description || '-'}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="text-sm text-slate-500">Remark</div>
-                                        <div className="mt-1 text-base font-medium text-slate-900 whitespace-pre-wrap">
-                                            {expense.note || '-'}
                                         </div>
                                     </div>
                                 </div>
@@ -564,7 +547,7 @@ export default function ExpenseDetailsPane({
                                                             const selectedMediaUrl = allMediaUrls[mobileSelectedMediaIndex];
                                                             const newMedia = (expense.media || []).filter(url => url !== selectedMediaUrl);
 
-                                                            const dateTimestamp = Math.floor((expense.date instanceof Date ? expense.date : new Date(expense.date)).getTime() / 1000);
+                                                            const dateTimestamp = expense.date;
                                                             const updateRequest: ApiExpenseUpdateRequest = {
                                                                 date: dateTimestamp,
                                                                 merchant: expense.merchant,
@@ -573,9 +556,7 @@ export default function ExpenseDetailsPane({
                                                                 currency: expense.currency || workspaceCurrency,
                                                                 exchange_rate: expense.exchange_rate || 1,
                                                                 amount: expense.amount,
-                                                                note: expense.note || '',
-                                                                media: newMedia,
-                                                                media_files: newMedia.map(() => ''),
+                    media: newMedia,
                                                             };
 
                                                             await updateExpense(expense.id, updateRequest);
@@ -767,10 +748,6 @@ export default function ExpenseDetailsPane({
                                                 <div>
                                                     <div className="text-sm text-muted-foreground mb-1">Description</div>
                                                     <div className="text-sm whitespace-pre-wrap">{expense.description || '-'}</div>
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm text-muted-foreground mb-1">Remark</div>
-                                                    <div className="text-sm whitespace-pre-wrap">{expense.note || '-'}</div>
                                                 </div>
                                             </div>
                                         </div>

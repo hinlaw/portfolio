@@ -10,7 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { format } from 'date-fns';
+import { dayjs } from '@/lib/date';
 import { Filter } from 'lucide-react';
 import { useTranslation } from '@/components/contexts/translation.context';
 
@@ -50,9 +50,8 @@ export default function ExpenseStatisticsFilterBar({
 
     const handleFromDateChange = (date: Date | undefined) => {
         if (date) {
-            const newFromDate = format(date, 'yyyy-MM-dd');
-            // If selected date is after toDate, adjust toDate to match
-            if (toDate && new Date(newFromDate + 'T00:00:00') > new Date(toDate + 'T00:00:00')) {
+            const newFromDate = dayjs(date).format('YYYY-MM-DD');
+            if (toDate && dayjs(newFromDate).isAfter(dayjs(toDate))) {
                 onToDateChange(newFromDate);
             }
             onFromDateChange(newFromDate);
@@ -63,9 +62,8 @@ export default function ExpenseStatisticsFilterBar({
 
     const handleToDateChange = (date: Date | undefined) => {
         if (date) {
-            const newToDate = format(date, 'yyyy-MM-dd');
-            // If selected date is before fromDate, adjust fromDate to match
-            if (fromDate && new Date(newToDate + 'T00:00:00') < new Date(fromDate + 'T00:00:00')) {
+            const newToDate = dayjs(date).format('YYYY-MM-DD');
+            if (fromDate && dayjs(newToDate).isBefore(dayjs(fromDate))) {
                 onFromDateChange(newToDate);
             }
             onToDateChange(newToDate);
@@ -110,23 +108,23 @@ export default function ExpenseStatisticsFilterBar({
                                 </Label>
                                 <div className="flex items-center gap-1">
                                     <DatePicker
-                                        date={fromDate ? new Date(fromDate + 'T00:00:00') : undefined}
+                                        date={fromDate ? dayjs(fromDate).toDate() : undefined}
                                         onDateChange={handleFromDateChange}
                                         placeholder={t('from date')}
-                                        dateFormat="yyyy-MM-dd"
+                                        dateFormat="YYYY-MM-DD"
                                         showIcon={false}
                                         buttonClassName="w-32 h-9 text-sm"
-                                        disabledDates={toDate ? (date) => date > new Date(toDate + 'T00:00:00') : undefined}
+                                        disabledDates={toDate ? (date) => dayjs(date).isAfter(dayjs(toDate)) : undefined}
                                     />
                                     <span className="text-muted-foreground">-</span>
                                     <DatePicker
-                                        date={toDate ? new Date(toDate + 'T00:00:00') : undefined}
+                                        date={toDate ? dayjs(toDate).toDate() : undefined}
                                         onDateChange={handleToDateChange}
                                         placeholder={t('to date')}
-                                        dateFormat="yyyy-MM-dd"
+                                        dateFormat="YYYY-MM-DD"
                                         showIcon={false}
                                         buttonClassName="w-32 h-9 text-sm"
-                                        disabledDates={fromDate ? (date) => date < new Date(fromDate + 'T00:00:00') : undefined}
+                                        disabledDates={fromDate ? (date) => dayjs(date).isBefore(dayjs(fromDate)) : undefined}
                                     />
                                 </div>
                             </div>

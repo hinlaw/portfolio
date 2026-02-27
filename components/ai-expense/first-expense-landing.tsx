@@ -22,11 +22,7 @@ export default function FirstExpenseLanding({
                 <div className="grid gap-8 md:grid-cols-2 md:items-center">
                     <div>
                         <div className="inline-flex items-center gap-3 rounded-2xl bg-muted px-4 py-2">
-                            <img
-                                src="/apps/app-ai-expense.png"
-                                alt=""
-                                className="h-12 w-12 rounded-lg"
-                            />
+
                             <div className="text-sm font-semibold text-slate-900">
                                 AI Expense
                             </div>

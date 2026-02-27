@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,23 +5,23 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { createExpenseAiJob, getExpenseAiJob, createExpense, updateExpense, getSupportCurrency, getExchangeRate } from '@/lib/api-stubs';
+import { createExpenseAiJob, getExpenseAiJob, createExpense, updateExpense } from '@/lib/api-stubs';
 import { ExpenseDTO, ApiExpenseCreateRequest, ApiExpenseUpdateRequest } from '@/types/expense';
 import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';
 import { toast } from 'sonner';
 import { Loader2, X, Upload, FileText, RotateCw, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw, Scan, Search, Check } from 'lucide-react';
 import { useTranslation } from '@/components/contexts/translation.context';
-import { useCurrencyFormatter } from '@/lib/currency';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { formatDateYMD, todayYMD, parseToTimestamp, dayjs } from '@/lib/date';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createExpenseSchema, ExpenseFormData } from './form/schema';
 import MobileExpenseForm from './mobile-expense-form';
 import ReceiptViewer from './receipt-viewer';
 import InlinePdfViewer from './inline-pdf-viewer';
+import { useCurrencyFormatter, SUPPORTED_CURRENCIES, getExchangeRateToUsd } from '@/lib/currency';
 
 interface ExpenseFormProps {
     expense?: ExpenseDTO;
@@ -64,6 +62,7 @@ export default function ExpenseForm({
 }: ExpenseFormProps) {
     const { t } = useTranslation();
     const formatCurrency = useCurrencyFormatter();
+
     const detectedIsMobile = useIsMobile();
     // Use prop if provided, otherwise detect automatically
     const isMobile = isMobileProp !== undefined ? isMobileProp : detectedIsMobile;
@@ -74,8 +73,7 @@ export default function ExpenseForm({
     const [selectedCurrency, setSelectedCurrency] = useState<string>(workspaceCurrency);
     const [exchangeRate, setExchangeRate] = useState<number>(1);
     const [manualExchangeRate, setManualExchangeRate] = useState<string>('');
-    const [isLoadingExchangeRate, setIsLoadingExchangeRate] = useState(false);
-    const [supportedCurrencies, setSupportedCurrencies] = useState<string[]>([]);
+    const supportedCurrencies = [...SUPPORTED_CURRENCIES];
     const [currencySearchKeyword, setCurrencySearchKeyword] = useState('');
     const [isCurrencyPopoverOpen, setIsCurrencyPopoverOpen] = useState(false);
 
@@ -103,46 +101,17 @@ export default function ExpenseForm({
     // Mobile specific state
     const [showReceiptViewer, setShowReceiptViewer] = useState(false);
 
-    // Load supported currencies on mount
-    useEffect(() => {
-        getSupportCurrency()
-            .then((response) => {
-                if (response.data.success && response.data.data) {
-                    setSupportedCurrencies(response.data.data.currencies || []);
-                }
-            })
-            .catch((err) => {
-                console.error('Failed to load currencies:', err);
-            });
-    }, []);
-
-    // Fetch exchange rate when currency changes
+    // Use hardcoded exchange rate when currency changes (no API)
     useEffect(() => {
         if (selectedCurrency === workspaceCurrency) {
             setExchangeRate(1);
             setManualExchangeRate('');
             return;
         }
-
-        setIsLoadingExchangeRate(true);
-        getExchangeRate(selectedCurrency, workspaceCurrency)
-            .then((response) => {
-                if (response.data.success && response.data.data) {
-                    const rate = response.data.data.exchange_rate;
-                    setExchangeRate(rate);
-                    setManualExchangeRate(rate.toFixed(6));
-                } else {
-                    toast.error(response.data.error || t('failed to fetch exchange rate'));
-                }
-            })
-            .catch((err) => {
-                console.error('Failed to fetch exchange rate:', err);
-                toast.error(err?.response?.data?.error || err?.message || t('failed to fetch exchange rate'));
-            })
-            .finally(() => {
-                setIsLoadingExchangeRate(false);
-            });
-    }, [selectedCurrency, workspaceCurrency, t]);
+        const rate = getExchangeRateToUsd(selectedCurrency);
+        setExchangeRate(rate);
+        setManualExchangeRate(rate.toFixed(6));
+    }, [selectedCurrency, workspaceCurrency]);
 
     // Filter currencies based on search keyword
     const filteredCurrencies = useMemo(() => {
@@ -169,32 +138,16 @@ export default function ExpenseForm({
         resolver: zodResolver(expenseSchema),
         defaultValues: expense
             ? {
-                date: (() => {
-                    // Convert Date object to local date string to avoid timezone issues
-                    const date = expense.date instanceof Date ? expense.date : new Date(expense.date);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                })(),
-                merchant: expense.merchant,
-                amount: expense.original_amount > 0 ? expense.original_amount : expense.amount,
-                description: expense.description,
-                remark: expense.note || '',
+                date: formatDateYMD(expense.date),
+                merchant: expense.merchant ?? '',
+                amount: (expense.original_amount ?? 0) > 0 ? (expense.original_amount ?? expense.amount) : expense.amount,
+                description: expense.description ?? '',
             }
             : {
-                date: (() => {
-                    // Get today's date in local timezone to avoid T-1 issue
-                    const today = new Date();
-                    const year = today.getFullYear();
-                    const month = String(today.getMonth() + 1).padStart(2, '0');
-                    const day = String(today.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                })(),
+                date: todayYMD(),
                 merchant: '',
                 amount: 0,
                 description: '',
-                remark: '',
             },
     });
 
@@ -207,7 +160,7 @@ export default function ExpenseForm({
             // Set currency and exchange rate from expense
             if (expense.currency && expense.currency.trim() !== '') {
                 setSelectedCurrency(expense.currency);
-                if (expense.exchange_rate > 0) {
+                if (expense.exchange_rate != null && expense.exchange_rate > 0) {
                     setExchangeRate(expense.exchange_rate);
                     setManualExchangeRate(expense.exchange_rate.toFixed(6));
                 }
@@ -263,11 +216,10 @@ export default function ExpenseForm({
     // Reset form function
     const resetForm = useCallback(() => {
         reset({
-            date: format(new Date(), 'yyyy-MM-dd'),
+            date: todayYMD(),
             merchant: '',
             amount: 0,
             description: '',
-            remark: '',
         });
         setFiles([]);
         setInitialFilesRef([]);
@@ -298,14 +250,8 @@ export default function ExpenseForm({
     const onSubmit = async (data: ExpenseFormData, saveAndNew: boolean = false): Promise<boolean> => {
         setIsSubmitting(true);
         try {
-            const dateTimestamp = Math.floor(new Date(data.date).getTime() / 1000);
+            const dateTimestamp = parseToTimestamp(data.date);
             const media: string[] = files.map((f) => f.base64);
-            const mediaFiles: string[] = files.map((f) => {
-                if (f.base64 && f.base64.startsWith('data:') && f.file && f.file.name) {
-                    return f.file.name;
-                }
-                return '';
-            });
 
             // Calculate original amount and converted amount
             const originalAmount = data.amount; // Amount in selected currency
@@ -323,9 +269,7 @@ export default function ExpenseForm({
                 currency: currency,
                 exchange_rate: rate,
                 amount: finalAmount,
-                note: data.remark || '',
                 media,
-                media_files: mediaFiles,
             };
 
             let result: ExpenseDTO;
@@ -338,9 +282,7 @@ export default function ExpenseForm({
                     currency: currency,
                     exchange_rate: rate,
                     amount: finalAmount,
-                    note: data.remark || '',
                     media,
-                    media_files: mediaFiles,
                 };
                 const response = await updateExpense(expense.id, updateRequest);
                 if (!response.data.success || !response.data.data) {
@@ -695,37 +637,20 @@ export default function ExpenseForm({
                         setTimeout(() => {
                             // Get current form values to preserve date if job.date is empty
                             const currentValues = {
-                                date: format(new Date(), 'yyyy-MM-dd'),
+                                date: todayYMD(),
                                 merchant: '',
                                 amount: 0,
                                 description: '',
-                                remark: '',
                             };
 
-                            // Parse date from ISO string (time.Time serialized format) or YYYY-MM-DD format
-                            if (job.date) {
-                                try {
-                                    // Parse as Date (handles ISO 8601 strings from time.Time)
-                                    const dateObj = typeof job.date === 'string' ? new Date(job.date) : new Date(job.date);
-                                    if (!isNaN(dateObj.getTime())) {
-                                        // Format to YYYY-MM-DD for the form
-                                        currentValues.date = format(dateObj, 'yyyy-MM-dd');
-                                    } else if (typeof job.date === 'string' && job.date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                                        // Already in YYYY-MM-DD format
-                                        currentValues.date = job.date;
-                                    }
-                                } catch (e) {
-                                    // If parsing fails, try using as-is if it looks like YYYY-MM-DD
-                                    if (typeof job.date === 'string' && job.date.match(/^\d{4}-\d{2}-\d{2}/)) {
-                                        currentValues.date = job.date.substring(0, 10); // Take first 10 chars (YYYY-MM-DD)
-                                    }
-                                }
+                            // Parse date from Unix timestamp (seconds)
+                            if (typeof job.date === 'number') {
+                                currentValues.date = formatDateYMD(job.date);
                             }
 
                             currentValues.merchant = job.merchant || '';
                             currentValues.amount = job.amount || 0;
                             currentValues.description = job.description || '';
-                            currentValues.remark = job.note || '';
 
                             // Reset form with all values, ensuring UI updates
                             reset(currentValues);
@@ -919,7 +844,7 @@ export default function ExpenseForm({
                             workspaceCurrency={workspaceCurrency}
                             exchangeRate={exchangeRate}
                             manualExchangeRate={manualExchangeRate}
-                            isLoadingExchangeRate={isLoadingExchangeRate}
+                            isLoadingExchangeRate={false}
                             supportedCurrencies={supportedCurrencies}
                             currencySearchKeyword={currencySearchKeyword}
                             isCurrencyPopoverOpen={isCurrencyPopoverOpen}
@@ -1354,17 +1279,13 @@ export default function ExpenseForm({
                                 name="date"
                                 control={control}
                                 render={({ field }) => {
-                                    // Parse date string as local time to avoid timezone issues
-                                    const dateValue = field.value ? (() => {
-                                        const [year, month, day] = field.value.split('-').map(Number);
-                                        return new Date(year, month - 1, day);
-                                    })() : undefined;
+                                    const dateValue = field.value ? dayjs(field.value).toDate() : undefined;
                                     return (
                                         <DatePicker
                                             date={dateValue}
                                             onDateChange={(date) => {
                                                 if (date) {
-                                                    field.onChange(format(date, 'yyyy-MM-dd'));
+                                                    field.onChange(dayjs(date).format('YYYY-MM-DD'));
                                                 } else {
                                                     field.onChange('');
                                                 }
@@ -1372,7 +1293,7 @@ export default function ExpenseForm({
                                             disabled={isScanning}
                                             placeholder={t('select date')}
                                             error={!!errors.date}
-                                            dateFormat="yyyy-MM-dd"
+                                            dateFormat="YYYY-MM-DD"
                                             showIcon={true}
                                             buttonClassName={cn(
                                                 "w-1/2",
@@ -1471,9 +1392,6 @@ export default function ExpenseForm({
                                     <Label htmlFor="exchange-rate">
                                         {t('exchange rate')} ({selectedCurrency} → {workspaceCurrency})
                                     </Label>
-                                    {isLoadingExchangeRate && (
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    )}
                                 </div>
                                 <Input
                                     id="exchange-rate"
@@ -1483,7 +1401,7 @@ export default function ExpenseForm({
                                     value={manualExchangeRate}
                                     onChange={(e) => handleManualExchangeRateChange(e.target.value)}
                                     placeholder="1.000000"
-                                    disabled={isScanning || isLoadingExchangeRate}
+                                    disabled={isScanning}
                                 />
                                 <p className="text-xs text-muted-foreground">
                                     {t('amount will be converted to')} {workspaceCurrency}
@@ -1522,17 +1440,6 @@ export default function ExpenseForm({
                             <Textarea
                                 id="description"
                                 {...register('description')}
-                                rows={5}
-                                disabled={isScanning}
-                            />
-                        </div>
-
-                        {/* Remark */}
-                        <div className="space-y-2">
-                            <Label htmlFor="remark">{t('remark')}</Label>
-                            <Textarea
-                                id="remark"
-                                {...register('remark')}
                                 rows={5}
                                 disabled={isScanning}
                             />

@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { ExpenseDTO } from '@/types/expense';
-import { format } from 'date-fns';
+import { formatDateCompact } from '@/lib/date';
 
 interface ImageViewerProps {
     images: string[];
@@ -169,10 +169,7 @@ export default function ImageViewer({ images, initialIndex = 0, open, onOpenChan
         });
     };
 
-    const formatDate = (date: Date | string) => {
-        const dateObj = date instanceof Date ? date : new Date(date);
-        return format(dateObj, 'dd MMM yyyy');
-    };
+    const formatDate = (timestamp: number) => formatDateCompact(timestamp);
 
     const content = (
         <div

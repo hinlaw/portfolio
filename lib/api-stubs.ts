@@ -36,33 +36,33 @@ export async function deleteExpense(id: string): Promise<void> {
 
 // Stub for updateExpense
 export async function updateExpense(id: string, data: ApiExpenseUpdateRequest): Promise<ExpenseDTO> {
-  // Return a minimal stub expense
+  const now = Math.floor(Date.now() / 1000);
   return {
     id,
-    merchant: data.merchant || null,
-    amount: data.amount || 0,
+    merchant: data.merchant ?? null,
+    amount: data.amount ?? 0,
     original_amount: data.original_amount,
-    date: data.date || new Date().toISOString(),
+    date: data.date ?? now,
     currency: data.currency,
+    exchange_rate: data.exchange_rate,
     media: data.media,
     description: data.description,
-    remark: data.remark,
   };
 }
 
 // Stub for createExpense
 export async function createExpense(data: ApiExpenseCreateRequest): Promise<ExpenseDTO> {
-  // Return a minimal stub expense
+  const now = Math.floor(Date.now() / 1000);
   return {
     id: `stub-${Date.now()}`,
-    merchant: data.merchant || null,
-    amount: data.amount || 0,
+    merchant: data.merchant ?? null,
+    amount: data.amount ?? 0,
     original_amount: data.original_amount,
-    date: data.date || new Date().toISOString(),
+    date: data.date ?? now,
     currency: data.currency,
+    exchange_rate: data.exchange_rate,
     media: data.media,
     description: data.description,
-    remark: data.remark,
     workspace_id: data.workspace_id,
   };
 }

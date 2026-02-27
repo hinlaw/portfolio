@@ -13,7 +13,7 @@ import { useTranslation } from '@/components/contexts/translation.context';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { cn } from '@/lib/utils';
 import { ExpenseFormData } from './form/schema';
-import { format } from 'date-fns';
+import { dayjs } from '@/lib/date';
 import FileThumbnail from './file-thumbnail';
 import { isPdfUrl } from './file-utils';
 import { useMemo } from 'react';
@@ -106,17 +106,13 @@ export default function MobileExpenseForm({
                                         name="date"
                                         control={control}
                                         render={({ field }) => {
-                                            // Parse date string as local time to avoid timezone issues
-                                            const dateValue = field.value ? (() => {
-                                                const [year, month, day] = field.value.split('-').map(Number);
-                                                return new Date(year, month - 1, day);
-                                            })() : undefined;
+                                            const dateValue = field.value ? dayjs(field.value).toDate() : undefined;
                                             return (
                                                 <DatePicker
                                                     date={dateValue}
                                                     onDateChange={(date) => {
                                                         if (date) {
-                                                            field.onChange(format(date, 'yyyy-MM-dd'));
+                                                            field.onChange(dayjs(date).format('YYYY-MM-DD'));
                                                         } else {
                                                             field.onChange('');
                                                         }
@@ -124,7 +120,7 @@ export default function MobileExpenseForm({
                                                     disabled={isScanning}
                                                     placeholder={t('select date')}
                                                     error={!!errors.date}
-                                                    dateFormat="yyyy-MM-dd"
+                                                    dateFormat="YYYY-MM-DD"
                                                     showIcon={false}
                                                     buttonClassName={cn(
                                                         "w-full bg-transparent text-2xl font-semibold tracking-tight text-slate-900 outline-none border-b-2 border-slate-300 focus:border-slate-500 justify-start h-auto hover:bg-transparent",
@@ -344,21 +340,6 @@ export default function MobileExpenseForm({
                             {...register('description')}
                             rows={5}
                             placeholder={t('brief description of the expense')}
-                            className="rounded-xl bg-slate-50 border-slate-200 focus-visible:ring-slate-300 border-b-2 border-slate-300 focus:border-slate-500"
-                            disabled={isScanning}
-                        />
-                    </div>
-
-                    {/* Remark */}
-                    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                        <div className="text-sm font-medium text-slate-500 mb-2">
-                            {t('remark')}
-                        </div>
-                        <Textarea
-                            id="remark-mobile"
-                            {...register('remark')}
-                            rows={5}
-                            placeholder={t('additional notes or remarks')}
                             className="rounded-xl bg-slate-50 border-slate-200 focus-visible:ring-slate-300 border-b-2 border-slate-300 focus:border-slate-500"
                             disabled={isScanning}
                         />
