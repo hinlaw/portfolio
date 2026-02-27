@@ -67,8 +67,8 @@ export async function createExpense(data: ApiExpenseCreateRequest): Promise<Expe
   };
 }
 
-// Stub for createExpenseAiJob
-export async function createExpenseAiJob(files: File[]): Promise<{ job_id: string }> {
+// Stub for createExpenseAiJob - accepts base64 media strings
+export async function createExpenseAiJob(media: string[]): Promise<{ job_id: string }> {
   return { job_id: `stub-job-${Date.now()}` };
 }
 

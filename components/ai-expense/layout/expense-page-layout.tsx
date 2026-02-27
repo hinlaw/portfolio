@@ -59,7 +59,7 @@ export default function ExpensePageLayout({
             description={description || 'Manage your expenses with AI'}
             product={product}
         >
-            <div className="h-[calc(100vh-53px)] -mx-6 -mb-12 flex flex-col overflow-hidden">
+            <div className="h-full flex flex-col overflow-hidden">
                 <div className="flex flex-1 overflow-hidden">
                     {/* Sidebar - Desktop only */}
                     <div className="hidden md:block">

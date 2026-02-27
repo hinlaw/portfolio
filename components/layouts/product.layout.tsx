@@ -24,10 +24,10 @@ export default function ProductLayout({
   product,
 }: ProductLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       {/* Header */}
       {product && (
-        <div className="border-b border-gray-300 bg-card">
+        <div className="border-b">
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -52,7 +52,7 @@ export default function ProductLayout({
       )}
 
       {/* Content */}
-      <div className="container mx-auto px-6 py-6">
+      <div className="">
         {title && !product && (
           <div className="mb-6">
             <h1 className="text-2xl font-semibold">{title}</h1>

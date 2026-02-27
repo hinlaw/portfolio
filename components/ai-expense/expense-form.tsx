@@ -284,18 +284,10 @@ export default function ExpenseForm({
                     amount: finalAmount,
                     media,
                 };
-                const response = await updateExpense(expense.id, updateRequest);
-                if (!response.data.success || !response.data.data) {
-                    throw new Error(response.data.error || t('failed to update expense'));
-                }
-                result = response.data.data;
+                result = await updateExpense(expense.id, updateRequest);
                 toast.success(t('expense updated successfully'));
             } else {
-                const response = await createExpense(request);
-                if (!response.data.success || !response.data.data) {
-                    throw new Error(response.data.error || t('failed to create expense'));
-                }
-                result = response.data.data;
+                result = await createExpense(request);
                 toast.success(t('expense created successfully'));
             }
 
@@ -571,12 +563,8 @@ export default function ExpenseForm({
 
         try {
             const media = [currentFile.base64];
-            const createResponse = await createExpenseAiJob({ media });
-            if (!createResponse.data.success || !createResponse.data.data) {
-                throw new Error(createResponse.data.error || t('failed to create ai job'));
-            }
-
-            const jobId = createResponse.data.data._id;
+            const createResponse = await createExpenseAiJob(media);
+            const jobId = createResponse.job_id;
             toast.success(t('ai scan started'));
 
             const pollInterval = 1000;
@@ -590,12 +578,7 @@ export default function ExpenseForm({
                         throw new Error(t('ai scan timeout'));
                     }
 
-                    const getResponse = await getExpenseAiJob(jobId);
-                    if (!getResponse.data.success || !getResponse.data.data) {
-                        throw new Error(getResponse.data.error || t('failed to get ai job status'));
-                    }
-
-                    const job = getResponse.data.data;
+                    const job = await getExpenseAiJob(jobId);
 
                     // Update progress based on status
                     if (job.status === 'processing' || job.status === 'pending') {
@@ -635,7 +618,7 @@ export default function ExpenseForm({
 
                         // Wait for animation to complete before updating form
                         setTimeout(() => {
-                            // Get current form values to preserve date if job.date is empty
+                            const extracted = job.result;
                             const currentValues = {
                                 date: todayYMD(),
                                 merchant: '',
@@ -643,14 +626,14 @@ export default function ExpenseForm({
                                 description: '',
                             };
 
-                            // Parse date from Unix timestamp (seconds)
-                            if (typeof job.date === 'number') {
-                                currentValues.date = formatDateYMD(job.date);
+                            if (extracted) {
+                                if (typeof extracted.date === 'number') {
+                                    currentValues.date = formatDateYMD(extracted.date);
+                                }
+                                currentValues.merchant = extracted.merchant || '';
+                                currentValues.amount = extracted.amount ?? extracted.original_amount ?? 0;
+                                currentValues.description = extracted.description || '';
                             }
-
-                            currentValues.merchant = job.merchant || '';
-                            currentValues.amount = job.amount || 0;
-                            currentValues.description = job.description || '';
 
                             // Reset form with all values, ensuring UI updates
                             reset(currentValues);

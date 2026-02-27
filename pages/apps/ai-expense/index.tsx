@@ -52,8 +52,13 @@ export default function AiExpenseListPage() {
 
         (async () => {
             try {
-                const response = await listExpenses(1, 1, 'date', 0, '', '', '', '', '');
-                const total = response.data.page?.total ?? response.data.data?.length ?? 0;
+                const response = await listExpenses({
+                    page: 1,
+                    size: 1,
+                    field: 'date',
+                    asc: 0,
+                });
+                const total = response.page?.total ?? response.data.length ?? 0;
                 if (!cancelled) {
                     setHasAnyExpenses(total > 0);
                 }
@@ -96,7 +101,7 @@ export default function AiExpenseListPage() {
             const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
             const isCSV = file.type === 'text/csv' || file.type === 'application/csv';
             const isTXT = file.type === 'text/plain';
-            
+
             if (!isImage && !isPDF && !isDOC && !isDOCX && !isXLS && !isXLSX && !isCSV && !isTXT) {
                 toast.error(`${file.name} file type not supported. Supported types: images, PDF, DOC, DOCX, XLS, XLSX, CSV, TXT`);
                 continue;
