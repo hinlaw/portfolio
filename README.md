@@ -45,14 +45,14 @@
 - ✅ UI 基本完成，使用 `lib/api-stubs.ts` 作為 API 佔位
 - ⏳ 尚未接駁真實 API、認證與權限
 
-### 第一步：UI 測試
+### 第一步：UI 測試 ✅
 
 **目標**：確保喺冇真實 API 嘅情況下，UI 仍然正常運作。
 
-- 撰寫 UI / 元件測試（例如 Jest + React Testing Library）
-- 用 mock 或 stub 覆蓋 API 呼叫
-- 覆蓋主要流程：開支列表、詳情、新增、編輯、刪除、統計圖表
-- 確保無 API 時頁面唔會崩潰，錯誤處理合理
+- ✅ Jest + React Testing Library 已設定
+- ✅ Mock API 喺 `lib/api-mocks.ts`，測試時會取代 `api-stubs.ts`
+- ✅ 測試覆蓋：FirstExpenseLanding、DeleteExpenseDialog、ExpenseList、ExpenseStatistics
+- 執行測試：`npm test`
 
 ### 第二步：實作 API
 

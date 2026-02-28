@@ -1,4 +1,4 @@
-.PHONY: dev build start install lint db-generate db-migrate db-push db-seed db-studio db-reset clean
+.PHONY: dev build start install lint test test-watch db-generate db-migrate db-push db-seed db-studio db-reset clean
 
 # Development
 dev:
@@ -9,6 +9,13 @@ build:
 
 start:
 	npm run start
+
+# Test
+test:
+	npm test
+
+test-watch:
+	npm run test:watch
 
 # Database (Prisma)
 db-generate:
