@@ -59,7 +59,7 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                         </div>
                         <Button
                             variant="ghost"
-                            size="icon-sm"
+                            size="icon"
                             className="h-9 w-9 rounded-tl-none rounded-bl-none group-hover:bg-slate-200 hover:bg-slate-300 cursor-pointer"
                             onClick={handleCreateClick}
                         >

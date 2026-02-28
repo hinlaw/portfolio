@@ -137,20 +137,18 @@ export const getExpenseAiJob = jest.fn(
   }
 );
 
-// expense-statistics.tsx calls: getExpenseStatistics(fromTimestamp, toTimestamp, rangeType)
-// and expects: response.data.data
 export const getExpenseStatistics = jest.fn(
   async (
     _fromTimestamp: number,
     _toTimestamp: number,
     _rangeType: 'day' | 'month' | 'quarter'
-  ): Promise<{ data: { data: ExpenseStatisticItem[] } }> => {
+  ): Promise<{ data: ExpenseStatisticItem[] }> => {
     const items: ExpenseStatisticItem[] = [
-      { date: '2025-02-01', amount: 150, count: 3 },
-      { date: '2025-02-02', amount: 89, count: 1 },
-      { date: '2025-02-03', amount: 45.5, count: 1 },
+      { date: '2025-02-01', amount: 150, count: 3, transactions: 3 },
+      { date: '2025-02-02', amount: 89, count: 1, transactions: 1 },
+      { date: '2025-02-03', amount: 45.5, count: 1, transactions: 1 },
     ];
-    return { data: { data: items } };
+    return { data: items };
   }
 );
 
@@ -164,6 +162,8 @@ export const getSupportCurrency = jest.fn(
   }
 );
 
-export const getExchangeRate = jest.fn(async (_from: string, _to: string): Promise<{ rate: number }> => {
-  return { rate: 1.0 };
-});
+export const getExchangeRate = jest.fn(
+  async (_from: string, _to: string): Promise<{ rate: number }> => {
+    return { rate: 1.0 };
+  }
+);

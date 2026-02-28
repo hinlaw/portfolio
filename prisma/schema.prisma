@@ -12,10 +12,15 @@ datasource db {
 
 // 單據 Table
 model Expense {
-  id        String   @id @default(cuid())
-  merchant  String?  // 商戶名稱 (例如: 7-Eleven)
-  amount    Float?   // 金額 (例如: 105.5)
-  date      String?  // 日期 (例如: 2023-10-25)
-  imageUrl  String   // 圖片喺 Supabase Storage 嘅網址
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  merchant       String?  // 商戶名稱 (例如: 7-Eleven)
+  amount         Float?   // 金額 (例如: 105.5)
+  originalAmount Float?   // 原幣金額
+  date           String?  // 日期 YYYY-MM-DD
+  currency       String?  @default("USD")
+  exchangeRate   Float?   @default(1)
+  imageUrl       String?  // 圖片喺 Supabase Storage 嘅網址 (首張)
+  description    String?
+  workspaceId    String?
+  createdAt      DateTime @default(now())
 }

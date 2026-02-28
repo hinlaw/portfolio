@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layout';
 import { buttonVariants } from '@/components/ui/button';
 import { ExpenseDTO } from '@/types/expense';
-import { getExpense, deleteExpense, listExpenses } from '@/lib/api-stubs';
+import { getExpense, deleteExpense, listExpenses } from '@/lib/api/expenses';
 import DeleteExpenseDialog from '@/components/ai-expense/delete-expense-dialog';
 import ExpenseForm from '@/components/ai-expense/expense-form';
 import { toast } from 'sonner';
@@ -70,7 +70,7 @@ export default function ExpenseDetailPage() {
         loadExpenses();
     }, [loadExpenses]);
 
-    const handleExpenseClick = (expenseId: number) => {
+    const handleExpenseClick = (expenseId: string) => {
         router.push(`/apps/ai-expense/${expenseId}`);
     };
 
@@ -133,7 +133,7 @@ export default function ExpenseDetailPage() {
                     {/* Left Pane - Expense List */}
                     <ExpenseListPane
                         expenses={expenses}
-                        selectedExpenseId={expense?.id ? parseInt(expense.id) : undefined}
+                        selectedExpenseId={expense?.id}
                         loading={listLoading}
                         onExpenseClick={handleExpenseClick}
                         page={listPage}

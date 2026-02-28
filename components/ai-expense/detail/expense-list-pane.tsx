@@ -9,9 +9,9 @@ import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ExpenseListPaneProps {
     expenses: ExpenseDTO[];
-    selectedExpenseId?: number;
+    selectedExpenseId?: string;
     loading: boolean;
-    onExpenseClick: (expenseId: number) => void;
+    onExpenseClick: (expenseId: string) => void;
     page: number;
     size: number;
     total: number;

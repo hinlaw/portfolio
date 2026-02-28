@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@/__tests__/test-utils';
 
 import ExpenseStatistics from '../statistics/expense-statistics';
-import * as apiMocks from '@/lib/api-mocks';
+import * as apiMocks from '@/lib/api/__mocks__/expenses';
 
-jest.mock('@/lib/api-stubs', () => require('@/lib/api-mocks'));
+jest.mock('@/lib/api/expenses', () => require('@/lib/api/__mocks__/expenses'));
 jest.mock('next/router', () => ({
   useRouter: () => ({ push: jest.fn(), pathname: '/apps/ai-expense/statistics' }),
 }));

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getExpenseStatistics } from '@/lib/api-stubs';
+import { getExpenseStatistics } from '@/lib/api/expenses';
 import { ExpenseStatisticItem } from '@/types/expense';
 import { Button } from '@/components/ui/button';
 import {
@@ -91,7 +91,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
             const toTimestamp = to.endOf('day').unix();
 
             const response = await getExpenseStatistics(fromTimestamp, toTimestamp, rangeType);
-            setStatistics(response.data.data || []);
+            setStatistics(response.data || []);
         } catch (error: any) {
             console.error('Failed to load statistics:', error);
             toast.error(t('toast.failed to load statistics'));
@@ -123,14 +123,14 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     };
 
     const totalAmount = statistics.reduce((sum, item) => sum + item.amount, 0);
-    const totalTransactions = statistics.reduce((sum, item) => sum + item.transactions, 0);
+    const totalTransactions = statistics.reduce((sum, item) => sum + (item.transactions ?? item.count ?? 0), 0);
     const averageAmount = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
 
     const chartData = statistics.map((item) => ({
         date: formatChartDateLocal(item.date),
         timestamp: item.date,
         amount: item.amount || 0,
-        transactions: item.transactions || 0,
+        transactions: item.transactions ?? item.count ?? 0,
     }));
 
     const dateRangePresets = [

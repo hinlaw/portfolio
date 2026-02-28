@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { createExpenseAiJob, getExpenseAiJob, createExpense, updateExpense } from '@/lib/api-stubs';
+import { createExpenseAiJob, getExpenseAiJob, createExpense, updateExpense } from '@/lib/api/expenses';
 import { ExpenseDTO, ApiExpenseCreateRequest, ApiExpenseUpdateRequest } from '@/types/expense';
 import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';

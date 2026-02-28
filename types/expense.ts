@@ -44,6 +44,7 @@ export interface ExpenseStatisticItem {
   date: string;
   amount: number;
   count?: number;
+  transactions?: number; // alias for count, used by chart
 }
 
 export interface WorkspaceDTO {

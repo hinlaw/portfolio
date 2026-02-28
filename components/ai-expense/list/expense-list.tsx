@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { updateExpense, listExpenses } from '@/lib/api-stubs';
+import { updateExpense, listExpenses } from '@/lib/api/expenses';
 import { ExpenseDTO, ApiExpenseUpdateRequest, Response } from '@/types/expense';
 
 interface ExpenseListFilters {
@@ -180,8 +180,8 @@ export default function ExpenseList({
     };
 
     // File upload handlers
-    const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
-    const [uploadingExpenseId, setUploadingExpenseId] = useState<number | null>(null);
+    const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+    const [uploadingExpenseId, setUploadingExpenseId] = useState<string | null>(null);
 
     // Image viewer state
     const [imageViewerOpen, setImageViewerOpen] = useState(false);
@@ -241,7 +241,7 @@ export default function ExpenseList({
                 const dateTimestamp = expense.date;
                 const updateRequest: ApiExpenseUpdateRequest = {
                     date: dateTimestamp,
-                    merchant: expense.merchant,
+                    merchant: expense.merchant ?? undefined,
                     description: expense.description || '',
                     original_amount: expense.original_amount || expense.amount,
                     currency: expense.currency || workspaceCurrency,

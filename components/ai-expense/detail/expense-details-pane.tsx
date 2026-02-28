@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExpenseDTO, ApiExpenseUpdateRequest } from '@/types/expense';
-import { updateExpense } from '@/lib/api-stubs';
+import { updateExpense } from '@/lib/api/expenses';
 import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
 import { formatDateLong, dayjs } from '@/lib/date';
 import { useCurrencyFormatter, formatCurrencyWithCode } from '@/lib/currency';
@@ -96,7 +96,7 @@ export default function ExpenseDetailsPane({
                 const dateTimestamp = expense.date;
                 const updateRequest: ApiExpenseUpdateRequest = {
                     date: dateTimestamp,
-                    merchant: expense.merchant,
+                    merchant: expense.merchant ?? undefined,
                     description: expense.description || '',
                     original_amount: expense.original_amount || expense.amount,
                     currency: expense.currency || workspaceCurrency,
@@ -150,7 +150,7 @@ export default function ExpenseDetailsPane({
             const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
-                merchant: expense.merchant,
+                merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
                 currency: expense.currency || workspaceCurrency,
@@ -184,7 +184,7 @@ export default function ExpenseDetailsPane({
             const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
-                merchant: expense.merchant,
+                merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
                 currency: expense.currency || workspaceCurrency,
@@ -226,7 +226,7 @@ export default function ExpenseDetailsPane({
             const dateTimestamp = expense.date;
             const updateRequest: ApiExpenseUpdateRequest = {
                 date: dateTimestamp,
-                merchant: expense.merchant,
+                merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
                 currency: expense.currency || workspaceCurrency,
@@ -315,7 +315,7 @@ export default function ExpenseDetailsPane({
                                 <Link
                                     href="/apps/ai-expense"
                                     className="h-11 w-11 rounded-full bg-slate-100 hover:bg-slate-200 active:bg-slate-200 transition-colors inline-flex items-center justify-center"
-                                    aria-label=Back to list
+                                    aria-label="Back to list"
                                 >
                                     <ArrowLeft className="h-5 w-5 text-slate-700" />
                                 </Link>
@@ -337,10 +337,10 @@ export default function ExpenseDetailsPane({
                                         {/* No report status in current system; keep empty to avoid fake feature */}
                                     </div>
                                     <div className="mt-1">
-                                        {expense.original_amount > 0 && expense.currency && expense.currency.trim() !== '' ? (
+                                        {(expense.original_amount ?? 0) > 0 && expense.currency && expense.currency.trim() !== '' ? (
                                             <div className="space-y-1">
                                                 <div className="text-4xl font-semibold tracking-tight text-slate-900">
-                                                    {formatCurrencyWithCode(expense.original_amount, expense.currency)}
+                                                    {formatCurrencyWithCode(expense.original_amount ?? expense.amount, expense.currency)}
                                                 </div>
                                                 {expense.currency !== workspaceCurrency && expense.amount !== expense.original_amount && (
                                                     <div className="text-lg text-slate-500">
@@ -550,7 +550,7 @@ export default function ExpenseDetailsPane({
                                                             const dateTimestamp = expense.date;
                                                             const updateRequest: ApiExpenseUpdateRequest = {
                                                                 date: dateTimestamp,
-                                                                merchant: expense.merchant,
+                                                                merchant: expense.merchant ?? undefined,
                                                                 description: expense.description || '',
                                                                 original_amount: expense.original_amount || expense.amount,
                                                                 currency: expense.currency || workspaceCurrency,
@@ -720,10 +720,10 @@ export default function ExpenseDetailsPane({
 
                                         {/* Amount */}
                                         <div>
-                                            {expense.original_amount > 0 && expense.currency && expense.currency.trim() !== '' ? (
+                                            {(expense.original_amount ?? 0) > 0 && expense.currency && expense.currency.trim() !== '' ? (
                                                 <div className="space-y-1">
                                                     <div className="text-3xl text-primary">
-                                                        {formatCurrencyWithCode(expense.original_amount, expense.currency)}
+                                                        {formatCurrencyWithCode(expense.original_amount ?? expense.amount, expense.currency)}
                                                     </div>
                                                     {expense.currency !== workspaceCurrency && expense.amount !== expense.original_amount && (
                                                         <div className="text-base text-muted-foreground">

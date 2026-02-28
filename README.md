@@ -42,7 +42,7 @@
 
 ### 現況
 
-- ✅ UI 基本完成，使用 `lib/api-stubs.ts` 作為 API 佔位
+- ✅ UI 基本完成，使用 `lib/api/expenses.ts` 作為 API client
 - ⏳ 尚未接駁真實 API、認證與權限
 
 ### 第一步：UI 測試 ✅
@@ -50,13 +50,13 @@
 **目標**：確保喺冇真實 API 嘅情況下，UI 仍然正常運作。
 
 - ✅ Jest + React Testing Library 已設定
-- ✅ Mock API 喺 `lib/api-mocks.ts`，測試時會取代 `api-stubs.ts`
+- ✅ Mock API 喺 `lib/api/__mocks__/expenses.ts`，測試時會取代 `lib/api/expenses.ts`
 - ✅ 測試覆蓋：FirstExpenseLanding、DeleteExpenseDialog、ExpenseList、ExpenseStatistics
 - 執行測試：`npm test`
 
 ### 第二步：實作 API
 
-**目標**：將 `api-stubs.ts` 換成真實 API 呼叫。
+**目標**：將 API client 換成真實 API 呼叫。
 
 - 建立 Next.js API routes 或接駁後端服務
 - 使用 Prisma 操作 PostgreSQL（Supabase）
