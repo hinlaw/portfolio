@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { prismaToDTO, timestampToDate } from '@/lib/api-helpers';
+import { prismaToDTO, timestampToDate } from '@/lib/services/expense-mappers';
 import { NotFoundError } from '@/lib/errors';
 import type { ExpenseDTO } from '@/types/expense';
 import type {

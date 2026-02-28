@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getExpenseStatistics } from '@/lib/api/client/expenses';
+import { getExpenseStatistics } from '@/api/client/expenses';
 import { ExpenseStatisticItem } from '@/types/expense';
 import { Button } from '@/components/ui/button';
 import {

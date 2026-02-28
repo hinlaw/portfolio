@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@/__tests__/test-utils';
 
 import ExpenseList from '../list/expense-list';
-import * as apiMocks from '@/lib/api/client/__mocks__/expenses';
+import * as apiMocks from '@/api/client/__mocks__/expenses';
 
-jest.mock('@/lib/api/client/expenses', () => require('@/lib/api/client/__mocks__/expenses'));
+jest.mock('@/api/client/expenses', () => require('@/api/client/__mocks__/expenses'));
 jest.mock('next/router', () => ({
   useRouter: () => ({
     push: jest.fn(),

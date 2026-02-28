@@ -1,7 +1,7 @@
 /**
- * Helpers to convert between Prisma Expense model and ExpenseDTO
+ * Mappers to convert between Prisma Expense model and ExpenseDTO
  */
-import type { Expense } from './generated/prisma';
+import type { Expense } from '@/lib/generated/prisma';
 import type { ExpenseDTO } from '@/types/expense';
 
 /** Prisma date (YYYY-MM-DD) to Unix timestamp (seconds) */

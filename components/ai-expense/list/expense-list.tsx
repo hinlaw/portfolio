@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { updateExpense, listExpenses } from '@/lib/api/client/expenses';
+import { updateExpense, listExpenses } from '@/api/client/expenses';
 import { ExpenseDTO, ApiExpenseUpdateRequest, Response } from '@/types/expense';
 
 interface ExpenseListFilters {
