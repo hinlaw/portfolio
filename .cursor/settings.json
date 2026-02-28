@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "clerk": {
+      "enabled": true
+    },
+    "supabase": {
+      "enabled": true
+    },
+    "prisma": {
+      "enabled": true
+    },
+    "continual-learning": {
+      "enabled": true
+    }
+  }
+}

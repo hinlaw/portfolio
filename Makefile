@@ -1,27 +1,31 @@
-.PHONY: frontend backend dev install-frontend install-backend clean help
+.PHONY: dev build start install lint test test-watch db-generate db-migrate db-push db-seed db-studio db-reset clean
 
-# 預設端口
-FRONTEND_PORT ?= 3000
-BACKEND_PORT ?= 5000
+# Development
+dev:
+	npm run dev
 
-dev: ## 執行前端開發伺服器
-	cd frontend && npm run dev
+build:
+	npm run build
 
-build: ## 執行後端伺服器
-	cd backend && PORT=$(BACKEND_PORT) go run cmd/api/main.go
+start:
+	npm run start
 
-build-frontend: ## 建置前端生產版本
-	cd frontend && npm run build
+# Test
+test:
+	npm test
 
-clean: ## 清理建置檔案
-	rm -rf frontend/.next
-	rm -rf frontend/node_modules/.cache
-	rm -rf backend/bin
+test-watch:
+	npm run test:watch
 
-install-frontend: ## 安裝前端依賴
-	cd frontend && npm install
+# Database (Prisma)
+db-generate:
+	npx prisma generate
 
-install-backend: ## 安裝後端依賴
-	cd backend && go mod download
+db-migrate:
+	npx prisma migrate dev
 
-install: install-frontend install-backend ## 安裝所有依賴
+db-push:
+	npx prisma db push
+
+db-studio:
+	npx prisma studio
