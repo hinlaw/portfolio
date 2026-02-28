@@ -1,9 +1,9 @@
 import { withApiHandler } from '@/api/server/route-handler';
-import { ExpenseService } from '@/lib/services/expense.service';
+import { ExpenseService } from '@/services/expense.service';
 import {
   getExpensesQuerySchema,
   createExpenseBodySchema,
-} from '@/lib/schemas/expense.schema';
+} from '@/schemas/expense.schema';
 
 export default withApiHandler({
   GET: async (req, res) => {

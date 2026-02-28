@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { prismaToDTO, timestampToDate } from '@/lib/services/expense-mappers';
+import { prismaToDTO, timestampToDate } from '@/services/expense-mappers';
 import { NotFoundError } from '@/lib/errors';
 import type { ExpenseDTO } from '@/types/expense';
 import type {
@@ -7,7 +7,7 @@ import type {
   CreateExpenseBody,
   UpdateExpenseBody,
   GetStatisticsQuery,
-} from '@/lib/schemas/expense.schema';
+} from '@/schemas/expense.schema';
 
 export class ExpenseService {
   static async getExpenses(
