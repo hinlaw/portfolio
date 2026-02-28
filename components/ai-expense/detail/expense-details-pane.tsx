@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExpenseDTO, ApiExpenseUpdateRequest } from '@/types/expense';
-import { updateExpense } from '@/lib/api/expenses';
+import { updateExpense } from '@/lib/api/client/expenses';
 import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
 import { formatDateLong, dayjs } from '@/lib/date';
 import { useCurrencyFormatter, formatCurrencyWithCode } from '@/lib/currency';

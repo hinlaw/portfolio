@@ -1,4 +1,4 @@
-import { withApiHandler } from '@/lib/api/route-handler';
+import { withApiHandler } from '@/lib/api/server/route-handler';
 
 const CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$' },

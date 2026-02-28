@@ -1,4 +1,4 @@
-import { withApiHandler } from '@/lib/api/route-handler';
+import { withApiHandler } from '@/lib/api/server/route-handler';
 
 const RATES: Record<string, number> = {
   USD: 1,

@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import ExpenseForm from '@/components/ai-expense/expense-form';
 import { FileWithPreview } from '@/components/ai-expense/file-upload';
 import { toast } from 'sonner';
-import { listExpenses } from '@/lib/api/expenses';
+import { listExpenses } from '@/lib/api/client/expenses';
 import FirstExpenseLanding from '@/components/ai-expense/first-expense-landing';
 
 export default function AiExpenseListPage() {

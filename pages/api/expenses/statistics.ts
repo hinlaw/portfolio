@@ -1,4 +1,4 @@
-import { withApiHandler } from '@/lib/api/route-handler';
+import { withApiHandler } from '@/lib/api/server/route-handler';
 import { ExpenseService } from '@/lib/services/expense.service';
 import { getStatisticsQuerySchema } from '@/lib/schemas/expense.schema';
 
