@@ -28,7 +28,7 @@ export default function ProductLayout({
       {/* Header */}
       {product && (
         <div className="border-b">
-          <div className="container mx-auto px-6 py-4">
+          <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 {product.icon && (

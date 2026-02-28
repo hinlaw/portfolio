@@ -37,10 +37,10 @@ export default function ExpensePageLayout({
         actions: (
             <div className="flex items-center gap-3">
                 <Link
-                    href="/apps"
+                    href="/"
                     className={buttonVariants({ variant: 'outline', size: 'default' })}
                 >
-                    Back to apps
+                    Back to home
                 </Link>
             </div>
         ),
