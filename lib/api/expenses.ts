@@ -1,4 +1,4 @@
-import { apiRequest } from './client';
+import { apiRequest } from './axios';
 import { buildQuery } from './utils';
 import type {
   ExpenseDTO,
@@ -58,7 +58,7 @@ export async function createExpense(
 ): Promise<ExpenseDTO> {
   return apiRequest<ExpenseDTO>('/api/expenses', {
     method: 'POST',
-    body: JSON.stringify(data),
+    data,
   });
 }
 
@@ -70,7 +70,7 @@ export async function updateExpense(
     `/api/expenses/${encodeURIComponent(id)}`,
     {
       method: 'PATCH',
-      body: JSON.stringify(data),
+      data,
     }
   );
 }
