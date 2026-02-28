@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 
 import DeleteExpenseDialog from '../delete-expense-dialog';
-import { ExpenseDTO } from '@/types/expense';
+import { ExpenseDTO } from '@/api/types/expense';
 
 const mockExpense: ExpenseDTO = {
   id: 'exp-1',

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getExpenseStatistics } from '@/api/client/expenses';
-import { ExpenseStatisticItem } from '@/types/expense';
+import { ExpenseStatisticItem } from '@/api/types/expense';
 import { Button } from '@/components/ui/button';
 import {
     BarChart,

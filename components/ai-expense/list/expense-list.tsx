@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { updateExpense, listExpenses } from '@/api/client/expenses';
-import { ExpenseDTO, ApiExpenseUpdateRequest, Response } from '@/types/expense';
+import { ExpenseDTO, ApiExpenseUpdateRequest, Response } from '@/api/types/expense';
 
 interface ExpenseListFilters {
     fromDate?: number;

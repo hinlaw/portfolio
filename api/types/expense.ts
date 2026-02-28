@@ -1,4 +1,4 @@
-// Expense types - migrated from @/apis/accounting/models
+// Expense types - API contracts (request/response DTOs)
 
 export interface ExpenseDTO {
   id: string;

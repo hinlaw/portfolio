@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ExpenseDTO } from '@/types/expense';
+import { ExpenseDTO } from '@/api/types/expense';
 import { formatDateLong } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';

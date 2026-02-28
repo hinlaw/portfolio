@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import ExpenseForm from '@/components/ai-expense/expense-form';
-import { ExpenseDTO } from '@/types/expense';
+import { ExpenseDTO } from '@/api/types/expense';
 
 export default function NewExpensePage() {
     const router = useRouter();

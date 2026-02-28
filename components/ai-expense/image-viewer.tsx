@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 import { useCurrencyFormatter } from '@/lib/currency';
-import { ExpenseDTO } from '@/types/expense';
+import { ExpenseDTO } from '@/api/types/expense';
 import { formatDateCompact } from '@/lib/date';
 
 interface ImageViewerProps {

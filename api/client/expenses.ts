@@ -6,7 +6,7 @@ import type {
   ApiExpenseUpdateRequest,
   ExpenseStatisticItem,
   Response,
-} from '@/types/expense';
+} from '@/api/types/expense';
 import type { PaginatedResponse } from './types';
 
 export interface ListExpensesParams {

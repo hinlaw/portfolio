@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ExpenseDTO } from '@/types/expense';
+import { ExpenseDTO } from '@/api/types/expense';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { useTranslations } from 'next-intl';
 

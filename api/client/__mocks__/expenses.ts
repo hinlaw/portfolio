@@ -8,7 +8,7 @@ import {
   ApiExpenseUpdateRequest,
   ExpenseStatisticItem,
   Response,
-} from '@/types/expense';
+} from '@/api/types/expense';
 
 // In-memory store for test data
 const mockExpenses: ExpenseDTO[] = [
