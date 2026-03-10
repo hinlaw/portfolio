@@ -54,12 +54,7 @@ export default function AiExpenseListPage() {
 
         (async () => {
             try {
-                const response = await listExpenses({
-                    page: 1,
-                    size: 1,
-                    field: 'date',
-                    asc: 0,
-                });
+                const response = await listExpenses({ page: 1, size: 1, field: 'date', asc: 0 });
                 const total = response.page?.total ?? response.data.length ?? 0;
                 if (!cancelled) {
                     setHasAnyExpenses(total > 0);
