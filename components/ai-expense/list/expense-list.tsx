@@ -134,23 +134,20 @@ export default function ExpenseList({
         setPage(1);
     }, [keyword, fromDate, toDate, minAmount, maxAmount]);
 
-    // Load expenses immediately on initial mount
-    useEffect(() => {
-        loadExpenses();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // Load expenses immediately when page changes (user actions, no debounce needed)
+    // Load expenses on mount and when page changes (single effect, no duplicate calls)
     useEffect(() => {
         loadExpenses();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
-    // Use timer effect to debounce API calls when filter inputs change (500ms delay)
-    // This prevents too many API calls while user is typing in keyword or changing date/amount filters
+    // Debounce API calls when filter inputs change (500ms) - skip initial mount to avoid duplicate load
+    const isFirstFilterLoad = useRef(true);
     useTimerEffect(500, () => {
+        if (isFirstFilterLoad.current) {
+            isFirstFilterLoad.current = false;
+            return;
+        }
         loadExpenses();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyword, fromDate, toDate, minAmount, maxAmount]);
 
     const handleRowClick = (expense: ExpenseDTO) => {
