@@ -19,7 +19,7 @@ model Expense {
   date           String?  // 日期 YYYY-MM-DD
   currency       String?  @default("USD")
   exchangeRate   Float?   @default(1)
-  imageUrl       String?  // 圖片喺 Supabase Storage 嘅網址 (首張)
+  media          String[] @default([])  // 圖片/文件 URL 陣列，最多 10 個
   description    String?
   workspaceId    String?
   createdAt      DateTime @default(now())

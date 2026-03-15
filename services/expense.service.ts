@@ -65,10 +65,9 @@ export class ExpenseService {
       ? timestampToDate(body.date)
       : timestampToDate(Math.floor(Date.now() / 1000));
 
-    let imageUrl: string | null = null;
+    let media: string[] = [];
     if (Array.isArray(body.media) && body.media.length > 0) {
-      const processed = await processMediaForStorage(body.media, 'expenses');
-      imageUrl = processed[0] ?? null;
+      media = await processMediaForStorage(body.media.slice(0, 10), 'expenses');
     }
 
     const created = await prisma.expense.create({
@@ -79,7 +78,7 @@ export class ExpenseService {
         date: dateStr,
         currency: body.currency ?? 'USD',
         exchangeRate: body.exchange_rate ?? 1,
-        imageUrl,
+        media,
         description: body.description ?? null,
         workspaceId: body.workspace_id ?? null,
       },
@@ -109,9 +108,9 @@ export class ExpenseService {
     if (body.media !== undefined) {
       const processed =
         Array.isArray(body.media) && body.media.length > 0
-          ? await processMediaForStorage(body.media, `expenses/${id}`)
+          ? await processMediaForStorage(body.media.slice(0, 10), `expenses/${id}`)
           : [];
-      data.imageUrl = processed[0] ?? null;
+      data.media = processed;
     }
     if (body.description !== undefined) data.description = body.description ?? null;
 

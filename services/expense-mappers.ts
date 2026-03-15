@@ -26,7 +26,7 @@ export function prismaToDTO(row: Expense): ExpenseDTO {
     date: dateToTimestamp(row.date),
     currency: row.currency ?? undefined,
     exchange_rate: row.exchangeRate ?? undefined,
-    media: row.imageUrl ? [row.imageUrl] : undefined,
+    media: row.media?.length ? row.media : undefined,
     description: row.description ?? undefined,
     workspace_id: row.workspaceId ?? undefined,
   };
