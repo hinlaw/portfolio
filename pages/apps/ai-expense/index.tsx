@@ -9,7 +9,7 @@ import ExpenseFilterBar from '@/components/ai-expense/list/expense-filter-bar';
 import ExpenseListDesktopHeader from '@/components/ai-expense/list/expense-list-desktop-header';
 import ExpenseListMobileHeader from '@/components/ai-expense/list/expense-list-mobile-header';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { Upload, Search, Plus } from 'lucide-react';
+import { Upload, Search, Plus, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ExpenseForm from '@/components/ai-expense/expense-form';
@@ -210,11 +210,34 @@ export default function AiExpenseListPage() {
                         onDragOver={handleDragOver}
                     />
                 ) : hasAnyExpenses === null ? (
-                    <div className="p-6">
-                        <div className="max-w-7xl mx-auto text-sm text-muted-foreground">
-                            {t('loading')}
+                    <>
+                        {/* Desktop: Header + centered loading */}
+                        <div className="hidden md:block">
+                            <ExpenseListDesktopHeader
+                                onNewExpenseClick={() => router.push('/apps/ai-expense/new')}
+                                onFilterClick={() => setShowFilters(!showFilters)}
+                            />
+                            <div className="flex items-center justify-center min-h-[40vh] py-12">
+                                <div className="flex flex-col items-center gap-3">
+                                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                                    <p className="text-sm text-muted-foreground">{t('loading')}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        {/* Mobile: Header + centered loading */}
+                        <div className="md:hidden">
+                            <ExpenseListMobileHeader
+                                onMenuClick={() => setIsSheetOpen(true)}
+                                onCameraClick={handleClick}
+                            />
+                            <div className="flex items-center justify-center min-h-[40vh] py-12 px-4">
+                                <div className="flex flex-col items-center gap-3">
+                                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                                    <p className="text-sm text-muted-foreground">{t('loading')}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </>
                 ) : (
                     <>
                         {/* Desktop */}
@@ -311,29 +334,30 @@ export default function AiExpenseListPage() {
                 )}
             </ExpensePageLayout>
 
-            {hasAnyExpenses === true && (
+            {(hasAnyExpenses === true || hasAnyExpenses === null) && (
                 <>
-                    {/* Mobile Fixed Bottom Search Bar */}
-                    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pt-1 pb-[calc(env(safe-area-inset-bottom)+16px)] bg-gradient-to-t from-white via-white/95 to-transparent backdrop-blur-sm border-t border-slate-200/50">
-                        <div className="flex items-center gap-3">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                                <Input
-                                    value={keyword}
-                                    onChange={(e) => setKeyword(e.target.value)}
-                                    placeholder={t('search merchant, description...')}
-                                    className="h-12 rounded-full pl-12 pr-4 bg-slate-100 border-slate-200 focus-visible:ring-slate-300"
-                                />
+                    {hasAnyExpenses === true && (
+                        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pt-1 pb-[calc(env(safe-area-inset-bottom)+16px)] bg-gradient-to-t from-white via-white/95 to-transparent backdrop-blur-sm border-t border-slate-200/50">
+                            <div className="flex items-center gap-3">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                                    <Input
+                                        value={keyword}
+                                        onChange={(e) => setKeyword(e.target.value)}
+                                        placeholder={t('search merchant, description...')}
+                                        className="h-12 rounded-full pl-12 pr-4 bg-slate-100 border-slate-200 focus-visible:ring-slate-300"
+                                    />
+                                </div>
+                                <Button
+                                    type="button"
+                                    onClick={() => router.push('/apps/ai-expense/new')}
+                                    className="h-12 w-12 rounded-full p-0 shadow-sm"
+                                >
+                                    <Plus className="h-5 w-5" />
+                                </Button>
                             </div>
-                            <Button
-                                type="button"
-                                onClick={() => router.push('/apps/ai-expense/new')}
-                                className="h-12 w-12 rounded-full p-0 shadow-sm"
-                            >
-                                <Plus className="h-5 w-5" />
-                            </Button>
                         </div>
-                    </div>
+                    )}
 
                     {/* Mobile Sheet for Sidebar */}
                     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
