@@ -5,6 +5,10 @@ import {
   createExpenseBodySchema,
 } from '@/schemas/expense.schema';
 
+export const config = {
+  api: { bodyParser: { sizeLimit: '10mb' } },
+};
+
 export default withApiHandler({
   GET: async (req, res) => {
     const filters = getExpensesQuerySchema.parse(req.query);

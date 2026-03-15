@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { prismaToDTO, timestampToDate } from '@/services/expense-mappers';
 import { NotFoundError } from '@/lib/errors';
+import { processMediaForStorage } from '@/lib/storage-upload';
 import type { ExpenseDTO } from '@/api/types/expense';
 import type {
   GetExpensesQuery,
@@ -63,8 +64,12 @@ export class ExpenseService {
     const dateStr = body.date
       ? timestampToDate(body.date)
       : timestampToDate(Math.floor(Date.now() / 1000));
-    const imageUrl =
-      Array.isArray(body.media) && body.media.length > 0 ? body.media[0] : '';
+
+    let imageUrl: string | null = null;
+    if (Array.isArray(body.media) && body.media.length > 0) {
+      const processed = await processMediaForStorage(body.media, 'expenses');
+      imageUrl = processed[0] ?? null;
+    }
 
     const created = await prisma.expense.create({
       data: {
@@ -74,7 +79,7 @@ export class ExpenseService {
         date: dateStr,
         currency: body.currency ?? 'USD',
         exchangeRate: body.exchange_rate ?? 1,
-        imageUrl: imageUrl || null,
+        imageUrl,
         description: body.description ?? null,
         workspaceId: body.workspace_id ?? null,
       },
@@ -101,8 +106,13 @@ export class ExpenseService {
     if (body.date !== undefined) data.date = timestampToDate(body.date);
     if (body.currency !== undefined) data.currency = body.currency ?? 'USD';
     if (body.exchange_rate !== undefined) data.exchangeRate = body.exchange_rate ?? 1;
-    if (body.media !== undefined)
-      data.imageUrl = Array.isArray(body.media) && body.media[0] ? body.media[0] : null;
+    if (body.media !== undefined) {
+      const processed =
+        Array.isArray(body.media) && body.media.length > 0
+          ? await processMediaForStorage(body.media, `expenses/${id}`)
+          : [];
+      data.imageUrl = processed[0] ?? null;
+    }
     if (body.description !== undefined) data.description = body.description ?? null;
 
     const updated = await prisma.expense.update({

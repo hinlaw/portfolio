@@ -61,7 +61,7 @@
 - 建立 Next.js API routes 或接駁後端服務
 - 使用 Prisma 操作 PostgreSQL（Supabase）
 - 實作開支 CRUD、統計、搜尋等 API
-- 串接 Supabase Storage 處理收據圖片上傳
+- ✅ 串接 Supabase Storage 處理收據圖片上傳
 
 ### 第三步：認證（Clerk）
 
@@ -90,6 +90,18 @@
 ## 部署
 
 推薦使用 [Vercel](https://vercel.com) 部署 Next.js。部署時需設定 `DATABASE_URL`，以及 Clerk、Supabase 等相關環境變數。
+
+### Supabase Storage（收據圖片上傳）
+
+在 `.env.local` 設定：
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SUPABASE_STORAGE_BUCKET=expense-receipts   # 可選，預設為 expense-receipts
+```
+
+在 Supabase Dashboard → Storage 建立 bucket `expense-receipts`，並設定為 Public（以便取得圖片 URL）。
 
 ## License
 
