@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ExpenseDTO } from '@/api/types/expense';
 import { formatDateLong } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
-import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 
 interface ExpenseListPaneProps {
     expenses: ExpenseDTO[];
@@ -48,8 +48,8 @@ export default function ExpenseListPane({
             </div>
             <div className="flex-1 overflow-y-auto">
                 {loading ? (
-                    <div className="text-center py-8 text-muted-foreground text-sm">
-                        Loading...
+                    <div className="flex items-center justify-center min-h-[120px]">
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                     </div>
                 ) : expenses.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground text-sm">

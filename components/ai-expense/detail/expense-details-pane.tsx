@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExpenseDTO, ApiExpenseUpdateRequest } from '@/api/types/expense';
 import { updateExpense } from '@/api/client/expenses';
-import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Loader2, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
 import { formatDateLong, dayjs } from '@/lib/date';
 import { useCurrencyFormatter, formatCurrencyWithCode } from '@/lib/currency';
 import ImageViewer from '@/components/ai-expense/image-viewer';
@@ -271,8 +271,8 @@ export default function ExpenseDetailsPane({
     return (
         <div className="flex-1 overflow-y-auto bg-white">
             {loading ? (
-                <div className="text-center py-12 text-muted-foreground">
-                    Loading...
+                <div className="flex items-center justify-center min-h-[200px]">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                 </div>
             ) : error ? (
                 <div className="text-center py-12">
