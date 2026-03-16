@@ -28,20 +28,20 @@ export default function ProductLayout({
       {/* Header */}
       {product && (
         <div className="border-b">
-          <div className="px-6 py-4">
+          <div className="px-6 py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 {product.icon && (
                   <img
                     src={product.icon}
                     alt={product.name}
-                    className="h-10 w-10 rounded-lg object-cover"
+                    className="h-8 w-8 rounded-lg object-cover"
                   />
                 )}
                 <div>
-                  <h1 className="text-xl font-semibold">{product.name}</h1>
+                  <h1 className="text-lg font-semibold">{product.name}</h1>
                   {product.description && (
-                    <p className="text-sm text-muted-foreground">{product.description}</p>
+                    <p className="text-xs text-muted-foreground">{product.description}</p>
                   )}
                 </div>
               </div>

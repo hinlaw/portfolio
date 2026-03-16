@@ -51,7 +51,7 @@ export default function AiExpenseStatisticsPage() {
                 <SheetContent side="left" className="w-64 p-0 pt-12">
                     <ExpenseSidebar
                         currentPath={router.pathname}
-                        variant="drawer"
+                        variant="sheet"
                         onNavigate={() => setIsSheetOpen(false)}
                     />
                 </SheetContent>

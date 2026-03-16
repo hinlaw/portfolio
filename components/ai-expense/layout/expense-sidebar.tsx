@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 
 interface ExpenseSidebarProps {
     currentPath: string;
-    variant?: 'sidebar' | 'drawer';
+    variant?: 'sidebar' | 'sheet';
     onNavigate?: () => void;
 }
 
@@ -37,11 +37,11 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
     return (
         <aside
             className={cn(
-                "bg-white flex flex-col h-full",
+                "bg-white flex flex-col h-[calc(100vh-32px)]",
                 variant === 'sidebar' ? "w-64 border-r border-slate-200" : "w-full"
             )}
         >
-            <nav className={cn("flex-1 p-4 space-y-1", variant === 'drawer' ? "pb-6" : undefined)}>
+            <nav className={cn("flex-1 p-4 space-y-1", variant === 'sheet' ? "pb-6" : undefined)}>
                 {/* Expenses Item */}
                 <div className="group">
                     <div

@@ -4,12 +4,12 @@ import { useTranslations } from 'next-intl';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layout';
 import ExpenseSidebar from '@/components/ai-expense/layout/expense-sidebar';
-import ExpenseList from '@/components/ai-expense/list/expense-list';
-import ExpenseFilterBar from '@/components/ai-expense/list/expense-filter-bar';
 import ExpenseListDesktopHeader from '@/components/ai-expense/list/expense-list-desktop-header';
 import ExpenseListMobileHeader from '@/components/ai-expense/list/expense-list-mobile-header';
+import ExpenseListDesktopView from '@/components/ai-expense/list/expense-list-desktop-view';
+import ExpenseListMobileView from '@/components/ai-expense/list/expense-list-mobile-view';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { Upload, Search, Plus, Loader2 } from 'lucide-react';
+import { Search, Plus, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ExpenseForm from '@/components/ai-expense/expense-form';
@@ -240,96 +240,42 @@ export default function AiExpenseListPage() {
                     </>
                 ) : (
                     <>
-                        {/* Desktop */}
-                        <div className="hidden md:block">
-                            {/* Desktop Header */}
-                            <ExpenseListDesktopHeader
-                                onNewExpenseClick={() => router.push('/apps/ai-expense/new')}
-                                onFilterClick={() => setShowFilters(!showFilters)}
-                            />
-
-                            {/* Sticky Filter Bar - slides down from header */}
-                            <div className="sticky top-[47px] z-10 overflow-hidden">
-                                <div className="max-w-7xl mx-auto ">
-                                    <ExpenseFilterBar
-                                        showFilters={showFilters}
-                                        keyword={keyword}
-                                        onKeywordChange={setKeyword}
-                                        fromDate={fromDate}
-                                        onFromDateChange={setFromDate}
-                                        toDate={toDate}
-                                        onToDateChange={setToDate}
-                                        minAmount={minAmount}
-                                        onMinAmountChange={setMinAmount}
-                                        maxAmount={maxAmount}
-                                        onMaxAmountChange={setMaxAmount}
-                                        hasActiveFilters={hasActiveFilters}
-                                        onClearFilters={clearAllFilters}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="p-6">
-                                <div className="max-w-7xl mx-auto">
-                                    {/* Upload Section */}
-                                    <div className="mb-6">
-                                        <div
-                                            onDrop={handleDrop}
-                                            onDragOver={handleDragOver}
-                                            onClick={handleClick}
-                                            className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex-shrink-0">
-                                                    <div className="rounded-full bg-muted p-3">
-                                                        <Upload className="h-6 w-6 text-muted-foreground" />
-                                                    </div>
-                                                </div>
-                                                <p className="text-base font-medium text-muted-foreground">
-                                                    {t('drag & drop receipts or click here to upload')}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <ExpenseList
-                                        onViewStatistics={() => router.push('/apps/ai-expense/statistics')}
-                                        showFilters={showFilters}
-                                        onToggleFilters={() => setShowFilters(!showFilters)}
-                                        keyword={keyword}
-                                        onKeywordChange={setKeyword}
-                                        fromDate={fromDate}
-                                        toDate={toDate}
-                                        minAmount={minAmount}
-                                        maxAmount={maxAmount}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Mobile */}
-                        <div className="md:hidden">
-                            {/* Mobile Header */}
-                            <ExpenseListMobileHeader
-                                onMenuClick={() => setIsSheetOpen(true)}
-                                onCameraClick={handleClick}
-                            />
-
-                            {/* Mobile Content */}
-                            <div className="px-4 pt-3 pb-[calc(80px+env(safe-area-inset-bottom))]">
-                                <ExpenseList
-                                    onViewStatistics={() => router.push('/apps/ai-expense/statistics')}
-                                    showFilters={showFilters}
-                                    onToggleFilters={() => setShowFilters(!showFilters)}
-                                    keyword={keyword}
-                                    onKeywordChange={setKeyword}
-                                    fromDate={fromDate}
-                                    toDate={toDate}
-                                    minAmount={minAmount}
-                                    maxAmount={maxAmount}
-                                />
-                            </div>
-                        </div>
+                        <ExpenseListDesktopView
+                            onNewExpenseClick={() => router.push('/apps/ai-expense/new')}
+                            onFilterClick={() => setShowFilters(!showFilters)}
+                            showFilters={showFilters}
+                            keyword={keyword}
+                            onKeywordChange={setKeyword}
+                            fromDate={fromDate}
+                            onFromDateChange={setFromDate}
+                            toDate={toDate}
+                            onToDateChange={setToDate}
+                            minAmount={minAmount}
+                            onMinAmountChange={setMinAmount}
+                            maxAmount={maxAmount}
+                            onMaxAmountChange={setMaxAmount}
+                            hasActiveFilters={hasActiveFilters}
+                            onClearFilters={clearAllFilters}
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                            onUploadClick={handleClick}
+                            onViewStatistics={() => router.push('/apps/ai-expense/statistics')}
+                            onToggleFilters={() => setShowFilters(!showFilters)}
+                            uploadText={t('drag & drop receipts or click here to upload')}
+                        />
+                        <ExpenseListMobileView
+                            onMenuClick={() => setIsSheetOpen(true)}
+                            onCameraClick={handleClick}
+                            onViewStatistics={() => router.push('/apps/ai-expense/statistics')}
+                            showFilters={showFilters}
+                            onToggleFilters={() => setShowFilters(!showFilters)}
+                            keyword={keyword}
+                            onKeywordChange={setKeyword}
+                            fromDate={fromDate}
+                            toDate={toDate}
+                            minAmount={minAmount}
+                            maxAmount={maxAmount}
+                        />
                     </>
                 )}
             </ExpensePageLayout>
@@ -364,7 +310,7 @@ export default function AiExpenseListPage() {
                         <SheetContent side="left" className="w-64 p-0 pt-12">
                             <ExpenseSidebar
                                 currentPath={router.pathname}
-                                variant="drawer"
+                                variant="sheet"
                                 onNavigate={() => setIsSheetOpen(false)}
                             />
                         </SheetContent>
