@@ -115,7 +115,6 @@ export default function ExpenseFormDialog({
     // Form setup
     const expenseSchema = createExpenseSchema(t);
     const {
-        register,
         control,
         handleSubmit,
         watch,
@@ -674,7 +673,6 @@ export default function ExpenseFormDialog({
                     <div className="flex-1 relative overflow-hidden">
                         <ExpenseForm
                             key={scanCompleteKey}
-                            register={register}
                             control={control}
                             errors={errors}
                             isScanning={isScanning}
@@ -830,7 +828,6 @@ export default function ExpenseFormDialog({
                         </div>
                     )}
                     <ExpenseForm
-                        register={register}
                         control={control}
                         errors={errors}
                         isScanning={isScanning}

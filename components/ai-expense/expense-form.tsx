@@ -1,9 +1,10 @@
 'use client';
 
-import { UseFormRegister, Control, FieldErrors, Controller } from 'react-hook-form';
+import { Control, FieldErrors } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/form-field';
+import { FieldGroup } from '@/components/ui/field';
 import { DatePicker } from '@/components/ui/date-picker';
 import { CurrencySelect } from './currency-select';
 import { useTranslations } from 'next-intl';
@@ -15,7 +16,6 @@ import MobileExpenseForm from './mobile-expense-form';
 import { FileWithPreview } from './file-upload';
 
 export interface ExpenseFormProps {
-    register: UseFormRegister<ExpenseFormData>;
     control: Control<ExpenseFormData>;
     errors: FieldErrors<ExpenseFormData>;
     isScanning: boolean;
@@ -43,7 +43,6 @@ export interface ExpenseFormProps {
 }
 
 export default function ExpenseForm({
-    register,
     control,
     errors,
     isScanning,
@@ -74,7 +73,6 @@ export default function ExpenseForm({
     if (isMobile) {
         return (
             <MobileExpenseForm
-                register={register}
                 control={control}
                 errors={errors}
                 isScanning={isScanning}
@@ -110,17 +108,18 @@ export default function ExpenseForm({
                 e.stopPropagation();
             }}
         >
-            {/* Date */}
-            <div className="flex flex-col gap-2">
-                <Label htmlFor="date">{t('date')} *</Label>
-                <Controller
-                    name="date"
-                    control={control}
-                    render={({ field }) => {
-                        const dateValue = field.value ? dayjs(field.value).toDate() : undefined;
-                        return (
+            <FieldGroup className="space-y-6">
+                {/* Date */}
+                <FormField<ExpenseFormData>
+                    id="date"
+                    label={t('date')}
+                    required
+                    controller={{
+                        name: 'date',
+                        control,
+                        render: ({ field, fieldState }) => (
                             <DatePicker
-                                date={dateValue}
+                                date={field.value ? dayjs(field.value).toDate() : undefined}
                                 onDateChange={(date) => {
                                     if (date) {
                                         field.onChange(dayjs(date).format('YYYY-MM-DD'));
@@ -130,39 +129,41 @@ export default function ExpenseForm({
                                 }}
                                 disabled={isScanning}
                                 placeholder={t('select date')}
-                                error={!!errors.date}
+                                error={!!fieldState.invalid}
                                 dateFormat="YYYY-MM-DD"
                                 showIcon={true}
                                 buttonClassName={cn(
                                     "w-1/2",
-                                    errors.date ? 'border-destructive' : ''
+                                    fieldState.invalid ? 'border-destructive' : ''
                                 )}
                             />
-                        );
+                        ),
                     }}
                 />
-                {errors.date && (
-                    <p className="text-sm text-destructive">{errors.date.message}</p>
-                )}
-            </div>
 
-            {/* Merchant */}
-            <div className="space-y-2">
-                <Label htmlFor="merchant">{t('merchant')} *</Label>
-                <Input
+                {/* Merchant */}
+                <FormField<ExpenseFormData>
                     id="merchant"
-                    {...register('merchant')}
-                    placeholder={t('enter merchant name')}
-                    className={errors.merchant ? 'border-destructive' : ''}
-                    disabled={isScanning}
+                    label={t('merchant')}
+                    required
+                    controller={{
+                        name: 'merchant',
+                        control,
+                        render: ({ field, fieldState }) => (
+                            <Input
+                                {...field}
+                                id="merchant"
+                                aria-invalid={fieldState.invalid}
+                                placeholder={t('enter merchant name')}
+                                className={fieldState.invalid ? 'border-destructive' : ''}
+                                disabled={isScanning}
+                            />
+                        ),
+                    }}
                 />
-                {errors.merchant && (
-                    <p className="text-sm text-destructive">{errors.merchant.message}</p>
-                )}
-            </div>
 
-            {/* Currency and Amount */}
-            <CurrencySelect
+                {/* Currency and Amount */}
+                <CurrencySelect
                 id="currency"
                 label={t('currency')}
                 selectedCurrency={selectedCurrency}
@@ -176,67 +177,87 @@ export default function ExpenseForm({
                 emptyMessage={t('no currencies found')}
                 searchPrompt={t('start typing to search...')}
                 disabled={isScanning}
-            />
+                />
 
-            {/* Exchange Rate (show only if currency differs from workspace) */}
-            {selectedCurrency !== workspaceCurrency && (
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="exchange-rate">
-                            {t('exchange rate')} ({selectedCurrency} → {workspaceCurrency})
-                        </Label>
-                    </div>
-                    <Input
+                {/* Exchange Rate (show only if currency differs from workspace) */}
+                {selectedCurrency !== workspaceCurrency && (
+                    <FormField
                         id="exchange-rate"
-                        type="number"
-                        step="0.000001"
-                        min="0"
-                        value={manualExchangeRate}
-                        onChange={(e) => onManualExchangeRateChange(e.target.value)}
-                        placeholder="1.000000"
-                        disabled={isScanning}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                        {t('amount will be converted to')} {workspaceCurrency}
-                    </p>
-                </div>
-            )}
+                        label={
+                            <>
+                                {t('exchange rate')} ({selectedCurrency} → {workspaceCurrency})
+                            </>
+                        }
+                        hint={`${t('amount will be converted to')} ${workspaceCurrency}`}
+                    >
+                        <Input
+                            id="exchange-rate"
+                            type="number"
+                            step="0.000001"
+                            min="0"
+                            value={manualExchangeRate}
+                            onChange={(e) => onManualExchangeRateChange(e.target.value)}
+                            placeholder="1.000000"
+                            disabled={isScanning}
+                        />
+                    </FormField>
+                )}
 
-            {/* Amount */}
-            <div className="space-y-2">
-                <Label htmlFor="amount">
-                    {t('amount')} {selectedCurrency !== workspaceCurrency && `(${selectedCurrency})`} *
-                </Label>
-                <Input
+                {/* Amount */}
+                <FormField<ExpenseFormData>
                     id="amount"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    {...register('amount', { valueAsNumber: true })}
-                    placeholder="0.00"
-                    className={errors.amount ? 'border-destructive' : ''}
-                    disabled={isScanning}
+                    label={
+                        <>
+                            {t('amount')} {selectedCurrency !== workspaceCurrency && `(${selectedCurrency})`}
+                        </>
+                    }
+                    required
+                    hint={
+                        selectedCurrency !== workspaceCurrency && amountValue > 0 && exchangeRate > 0
+                            ? `${t('equals')} ${formatCurrency(amountValue * exchangeRate)} (${workspaceCurrency})`
+                            : undefined
+                    }
+                    hintClassName="text-sm"
+                    controller={{
+                        name: 'amount',
+                        control,
+                        render: ({ field, fieldState }) => (
+                            <Input
+                                {...field}
+                                id="amount"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={field.value ?? ''}
+                                onChange={(e) => field.onChange(e.target.value === '' ? 0 : parseFloat(e.target.value))}
+                                aria-invalid={fieldState.invalid}
+                                placeholder="0.00"
+                                className={fieldState.invalid ? 'border-destructive' : ''}
+                                disabled={isScanning}
+                            />
+                        ),
+                    }}
                 />
-                {selectedCurrency !== workspaceCurrency && amountValue > 0 && exchangeRate > 0 && (
-                    <p className="text-sm text-muted-foreground">
-                        {t('equals')} {formatCurrency(amountValue * exchangeRate)} ({workspaceCurrency})
-                    </p>
-                )}
-                {errors.amount && (
-                    <p className="text-sm text-destructive">{errors.amount.message}</p>
-                )}
-            </div>
 
-            {/* Description */}
-            <div className="space-y-2">
-                <Label htmlFor="description">{t('description')}</Label>
-                <Textarea
+                {/* Description */}
+                <FormField<ExpenseFormData>
                     id="description"
-                    {...register('description')}
-                    rows={5}
-                    disabled={isScanning}
+                    label={t('description')}
+                    controller={{
+                        name: 'description',
+                        control,
+                        render: ({ field, fieldState }) => (
+                            <Textarea
+                                {...field}
+                                id="description"
+                                rows={5}
+                                aria-invalid={fieldState.invalid}
+                                disabled={isScanning}
+                            />
+                        ),
+                    }}
                 />
-            </div>
+            </FieldGroup>
         </form>
     );
 }

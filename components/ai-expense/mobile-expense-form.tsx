@@ -1,11 +1,11 @@
 'use client';
 
-import { UseFormRegister, Control, FieldErrors, Controller } from 'react-hook-form';
+import { Control, FieldErrors } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/form-field';
 import { CurrencySelect } from './currency-select';
 import { FileWithPreview } from './file-upload';
 import { Paperclip, Loader2 } from 'lucide-react';
@@ -19,7 +19,6 @@ import { isPdfUrl } from './file-utils';
 import { useMemo } from 'react';
 
 interface MobileExpenseFormProps {
-    register: UseFormRegister<ExpenseFormData>;
     control: Control<ExpenseFormData>;
     errors: FieldErrors<ExpenseFormData>;
     isScanning: boolean;
@@ -46,7 +45,6 @@ interface MobileExpenseFormProps {
 }
 
 export default function MobileExpenseForm({
-    register,
     control,
     errors,
     isScanning,
@@ -94,67 +92,66 @@ export default function MobileExpenseForm({
                         <div className="grid grid-cols-[1fr_132px] gap-4 p-4">
                             <div className="space-y-5">
                                 {/* Date */}
-                                <div className="flex flex-col gap-1">
-                                    <label
-                                        htmlFor="date-mobile"
-                                        className="text-sm font-medium text-slate-500 cursor-pointer"
-                                    >
-                                        {t('expense date')}
-                                        <span className="text-red-500"> *</span>
-                                    </label>
-                                    <Controller
-                                        name="date"
-                                        control={control}
-                                        render={({ field }) => {
-                                            const dateValue = field.value ? dayjs(field.value).toDate() : undefined;
-                                            return (
-                                                <DatePicker
-                                                    date={dateValue}
-                                                    onDateChange={(date) => {
-                                                        if (date) {
-                                                            field.onChange(dayjs(date).format('YYYY-MM-DD'));
-                                                        } else {
-                                                            field.onChange('');
-                                                        }
-                                                    }}
-                                                    disabled={isScanning}
-                                                    placeholder={t('select date')}
-                                                    error={!!errors.date}
-                                                    dateFormat="YYYY-MM-DD"
-                                                    showIcon={false}
-                                                    buttonClassName={cn(
-                                                        "w-full bg-transparent text-2xl font-semibold tracking-tight text-slate-900 outline-none border-b-2 border-slate-300 focus:border-slate-500 justify-start h-auto hover:bg-transparent",
-                                                        errors.date ? 'text-red-600 border-red-500' : undefined
-                                                    )}
-                                                />
-                                            );
-                                        }}
-                                    />
-                                    {errors.date && (
-                                        <p className="text-sm text-red-600">{errors.date.message}</p>
-                                    )}
-                                </div>
+                                <FormField<ExpenseFormData>
+                                    id="date-mobile"
+                                    label={t('expense date')}
+                                    required
+                                    className="flex flex-col gap-1"
+                                    labelClassName="text-sm font-medium text-slate-500 cursor-pointer"
+                                    errorClassName="text-red-600"
+                                    controller={{
+                                        name: 'date',
+                                        control,
+                                        render: ({ field, fieldState }) => (
+                                            <DatePicker
+                                                date={field.value ? dayjs(field.value).toDate() : undefined}
+                                                onDateChange={(date) => {
+                                                    if (date) {
+                                                        field.onChange(dayjs(date).format('YYYY-MM-DD'));
+                                                    } else {
+                                                        field.onChange('');
+                                                    }
+                                                }}
+                                                disabled={isScanning}
+                                                placeholder={t('select date')}
+                                                error={!!fieldState.invalid}
+                                                dateFormat="YYYY-MM-DD"
+                                                showIcon={false}
+                                                buttonClassName={cn(
+                                                    "w-full bg-transparent text-2xl font-semibold tracking-tight text-slate-900 outline-none border-b-2 border-slate-300 focus:border-slate-500 justify-start h-auto hover:bg-transparent",
+                                                    fieldState.invalid ? 'text-red-600 border-red-500' : undefined
+                                                )}
+                                            />
+                                        ),
+                                    }}
+                                />
 
                                 {/* Merchant */}
-                                <div className="space-y-1">
-                                    <div className="text-sm font-medium text-slate-500">
-                                        {t('merchant')}
-                                        <span className="text-red-500"> *</span>
-                                    </div>
-                                    <input
-                                        id="merchant-mobile"
-                                        {...register('merchant')}
-                                        placeholder={t('enter merchant name')}
-                                        className={cn(
-                                            "w-full bg-transparent p-0 pb-2 text-xl font-medium text-slate-900 placeholder:text-slate-400 outline-none border-b-2 border-slate-300 focus:border-slate-500",
-                                            errors.merchant ? 'text-red-600 placeholder:text-red-300 border-red-500' : undefined
-                                        )}
-                                        disabled={isScanning}
-                                    />
-                                    {errors.merchant && (
-                                        <p className="text-sm text-red-600">{errors.merchant.message}</p>
-                                    )}
-                                </div>
+                                <FormField<ExpenseFormData>
+                                    id="merchant-mobile"
+                                    label={t('merchant')}
+                                    required
+                                    className="space-y-1"
+                                    labelClassName="text-sm font-medium text-slate-500"
+                                    errorClassName="text-red-600"
+                                    controller={{
+                                        name: 'merchant',
+                                        control,
+                                        render: ({ field, fieldState }) => (
+                                            <input
+                                                {...field}
+                                                id="merchant-mobile"
+                                                placeholder={t('enter merchant name')}
+                                                className={cn(
+                                                    "w-full bg-transparent p-0 pb-2 text-xl font-medium text-slate-900 placeholder:text-slate-400 outline-none border-b-2 border-slate-300 focus:border-slate-500",
+                                                    fieldState.invalid ? 'text-red-600 placeholder:text-red-300 border-red-500' : undefined
+                                                )}
+                                                disabled={isScanning}
+                                                aria-invalid={fieldState.invalid}
+                                            />
+                                        ),
+                                    }}
+                                />
                             </div>
 
                             {/* Attach receipt tile */}
@@ -225,15 +222,18 @@ export default function MobileExpenseForm({
                     {/* Exchange Rate (show only if currency differs from workspace) */}
                     {selectedCurrency !== workspaceCurrency && (
                         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                            <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="exchange-rate-mobile">
+                            <FormField
+                                id="exchange-rate-mobile"
+                                label={
+                                    <span className="flex items-center justify-between">
                                         {t('exchange rate')} ({selectedCurrency} → {workspaceCurrency})
-                                    </Label>
-                                    {isLoadingExchangeRate && (
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    )}
-                                </div>
+                                        {isLoadingExchangeRate && (
+                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        )}
+                                    </span>
+                                }
+                                hint={`${t('amount will be converted to')} ${workspaceCurrency}`}
+                            >
                                 <Input
                                     id="exchange-rate-mobile"
                                     type="number"
@@ -244,56 +244,76 @@ export default function MobileExpenseForm({
                                     placeholder="1.000000"
                                     disabled={isScanning || isLoadingExchangeRate}
                                 />
-                                <p className="text-xs text-muted-foreground">
-                                    {t('amount will be converted to')} {workspaceCurrency}
-                                </p>
-                            </div>
+                            </FormField>
                         </div>
                     )}
 
                     {/* Amount */}
                     <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                        <div className="space-y-1">
-                            <div className="text-sm font-medium text-slate-500">
-                                {t('amount')} {selectedCurrency !== workspaceCurrency && `(${selectedCurrency})`}
-                                <span className="text-red-500"> *</span>
-                            </div>
-                            <input
-                                id="amount-mobile"
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                {...register('amount', { valueAsNumber: true })}
-                                placeholder="0.00"
-                                className={cn(
-                                    "w-full bg-transparent p-0 pb-2 text-4xl font-semibold tracking-tight text-slate-900 outline-none border-b-2 border-slate-300 focus:border-slate-500",
-                                    errors.amount ? 'text-red-600 placeholder:text-red-300 border-red-500' : undefined
-                                )}
-                                disabled={isScanning}
-                            />
-                            {selectedCurrency !== workspaceCurrency && amountValue > 0 && exchangeRate > 0 && (
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    {t('equals')} {formatCurrency(amountValue * exchangeRate)} ({workspaceCurrency})
-                                </p>
-                            )}
-                            {errors.amount && (
-                                <p className="text-sm text-red-600">{errors.amount.message}</p>
-                            )}
-                        </div>
+                        <FormField<ExpenseFormData>
+                            id="amount-mobile"
+                            label={
+                                <>
+                                    {t('amount')} {selectedCurrency !== workspaceCurrency && `(${selectedCurrency})`}
+                                </>
+                            }
+                            required
+                            hint={
+                                selectedCurrency !== workspaceCurrency && amountValue > 0 && exchangeRate > 0
+                                    ? `${t('equals')} ${formatCurrency(amountValue * exchangeRate)} (${workspaceCurrency})`
+                                    : undefined
+                            }
+                            hintClassName="text-sm mt-1"
+                            className="space-y-1"
+                            labelClassName="text-sm font-medium text-slate-500"
+                            errorClassName="text-red-600"
+                            controller={{
+                                name: 'amount',
+                                control,
+                                render: ({ field, fieldState }) => (
+                                    <input
+                                        {...field}
+                                        id="amount-mobile"
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={field.value ?? ''}
+                                        onChange={(e) => field.onChange(e.target.value === '' ? 0 : parseFloat(e.target.value))}
+                                        placeholder="0.00"
+                                        className={cn(
+                                            "w-full bg-transparent p-0 pb-2 text-4xl font-semibold tracking-tight text-slate-900 outline-none border-b-2 border-slate-300 focus:border-slate-500",
+                                            fieldState.invalid ? 'text-red-600 placeholder:text-red-300 border-red-500' : undefined
+                                        )}
+                                        disabled={isScanning}
+                                        aria-invalid={fieldState.invalid}
+                                    />
+                                ),
+                            }}
+                        />
                     </div>
 
                     {/* Description */}
                     <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                        <div className="text-sm font-medium text-slate-500 mb-2">
-                            {t('description')}
-                        </div>
-                        <Textarea
+                        <FormField<ExpenseFormData>
                             id="description-mobile"
-                            {...register('description')}
-                            rows={5}
-                            placeholder={t('brief description of the expense')}
-                            className="rounded-xl bg-slate-50 border-slate-200 focus-visible:ring-slate-300 border-b-2 border-slate-300 focus:border-slate-500"
-                            disabled={isScanning}
+                            label={t('description')}
+                            labelClassName="text-sm font-medium text-slate-500"
+                            errorClassName="text-red-600"
+                            controller={{
+                                name: 'description',
+                                control,
+                                render: ({ field, fieldState }) => (
+                                    <Textarea
+                                        {...field}
+                                        id="description-mobile"
+                                        rows={5}
+                                        placeholder={t('brief description of the expense')}
+                                        className="rounded-xl bg-slate-50 border-slate-200 focus-visible:ring-slate-300 border-b-2 border-slate-300 focus:border-slate-500"
+                                        disabled={isScanning}
+                                        aria-invalid={fieldState.invalid}
+                                    />
+                                ),
+                            }}
                         />
                     </div>
                 </div>
