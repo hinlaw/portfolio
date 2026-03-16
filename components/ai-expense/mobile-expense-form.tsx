@@ -6,9 +6,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CurrencySelect } from './currency-select';
 import { FileWithPreview } from './file-upload';
-import { Paperclip, Loader2, Search, Check } from 'lucide-react';
+import { Paperclip, Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { cn } from '@/lib/utils';
@@ -205,69 +205,21 @@ export default function MobileExpenseForm({
 
                     {/* Currency */}
                     <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="currency-mobile">{t('currency')}</Label>
-                            <Popover open={isCurrencyPopoverOpen} onOpenChange={onCurrencyPopoverOpenChange}>
-                                <PopoverTrigger asChild>
-                                    <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
-                                        <Input
-                                            id="currency-mobile"
-                                            value={selectedCurrency || currencySearchKeyword}
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                onCurrencySearchChange(value);
-                                                onCurrencyPopoverOpenChange(true);
-                                                if (selectedCurrency && value !== selectedCurrency) {
-                                                    onCurrencyChange('');
-                                                }
-                                            }}
-                                            onFocus={() => {
-                                                onCurrencyPopoverOpenChange(true);
-                                            }}
-                                            placeholder={t('select currency')}
-                                            className="pl-9 w-full"
-                                            disabled={isScanning}
-                                        />
-                                    </div>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                    className="w-[var(--radix-popover-trigger-width)] p-0"
-                                    align="start"
-                                    onOpenAutoFocus={(e) => e.preventDefault()}
-                                >
-                                    <div className="max-h-[300px] overflow-y-auto">
-                                        {filteredCurrencies.length === 0 ? (
-                                            <div className="p-4 text-sm text-muted-foreground text-center">
-                                                {currencySearchKeyword.trim()
-                                                    ? t('no currencies found')
-                                                    : t('start typing to search...')}
-                                            </div>
-                                        ) : (
-                                            filteredCurrencies.map((currency) => (
-                                                <button
-                                                    key={currency}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        onCurrencyChange(currency);
-                                                        onCurrencyPopoverOpenChange(false);
-                                                    }}
-                                                    className={cn(
-                                                        'w-full px-4 py-2 text-left hover:bg-muted transition-colors flex items-center justify-between',
-                                                        selectedCurrency === currency && 'bg-primary/5'
-                                                    )}
-                                                >
-                                                    <span>{currency}</span>
-                                                    {selectedCurrency === currency && (
-                                                        <Check className="h-4 w-4 text-primary" />
-                                                    )}
-                                                </button>
-                                            ))
-                                        )}
-                                    </div>
-                                </PopoverContent>
-                            </Popover>
-                        </div>
+                        <CurrencySelect
+                            id="currency-mobile"
+                            label={t('currency')}
+                            selectedCurrency={selectedCurrency}
+                            currencySearchKeyword={currencySearchKeyword}
+                            filteredCurrencies={filteredCurrencies}
+                            isOpen={isCurrencyPopoverOpen}
+                            onOpenChange={onCurrencyPopoverOpenChange}
+                            onCurrencyChange={onCurrencyChange}
+                            onSearchChange={onCurrencySearchChange}
+                            placeholder={t('select currency')}
+                            emptyMessage={t('no currencies found')}
+                            searchPrompt={t('start typing to search...')}
+                            disabled={isScanning}
+                        />
                     </div>
 
                     {/* Exchange Rate (show only if currency differs from workspace) */}

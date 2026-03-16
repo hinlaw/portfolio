@@ -10,9 +10,9 @@ import { ExpenseDTO, ApiExpenseCreateRequest, ApiExpenseUpdateRequest } from '@/
 import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';
 import { toast } from 'sonner';
-import { Loader2, X, Upload, FileText, RotateCw, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw, Scan, Search, Check } from 'lucide-react';
+import { Loader2, X, Upload, FileText, RotateCw, Trash2, Plus, ZoomIn, ZoomOut, RotateCcw, Scan } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CurrencySelect } from './currency-select';
 import { cn } from '@/lib/utils';
 import { formatDateYMD, todayYMD, parseToTimestamp, dayjs } from '@/lib/date';
 import { Controller, useForm } from 'react-hook-form';
@@ -1307,66 +1307,21 @@ export default function ExpenseForm({
                         </div>
 
                         {/* Currency and Amount */}
-                        <div className="space-y-2">
-                            <Label htmlFor="currency">{t('currency')}</Label>
-                            <Popover open={isCurrencyPopoverOpen} onOpenChange={setIsCurrencyPopoverOpen}>
-                                <PopoverTrigger asChild>
-                                    <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
-                                        <Input
-                                            id="currency"
-                                            value={selectedCurrency || currencySearchKeyword}
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setCurrencySearchKeyword(value);
-                                                setIsCurrencyPopoverOpen(true);
-                                                if (selectedCurrency && value !== selectedCurrency) {
-                                                    setSelectedCurrency('');
-                                                }
-                                            }}
-                                            onFocus={() => {
-                                                setIsCurrencyPopoverOpen(true);
-                                            }}
-                                            placeholder={t('select currency')}
-                                            className="pl-9 w-full"
-                                            disabled={isScanning}
-                                        />
-                                    </div>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                    className="w-[var(--radix-popover-trigger-width)] p-0"
-                                    align="start"
-                                    onOpenAutoFocus={(e) => e.preventDefault()}
-                                >
-                                    <div className="max-h-[300px] overflow-y-auto">
-                                        {filteredCurrencies.length === 0 ? (
-                                            <div className="p-4 text-sm text-muted-foreground text-center">
-                                                {currencySearchKeyword.trim()
-                                                    ? t('no currencies found')
-                                                    : t('start typing to search...')}
-                                            </div>
-                                        ) : (
-                                            filteredCurrencies.map((currency) => (
-                                                <button
-                                                    key={currency}
-                                                    type="button"
-                                                    onClick={() => handleCurrencyChange(currency)}
-                                                    className={cn(
-                                                        'w-full px-4 py-2 text-left hover:bg-muted transition-colors flex items-center justify-between',
-                                                        selectedCurrency === currency && 'bg-primary/5'
-                                                    )}
-                                                >
-                                                    <span>{currency}</span>
-                                                    {selectedCurrency === currency && (
-                                                        <Check className="h-4 w-4 text-primary" />
-                                                    )}
-                                                </button>
-                                            ))
-                                        )}
-                                    </div>
-                                </PopoverContent>
-                            </Popover>
-                        </div>
+                        <CurrencySelect
+                            id="currency"
+                            label={t('currency')}
+                            selectedCurrency={selectedCurrency}
+                            currencySearchKeyword={currencySearchKeyword}
+                            filteredCurrencies={filteredCurrencies}
+                            isOpen={isCurrencyPopoverOpen}
+                            onOpenChange={setIsCurrencyPopoverOpen}
+                            onCurrencyChange={handleCurrencyChange}
+                            onSearchChange={setCurrencySearchKeyword}
+                            placeholder={t('select currency')}
+                            emptyMessage={t('no currencies found')}
+                            searchPrompt={t('start typing to search...')}
+                            disabled={isScanning}
+                        />
 
                         {/* Exchange Rate (show only if currency differs from workspace) */}
                         {selectedCurrency !== workspaceCurrency && (
