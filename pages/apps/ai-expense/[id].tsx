@@ -7,7 +7,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { ExpenseDTO } from '@/api/types/expense';
 import { getExpense, deleteExpense, listExpenses } from '@/api/client/expenses';
 import DeleteExpenseDialog from '@/components/ai-expense/delete-expense-dialog';
-import ExpenseForm from '@/components/ai-expense/expense-form';
+import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
 import { toast } from 'sonner';
 import ExpenseListPane from '@/components/ai-expense/detail/expense-list-pane';
 import ExpenseDetailsPane from '@/components/ai-expense/detail/expense-details-pane';
@@ -165,7 +165,7 @@ export default function ExpenseDetailPage() {
 
             {/* Fullscreen Expense Form */}
             {showFullscreenForm && expense && (
-                <ExpenseForm
+                <ExpenseFormDialog
                     expense={expense}
                     onSuccess={handleSaveSuccess}
                     onClose={handleFormClose}

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import ExpenseForm from '@/components/ai-expense/expense-form';
+import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
 import { ExpenseDTO } from '@/api/types/expense';
 
 export default function NewExpensePage() {
@@ -26,7 +26,7 @@ export default function NewExpensePage() {
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
             </Head>
 
-            <ExpenseForm
+            <ExpenseFormDialog
                 onSuccess={handleCreateSuccess}
                 onClose={handleFormClose}
             />

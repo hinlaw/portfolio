@@ -12,7 +12,7 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Search, Plus, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import ExpenseForm from '@/components/ai-expense/expense-form';
+import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
 import { FileWithPreview } from '@/components/ai-expense/file-upload';
 import { toast } from 'sonner';
 import { listExpenses } from '@/api/client/expenses';
@@ -323,7 +323,7 @@ export default function AiExpenseListPage() {
 
             {/* Expense Form */}
             {showFullscreenForm && (
-                <ExpenseForm
+                <ExpenseFormDialog
                     initialFiles={uploadedFiles}
                     autoScan={autoScan}
                     onSuccess={handleFormSuccess}
