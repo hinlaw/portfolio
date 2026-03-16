@@ -1256,7 +1256,7 @@ export default function ExpenseForm({
                             </div>
                         )}
                         {/* Date */}
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                             <Label htmlFor="date">{t('date')} *</Label>
                             <Controller
                                 name="date"

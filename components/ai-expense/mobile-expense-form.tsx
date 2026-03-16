@@ -94,7 +94,7 @@ export default function MobileExpenseForm({
                         <div className="grid grid-cols-[1fr_132px] gap-4 p-4">
                             <div className="space-y-5">
                                 {/* Date */}
-                                <div className="space-y-1">
+                                <div className="flex flex-col gap-1">
                                     <label
                                         htmlFor="date-mobile"
                                         className="text-sm font-medium text-slate-500 cursor-pointer"

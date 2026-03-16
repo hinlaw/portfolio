@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Search, Check } from 'lucide-react';
+import { Search, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CurrencySelectProps {
@@ -58,6 +58,14 @@ export function CurrencySelect({
         onOpenChange(false);
     };
 
+    const handleClear = () => {
+        onCurrencyChange('');
+        onSearchChange('');
+        onOpenChange(false);
+    };
+
+    const hasContent = (!!selectedCurrency || !!currencySearchKeyword) && !disabled;
+
     return (
         <div className={cn('space-y-2', className)} ref={containerRef}>
             <Label htmlFor={id}>{label}</Label>
@@ -75,10 +83,21 @@ export function CurrencySelect({
                         }
                     }}
                     onFocus={() => onOpenChange(true)}
+                    onClick={() => onOpenChange(true)}
                     placeholder={placeholder}
-                    className="pl-9 w-full"
+                    className={cn('pl-9 w-full', hasContent && 'pr-9')}
                     disabled={disabled}
                 />
+                {hasContent && (
+                    <button
+                        type="button"
+                        onClick={handleClear}
+                        onMouseDown={(e) => e.preventDefault()}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-sm opacity-70 ring-offset-background hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 flex items-center justify-center"
+                    >
+                        <X className="h-4 w-4 text-muted-foreground" />
+                    </button>
+                )}
                 {isOpen && (
                     <div
                         className="absolute left-0 right-0 top-full mt-1 z-50 rounded-md border bg-popover p-0 text-popover-foreground shadow-md overflow-hidden"
