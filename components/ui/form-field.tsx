@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Controller, Control, ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form';
 import {
     Field,
-    FieldDescription,
     FieldError,
     FieldLabel,
 } from '@/components/ui/field';
@@ -63,12 +62,14 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
                         <FieldLabel htmlFor={id ?? String(controller.name)} className={labelClassName}>
                             {labelContent}
                         </FieldLabel>
-                        {controller.render({ field, fieldState })}
-                        {hint && (
-                            <FieldDescription className={cn(hintClassName)}>
-                                {hint}
-                            </FieldDescription>
-                        )}
+                        <div className="flex flex-col gap-1">
+                            {controller.render({ field, fieldState })}
+                            {hint && (
+                                <p className={cn('text-xs text-muted-foreground', hintClassName)}>
+                                    {hint}
+                                </p>
+                            )}
+                        </div>
                         {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} className={errorClassName} />
                         )}
@@ -83,12 +84,14 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
             <FieldLabel htmlFor={id} className={labelClassName}>
                 {labelContent}
             </FieldLabel>
-            {children}
-            {hint && (
-                <FieldDescription className={cn(hintClassName)}>
-                    {hint}
-                </FieldDescription>
-            )}
+            <div className="flex flex-col gap-1">
+                {children}
+                {hint && (
+                    <p className={cn('text-xs text-muted-foreground', hintClassName)}>
+                        {hint}
+                    </p>
+                )}
+            </div>
         </Field>
     );
 }

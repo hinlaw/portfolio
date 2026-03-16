@@ -61,11 +61,11 @@ export default function ExpenseForm({
     onManualExchangeRateChange,
     isMobile = false,
     files = [],
-    onFileClick = () => {},
+    onFileClick = () => { },
     hasFormChanges = false,
     isSubmitting = false,
-    onCancel = () => {},
-    onSave = () => {},
+    onCancel = () => { },
+    onSave = () => { },
 }: ExpenseFormProps) {
     const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
@@ -102,13 +102,13 @@ export default function ExpenseForm({
     // Desktop form fields
     return (
         <form
-            className="space-y-6"
+            className="space-y-4"
             onSubmit={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
             }}
         >
-            <FieldGroup className="space-y-6">
+            <FieldGroup className="gap-4">
                 {/* Date */}
                 <FormField<ExpenseFormData>
                     id="date"
@@ -164,19 +164,19 @@ export default function ExpenseForm({
 
                 {/* Currency and Amount */}
                 <CurrencySelect
-                id="currency"
-                label={t('currency')}
-                selectedCurrency={selectedCurrency}
-                currencySearchKeyword={currencySearchKeyword}
-                filteredCurrencies={filteredCurrencies}
-                isOpen={isCurrencyPopoverOpen}
-                onOpenChange={onCurrencyPopoverOpenChange}
-                onCurrencyChange={onCurrencyChange}
-                onSearchChange={onCurrencySearchChange}
-                placeholder={t('select currency')}
-                emptyMessage={t('no currencies found')}
-                searchPrompt={t('start typing to search...')}
-                disabled={isScanning}
+                    id="currency"
+                    label={t('currency')}
+                    selectedCurrency={selectedCurrency}
+                    currencySearchKeyword={currencySearchKeyword}
+                    filteredCurrencies={filteredCurrencies}
+                    isOpen={isCurrencyPopoverOpen}
+                    onOpenChange={onCurrencyPopoverOpenChange}
+                    onCurrencyChange={onCurrencyChange}
+                    onSearchChange={onCurrencySearchChange}
+                    placeholder={t('select currency')}
+                    emptyMessage={t('no currencies found')}
+                    searchPrompt={t('start typing to search...')}
+                    disabled={isScanning}
                 />
 
                 {/* Exchange Rate (show only if currency differs from workspace) */}

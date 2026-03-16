@@ -67,7 +67,7 @@ export function CurrencySelect({
     const hasContent = (!!selectedCurrency || !!currencySearchKeyword) && !disabled;
 
     return (
-        <div className={cn('space-y-2', className)} ref={containerRef}>
+        <div className={cn('flex flex-col gap-3', className)} ref={containerRef}>
             <Label htmlFor={id}>{label}</Label>
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
