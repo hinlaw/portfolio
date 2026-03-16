@@ -534,7 +534,7 @@ export default function ExpenseList({
                                     className="w-full text-left px-4 py-4 bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors"
                                     onClick={() => handleRowClick(expense)}
                                 >
-                                    <div className="flex gap-4">
+                                    <div className="flex gap-4 items-center">
                                         {/* Thumbnail / Add receipt */}
                                         <div className="relative flex-shrink-0">
                                             <input

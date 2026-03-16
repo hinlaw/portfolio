@@ -307,7 +307,10 @@ export default function AiExpenseListPage() {
 
                     {/* Mobile Sheet for Sidebar */}
                     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                        <SheetContent side="left" className="w-64 p-0 pt-12">
+                        <SheetContent side="left" className="w-72 p-0 flex flex-col">
+                            <div className="flex-shrink-0 h-12 flex items-center px-4 pr-12 border-b border-slate-200 bg-white">
+                                <h2 className="text-base font-semibold text-slate-900">{t('ai expense')}</h2>
+                            </div>
                             <ExpenseSidebar
                                 currentPath={router.pathname}
                                 variant="sheet"
