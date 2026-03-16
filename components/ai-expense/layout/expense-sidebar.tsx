@@ -37,7 +37,7 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
     return (
         <aside
             className={cn(
-                "bg-white flex flex-col h-[calc(100vh-32px)]",
+                "bg-white flex flex-col h-[calc(100vh-64px)]",
                 variant === 'sidebar' ? "w-64 border-r border-slate-200" : "w-full"
             )}
         >
