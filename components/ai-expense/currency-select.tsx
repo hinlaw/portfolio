@@ -85,6 +85,7 @@ export function CurrencySelect({
                     onFocus={() => onOpenChange(true)}
                     onClick={() => onOpenChange(true)}
                     placeholder={placeholder}
+                    autoComplete="off"
                     className={cn('pl-9 w-full', hasContent && 'pr-9')}
                     disabled={disabled}
                 />
