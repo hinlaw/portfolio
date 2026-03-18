@@ -17,7 +17,7 @@ import ExpenseForm from './expense-form';
 import ReceiptViewer from './receipt-viewer';
 import ExpenseMediaUpload from './expense-media-upload';
 import { SUPPORTED_CURRENCIES, getExchangeRateToUsd } from '@/lib/currency';
-import { getReceiptLanguagePreference } from '@/lib/ai-expense-settings';
+import { fetchAiExpenseSettings, getDefaultReceiptLanguage } from '@/lib/ai-expense-settings';
 
 interface ExpenseFormDialogProps {
     expense?: ExpenseDTO;
@@ -435,7 +435,16 @@ export default function ExpenseFormDialog({
             toast.success(t('toast.ai scan started'));
 
             const media = [currentFile.base64];
-            const receiptLangPref = getReceiptLanguagePreference(locale);
+            let receiptLangPref: 'en' | 'zh' | 'zh_HK' | 'receipt';
+            try {
+                const settings = await fetchAiExpenseSettings();
+                const lang = settings.receipt_language;
+                receiptLangPref = (lang === 'en' || lang === 'zh' || lang === 'zh_HK' || lang === 'receipt')
+                    ? lang
+                    : getDefaultReceiptLanguage(locale);
+            } catch {
+                receiptLangPref = getDefaultReceiptLanguage(locale);
+            }
             const extracted = await scanExpenseReceipt(media, {
                 locale: receiptLangPref === 'receipt' ? undefined : receiptLangPref,
                 useReceiptLanguage: receiptLangPref === 'receipt',

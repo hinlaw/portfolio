@@ -4,12 +4,14 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { toast } from 'sonner';
 import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layout';
 import ExpenseSidebar from '@/components/ai-expense/layout/expense-sidebar';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
-    getReceiptLanguagePreference,
-    setReceiptLanguagePreference,
+    fetchAiExpenseSettings,
+    updateAiExpenseSettings,
+    getDefaultReceiptLanguage,
     type ReceiptLanguageOption,
 } from '@/lib/ai-expense-settings';
 import ExpenseSettingsMobileHeader from '@/components/ai-expense/settings/expense-settings-mobile-header';
@@ -21,14 +23,37 @@ export default function AiExpenseSettingsPage() {
     const locale = useLocale();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [receiptLanguage, setReceiptLanguage] = useState<ReceiptLanguageOption>('en');
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        setReceiptLanguage(getReceiptLanguagePreference(locale));
+        fetchAiExpenseSettings()
+            .then((data) => {
+                const lang = data.receipt_language;
+                if (lang === 'en' || lang === 'zh' || lang === 'zh_HK' || lang === 'receipt') {
+                    setReceiptLanguage(lang as ReceiptLanguageOption);
+                } else {
+                    setReceiptLanguage(getDefaultReceiptLanguage(locale));
+                }
+            })
+            .catch(() => setReceiptLanguage(getDefaultReceiptLanguage(locale)))
+            .finally(() => setIsLoading(false));
     }, [locale]);
 
     const handleReceiptLanguageChange = (value: ReceiptLanguageOption) => {
         setReceiptLanguage(value);
-        setReceiptLanguagePreference(value);
+    };
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            await updateAiExpenseSettings({ receipt_language: receiptLanguage });
+            toast.success(t('settings saved'));
+        } catch {
+            toast.error(t('toast.failed to save settings'));
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
@@ -50,6 +75,9 @@ export default function AiExpenseSettingsPage() {
                             <ExpenseSettingsPreferencesSection
                                 receiptLanguage={receiptLanguage}
                                 onReceiptLanguageChange={handleReceiptLanguageChange}
+                                onSave={handleSave}
+                                isLoading={isLoading}
+                                isSaving={isSaving}
                             />
                         </div>
                     </div>
@@ -62,6 +90,9 @@ export default function AiExpenseSettingsPage() {
                             <ExpenseSettingsPreferencesSection
                                 receiptLanguage={receiptLanguage}
                                 onReceiptLanguageChange={handleReceiptLanguageChange}
+                                onSave={handleSave}
+                                isLoading={isLoading}
+                                isSaving={isSaving}
                             />
                         </div>
                     </div>

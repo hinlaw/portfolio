@@ -10,6 +10,15 @@ datasource db {
   provider = "postgresql"
 }
 
+// AI Expense 用戶設定 (可擴充多種 preferences)
+model AiExpenseSettings {
+  id          String   @id @default(cuid())
+  ownerId     String   @unique // 未來可接 Clerk userId，目前可用 "default"
+  receiptLanguage String? @default("en") // en | zh | zh_HK | receipt
+  preferences Json?    @default("{}")     // 擴充用：{ key: value }
+  updatedAt   DateTime @updatedAt
+}
+
 // 單據 Table
 model Expense {
   id             String   @id @default(cuid())

@@ -9,16 +9,23 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import type { ReceiptLanguageOption } from '@/lib/ai-expense-settings';
 
 interface ExpenseSettingsPreferencesSectionProps {
     receiptLanguage: ReceiptLanguageOption;
     onReceiptLanguageChange: (v: ReceiptLanguageOption) => void;
+    onSave: () => void;
+    isLoading?: boolean;
+    isSaving?: boolean;
 }
 
 export default function ExpenseSettingsPreferencesSection({
     receiptLanguage,
     onReceiptLanguageChange,
+    onSave,
+    isLoading = false,
+    isSaving = false,
 }: ExpenseSettingsPreferencesSectionProps) {
     const t = useTranslations('aiExpense');
 
@@ -30,6 +37,7 @@ export default function ExpenseSettingsPreferencesSection({
                 <Select
                     value={receiptLanguage}
                     onValueChange={(v) => onReceiptLanguageChange(v as ReceiptLanguageOption)}
+                    disabled={isLoading}
                 >
                     <SelectTrigger id="receipt-language" className="w-full max-w-xs">
                         <SelectValue />
@@ -41,6 +49,13 @@ export default function ExpenseSettingsPreferencesSection({
                         <SelectItem value="receipt">{t('based on receipt language')}</SelectItem>
                     </SelectContent>
                 </Select>
+                <Button
+                    onClick={onSave}
+                    disabled={isLoading || isSaving}
+                    className="mt-4"
+                >
+                    {isSaving ? t('loading') : t('save')}
+                </Button>
             </div>
         </section>
     );
