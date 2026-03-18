@@ -112,27 +112,13 @@ export const createExpense = jest.fn(
   }
 );
 
-export const createExpenseAiJob = jest.fn(async (): Promise<{ job_id: string }> => {
-  return { job_id: `job-${Date.now()}` };
-});
-
-export const getExpenseAiJob = jest.fn(
-  async (
-    _jobId: string
-  ): Promise<{
-    status: 'pending' | 'processing' | 'completed' | 'failed';
-    result?: ExpenseDTO;
-    error?: string;
-  }> => {
+export const scanExpenseReceipt = jest.fn(
+  async (_media: string[]): Promise<Partial<ExpenseDTO>> => {
     return {
-      status: 'completed',
-      result: {
-        id: `ai-${Date.now()}`,
-        merchant: 'AI Scanned Merchant',
-        amount: 50.0,
-        date: Math.floor(Date.now() / 1000),
-        currency: 'USD',
-      },
+      merchant: 'AI Scanned Merchant',
+      amount: 50.0,
+      date: Math.floor(Date.now() / 1000),
+      description: 'Mock scanned receipt',
     };
   }
 );

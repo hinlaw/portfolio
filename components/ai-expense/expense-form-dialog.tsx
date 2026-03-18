@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { createExpenseAiJob, getExpenseAiJob, createExpense, updateExpense } from '@/api/client/expenses';
+import { scanExpenseReceipt, createExpense, updateExpense } from '@/api/client/expenses';
 import { ExpenseDTO, ApiExpenseCreateRequest, ApiExpenseUpdateRequest } from '@/api/types/expense';
 import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';
@@ -430,139 +430,42 @@ export default function ExpenseFormDialog({
         }, progressStepTime);
 
         try {
-            const media = [currentFile.base64];
-            const createResponse = await createExpenseAiJob(media);
-            const jobId = createResponse.job_id;
             toast.success(t('toast.ai scan started'));
 
-            const pollInterval = 1000;
-            const maxAttempts = 60;
-            let attempts = 0;
+            const media = [currentFile.base64];
+            const extracted = await scanExpenseReceipt(media);
 
-            const pollJobStatus = async (): Promise<void> => {
-                try {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        throw new Error(t('toast.ai scan timeout'));
-                    }
+            if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+                progressIntervalRef.current = null;
+            }
 
-                    const job = await getExpenseAiJob(jobId);
+            setScanProgress(100);
 
-                    // Update progress based on status
-                    if (job.status === 'processing' || job.status === 'pending') {
-                        // Keep progress at max 95% during processing
-                        if (progressIntervalRef.current) {
-                            // Ensure progress doesn't exceed 95%
-                            setScanProgress((prev) => Math.min(prev, 95));
-                        }
-                        // Recursive call with error handling
-                        setTimeout(() => {
-                            pollJobStatus().catch((err) => {
-                                // Handle error from recursive call
-                                if (progressIntervalRef.current) {
-                                    clearInterval(progressIntervalRef.current);
-                                    progressIntervalRef.current = null;
-                                }
-                                // Show red progress bar on error
-                                setScanFailed(true);
-                                setScanProgress(100);
-                                toast.error(err?.response?.data?.message || err?.message || t('toast.ai scan failed'));
-                                setIsScanning(false);
-                                setTimeout(() => {
-                                    setScanProgress(0);
-                                    setScanFailed(false);
-                                }, 2000); // Keep red bar visible for 2 seconds
-                            });
-                        }, pollInterval);
-                    } else if (job.status === 'completed') {
-                        // Stop the progress interval
-                        if (progressIntervalRef.current) {
-                            clearInterval(progressIntervalRef.current);
-                            progressIntervalRef.current = null;
-                        }
-
-                        // Animate to 100% first, then update form
-                        setScanProgress(100);
-
-                        // Wait for animation to complete before updating form
-                        setTimeout(() => {
-                            const extracted = job.result;
-                            const currentValues = {
-                                date: todayYMD(),
-                                merchant: '',
-                                amount: 0,
-                                description: '',
-                            };
-
-                            if (extracted) {
-                                if (typeof extracted.date === 'number') {
-                                    currentValues.date = formatDateYMD(extracted.date);
-                                }
-                                currentValues.merchant = extracted.merchant || '';
-                                currentValues.amount = extracted.amount ?? extracted.original_amount ?? 0;
-                                currentValues.description = extracted.description || '';
-                            }
-
-                            // Reset form with all values, ensuring UI updates
-                            reset(currentValues);
-
-                            toast.success(t('toast.ai scan completed'));
-                            setIsScanning(false);
-                            // Force mobile form to re-render after scanning completes
-                            setScanCompleteKey(prev => prev + 1);
-                            setTimeout(() => {
-                                setScanProgress(0);
-                                setScanFailed(false);
-                            }, 500);
-                        }, 500); // Wait 500ms for progress bar animation
-                    } else if (job.status === 'failed') {
-                        // Stop the progress interval
-                        if (progressIntervalRef.current) {
-                            clearInterval(progressIntervalRef.current);
-                            progressIntervalRef.current = null;
-                        }
-
-                        // Set failed state and show error
-                        setScanFailed(true);
-                        setScanProgress(100); // Show full red bar
-
-                        // Show error message after a brief delay
-                        setTimeout(() => {
-                            toast.error(t('toast.ai scan failed'));
-                            setIsScanning(false);
-                            setTimeout(() => {
-                                setScanProgress(0);
-                                setScanFailed(false);
-                            }, 2000); // Keep red bar visible for 2 seconds
-                        }, 300);
-                    } else {
-                        // Unknown status, continue polling
-                        setTimeout(() => {
-                            pollJobStatus().catch((err) => {
-                                // Handle error from recursive call
-                                if (progressIntervalRef.current) {
-                                    clearInterval(progressIntervalRef.current);
-                                    progressIntervalRef.current = null;
-                                }
-                                // Show red progress bar on error
-                                setScanFailed(true);
-                                setScanProgress(100);
-                                toast.error(err?.response?.data?.message || err?.message || t('toast.ai scan failed'));
-                                setIsScanning(false);
-                                setTimeout(() => {
-                                    setScanProgress(0);
-                                    setScanFailed(false);
-                                }, 2000); // Keep red bar visible for 2 seconds
-                            });
-                        }, pollInterval);
-                    }
-                } catch (error: any) {
-                    // Re-throw to be caught by outer try-catch
-                    throw error;
-                }
+            const currentValues = {
+                date: todayYMD(),
+                merchant: '',
+                amount: 0,
+                description: '',
             };
 
-            await pollJobStatus();
+            if (extracted) {
+                if (typeof extracted.date === 'number') {
+                    currentValues.date = formatDateYMD(extracted.date);
+                }
+                currentValues.merchant = extracted.merchant ?? '';
+                currentValues.amount = extracted.amount ?? extracted.original_amount ?? 0;
+                currentValues.description = extracted.description ?? '';
+            }
+
+            reset(currentValues);
+            toast.success(t('toast.ai scan completed'));
+            setIsScanning(false);
+            setScanCompleteKey(prev => prev + 1);
+            setTimeout(() => {
+                setScanProgress(0);
+                setScanFailed(false);
+            }, 500);
         } catch (error: any) {
             console.error('AI scan failed:', error);
             if (progressIntervalRef.current) {

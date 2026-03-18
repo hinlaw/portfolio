@@ -81,19 +81,14 @@ export async function deleteExpense(id: string): Promise<void> {
   });
 }
 
-// AI-related APIs - remain as stubs for now
-export async function createExpenseAiJob(
-  _media: string[]
-): Promise<{ job_id: string }> {
-  return { job_id: `stub-job-${Date.now()}` };
-}
-
-export async function getExpenseAiJob(_jobId: string): Promise<{
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  result?: ExpenseDTO;
-  error?: string;
-}> {
-  return { status: 'pending' };
+/** AI receipt scanning - synchronous OpenRouter vision API */
+export async function scanExpenseReceipt(
+  media: string[]
+): Promise<Partial<ExpenseDTO>> {
+  return apiRequest<Partial<ExpenseDTO>>('/api/expenses/ai/scan', {
+    method: 'POST',
+    data: { media },
+  });
 }
 
 /** Returns { data: ExpenseStatisticItem[] } - unified format */
