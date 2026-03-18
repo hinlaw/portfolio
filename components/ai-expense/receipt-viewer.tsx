@@ -15,8 +15,6 @@ interface ReceiptViewerProps {
     onDone?: () => void;
     onAiScan?: (imageIndex?: number) => void;
     isScanning?: boolean;
-    useReceiptLanguage?: boolean;
-    onUseReceiptLanguageChange?: (value: boolean) => void;
 }
 
 export default function ReceiptViewer({
@@ -26,8 +24,6 @@ export default function ReceiptViewer({
     onDone,
     onAiScan,
     isScanning = false,
-    useReceiptLanguage = false,
-    onUseReceiptLanguageChange,
 }: ReceiptViewerProps) {
     const t = useTranslations('aiExpense');
     const [isVisible, setIsVisible] = useState(false);
@@ -217,25 +213,9 @@ export default function ReceiptViewer({
                     {t('cancel')}
                 </button>
                 <div className="flex items-center gap-6">
-                    {/* Use Receipt Language & AI Scan button */}
+                    {/* AI Scan button */}
                     {files.length > 0 && onAiScan && (
-                        <>
-                            {onUseReceiptLanguageChange && (
-                                <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-white/80">
-                                    <input
-                                        type="checkbox"
-                                        checked={useReceiptLanguage}
-                                        onChange={(e) => {
-                                            e.stopPropagation();
-                                            onUseReceiptLanguageChange(e.target.checked);
-                                        }}
-                                        disabled={isScanning}
-                                        className="h-4 w-4 rounded border-white/50"
-                                    />
-                                    <span>{t('use receipt language')}</span>
-                                </label>
-                            )}
-                            <button
+                        <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onAiScan(selectedImageIndex);
@@ -259,10 +239,9 @@ export default function ReceiptViewer({
                                     <>
                                         <Scan className="h-4 w-4" />
                                         <span>{t('ai scan')}</span>
-                                    </>
-                                )}
-                            </button>
-                        </>
+                                </>
+                            )}
+                        </button>
                     )}
                     {/* Delete button */}
                     {files.length > 0 && (

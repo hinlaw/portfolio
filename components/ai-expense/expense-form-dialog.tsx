@@ -17,6 +17,7 @@ import ExpenseForm from './expense-form';
 import ReceiptViewer from './receipt-viewer';
 import ExpenseMediaUpload from './expense-media-upload';
 import { SUPPORTED_CURRENCIES, getExchangeRateToUsd } from '@/lib/currency';
+import { getReceiptLanguagePreference } from '@/lib/ai-expense-settings';
 
 interface ExpenseFormDialogProps {
     expense?: ExpenseDTO;
@@ -89,9 +90,6 @@ export default function ExpenseFormDialog({
 
     // Mobile specific state
     const [showReceiptViewer, setShowReceiptViewer] = useState(false);
-
-    // AI scan output language: false = user locale, true = receipt's original language
-    const [useReceiptLanguage, setUseReceiptLanguage] = useState(false);
 
     // Use hardcoded exchange rate when currency changes (no API)
     useEffect(() => {
@@ -437,9 +435,10 @@ export default function ExpenseFormDialog({
             toast.success(t('toast.ai scan started'));
 
             const media = [currentFile.base64];
+            const receiptLangPref = getReceiptLanguagePreference(locale);
             const extracted = await scanExpenseReceipt(media, {
-                locale,
-                useReceiptLanguage,
+                locale: receiptLangPref === 'receipt' ? undefined : receiptLangPref,
+                useReceiptLanguage: receiptLangPref === 'receipt',
             });
 
             if (progressIntervalRef.current) {
@@ -668,8 +667,6 @@ export default function ExpenseFormDialog({
                         onDone={handleReceiptViewerClose}
                         onAiScan={handleAiScan}
                         isScanning={isScanning}
-                        useReceiptLanguage={useReceiptLanguage}
-                        onUseReceiptLanguageChange={setUseReceiptLanguage}
                     />
                 )}
             </>
@@ -717,8 +714,6 @@ export default function ExpenseFormDialog({
                     }}
                     isScanning={isScanning}
                     onAiScan={handleAiScan}
-                    useReceiptLanguage={useReceiptLanguage}
-                    onUseReceiptLanguageChange={setUseReceiptLanguage}
                 />
 
                 {/* Right Side - Form */}

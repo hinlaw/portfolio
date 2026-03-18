@@ -26,8 +26,6 @@ interface ExpenseMediaUploadProps {
     onFileSelect: (fileList: FileList) => Promise<void>;
     isScanning: boolean;
     onAiScan: (imageIndex: number) => void;
-    useReceiptLanguage?: boolean;
-    onUseReceiptLanguageChange?: (value: boolean) => void;
 }
 
 export default function ExpenseMediaUpload({
@@ -36,8 +34,6 @@ export default function ExpenseMediaUpload({
     onFileSelect,
     isScanning,
     onAiScan,
-    useReceiptLanguage = false,
-    onUseReceiptLanguageChange,
 }: ExpenseMediaUploadProps) {
     const t = useTranslations('aiExpense');
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -326,24 +322,9 @@ export default function ExpenseMediaUpload({
                                     )}
                                 </div>
 
-                                {/* AI Scan Button & Use Receipt Language */}
+                                {/* AI Scan Button */}
                                 {files.length > 0 && (
-                                    <div className="flex items-center gap-2 border-l pl-3">
-                                        {onUseReceiptLanguageChange && (
-                                            <label className="flex items-center gap-1.5 cursor-pointer select-none text-xs text-muted-foreground hover:text-foreground">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={useReceiptLanguage}
-                                                    onChange={(e) => {
-                                                        e.stopPropagation();
-                                                        onUseReceiptLanguageChange(e.target.checked);
-                                                    }}
-                                                    disabled={isScanning}
-                                                    className="h-3.5 w-3.5 rounded border-muted-foreground"
-                                                />
-                                                <span>{t('use receipt language')}</span>
-                                            </label>
-                                        )}
+                                    <div className="flex items-center border-l pl-3">
                                         <Button
                                             variant="default"
                                             size="sm"

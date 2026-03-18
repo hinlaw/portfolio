@@ -3,7 +3,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { BarChart3, Plus } from 'lucide-react';
+import { BarChart3, Plus, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { IoReceiptOutline } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
@@ -18,8 +18,9 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
     const router = useRouter();
     const t = useTranslations('aiExpense');
 
-    const isExpensesActive = currentPath === '/apps/ai-expense' || (currentPath.startsWith('/apps/ai-expense/') && currentPath !== '/apps/ai-expense/statistics' && currentPath !== '/apps/ai-expense/new');
+    const isExpensesActive = currentPath === '/apps/ai-expense' || (currentPath.startsWith('/apps/ai-expense/') && currentPath !== '/apps/ai-expense/statistics' && currentPath !== '/apps/ai-expense/settings' && currentPath !== '/apps/ai-expense/new');
     const isReportsActive = currentPath === '/apps/ai-expense/statistics';
+    const isSettingsActive = currentPath === '/apps/ai-expense/settings';
 
     const handleExpensesClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -71,9 +72,7 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                 {/* Reports Item */}
                 <Link
                     href="/apps/ai-expense/statistics"
-                    onClick={(e) => {
-                        onNavigate?.();
-                    }}
+                    onClick={() => onNavigate?.()}
                     className={cn(
                         "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                         isReportsActive
@@ -83,6 +82,21 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                 >
                     <BarChart3 className="h-4 w-4" />
                     <span>{t('reports')}</span>
+                </Link>
+
+                {/* My Settings Item */}
+                <Link
+                    href="/apps/ai-expense/settings"
+                    onClick={() => onNavigate?.()}
+                    className={cn(
+                        "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                        isSettingsActive
+                            ? "bg-indigo-50 text-indigo-700"
+                            : "text-slate-700 hover:bg-slate-50"
+                    )}
+                >
+                    <Settings className="h-4 w-4" />
+                    <span>{t('my settings')}</span>
                 </Link>
             </nav>
         </aside>
