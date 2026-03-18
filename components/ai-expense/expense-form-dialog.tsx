@@ -85,6 +85,7 @@ export default function ExpenseFormDialog({
     const autoScanTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [scanProgress, setScanProgress] = useState<number>(0);
     const [scanFailed, setScanFailed] = useState<boolean>(false);
+    const [scanErrorMessage, setScanErrorMessage] = useState<string | null>(null);
     const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const [scanCompleteKey, setScanCompleteKey] = useState<number>(0);
 
@@ -406,6 +407,7 @@ export default function ExpenseFormDialog({
         setIsScanning(true);
         setScanProgress(0);
         setScanFailed(false);
+        setScanErrorMessage(null);
 
         // Smooth progress animation - processing status will control max 95%
         const progressDuration = 30000; // 30 seconds total duration
@@ -480,6 +482,7 @@ export default function ExpenseFormDialog({
             setTimeout(() => {
                 setScanProgress(0);
                 setScanFailed(false);
+                setScanErrorMessage(null);
             }, 500);
         } catch (error: any) {
             console.error('AI scan failed:', error);
@@ -487,15 +490,17 @@ export default function ExpenseFormDialog({
                 clearInterval(progressIntervalRef.current);
                 progressIntervalRef.current = null;
             }
-            // Show red progress bar on error
+            const errMsg = error?.response?.data?.error ?? error?.response?.data?.message ?? error?.message ?? t('toast.ai scan failed');
             setScanFailed(true);
             setScanProgress(100);
-            toast.error(error?.response?.data?.message || error?.message || t('toast.ai scan failed'));
-            setIsScanning(false);
+            setScanErrorMessage(errMsg);
+            toast.error(errMsg);
             setTimeout(() => {
                 setScanProgress(0);
                 setScanFailed(false);
-            }, 2000); // Keep red bar visible for 2 seconds
+                setScanErrorMessage(null);
+                setIsScanning(false);
+            }, 5000);
         }
     };
 
@@ -638,6 +643,9 @@ export default function ExpenseFormDialog({
                                             style={{ width: `${scanProgress}%` }}
                                         />
                                     </div>
+                                    {scanFailed && scanErrorMessage && (
+                                        <p className="mt-3 text-sm text-red-600">{scanErrorMessage}</p>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -743,6 +751,9 @@ export default function ExpenseFormDialog({
                                     style={{ width: `${scanProgress}%` }}
                                 />
                             </div>
+                            {scanFailed && scanErrorMessage && (
+                                <p className="mt-2 text-sm text-red-600">{scanErrorMessage}</p>
+                            )}
                         </div>
                     )}
                     <ExpenseForm
