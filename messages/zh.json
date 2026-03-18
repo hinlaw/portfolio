@@ -48,7 +48,7 @@
     "save and close": "儲存並關閉",
     "save and new": "儲存並新增",
     "discard changes": "放棄變更",
-    "you have unsaved changes. if you leave, they will be lost.": "您有未儲存的變更，離開後將遺失。",
+    "you have unsaved changes - if you leave, they will be lost": "您有未儲存的變更，離開後將遺失。",
     "keep editing": "繼續編輯",
     "discard and leave": "放棄並離開",
     "scanning": "掃描中",

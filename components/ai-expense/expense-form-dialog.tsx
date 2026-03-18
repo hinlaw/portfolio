@@ -657,7 +657,7 @@ export default function ExpenseFormDialog({
                             <DialogHeader>
                                 <DialogTitle>{t('discard changes')}</DialogTitle>
                                 <DialogDescription>
-                                    {t('you have unsaved changes. if you leave, they will be lost.')}
+                                    {t('you have unsaved changes - if you leave, they will be lost')}
                                 </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
@@ -819,7 +819,7 @@ export default function ExpenseFormDialog({
                     <DialogHeader>
                         <DialogTitle>{t('discard changes')}</DialogTitle>
                         <DialogDescription>
-                            {t('you have unsaved changes. if you leave, they will be lost.')}
+                            {t('you have unsaved changes - if you leave, they will be lost')}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
