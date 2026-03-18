@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages ?? {}}>
       <Component {...pageProps} />
-      <Toaster />
+      <Toaster position="bottom-left" />
     </NextIntlClientProvider>
   );
 }
