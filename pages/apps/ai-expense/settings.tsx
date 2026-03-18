@@ -33,9 +33,9 @@ function PreferencesSection({
 }) {
     return (
         <section>
-            <h2 className="text-lg font-semibold mb-4">{t('preferences')}</h2>
-            <div className="space-y-2">
-                <Label htmlFor="receipt-language">{t('receipt output language')}</Label>
+            <h2 className="text-lg font-semibold mb-6">{t('preferences')}</h2>
+            <div className="space-y-4">
+                <Label htmlFor="receipt-language" className="block mb-3">{t('receipt output language')}</Label>
                 <Select
                     value={receiptLanguage}
                     onValueChange={(v) => onReceiptLanguageChange(v as ReceiptLanguageOption)}
