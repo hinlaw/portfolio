@@ -7,7 +7,7 @@ import { FileWithPreview } from './file-upload';
 import { extractFilenameFromUrl, isPdfUrl } from './file-utils';
 import { toast } from 'sonner';
 import { Loader2, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { formatDateYMD, todayYMD, parseToTimestamp } from '@/lib/date';
 import { useForm } from 'react-hook-form';
@@ -56,6 +56,7 @@ export default function ExpenseFormDialog({
     isMobile: isMobileProp
 }: ExpenseFormDialogProps) {
     const t = useTranslations('aiExpense');
+    const locale = useLocale();
 
     const detectedIsMobile = useIsMobile();
     // Use prop if provided, otherwise detect automatically
@@ -88,6 +89,9 @@ export default function ExpenseFormDialog({
 
     // Mobile specific state
     const [showReceiptViewer, setShowReceiptViewer] = useState(false);
+
+    // AI scan output language: false = user locale, true = receipt's original language
+    const [useReceiptLanguage, setUseReceiptLanguage] = useState(false);
 
     // Use hardcoded exchange rate when currency changes (no API)
     useEffect(() => {
@@ -433,7 +437,10 @@ export default function ExpenseFormDialog({
             toast.success(t('toast.ai scan started'));
 
             const media = [currentFile.base64];
-            const extracted = await scanExpenseReceipt(media);
+            const extracted = await scanExpenseReceipt(media, {
+                locale,
+                useReceiptLanguage,
+            });
 
             if (progressIntervalRef.current) {
                 clearInterval(progressIntervalRef.current);
@@ -661,6 +668,8 @@ export default function ExpenseFormDialog({
                         onDone={handleReceiptViewerClose}
                         onAiScan={handleAiScan}
                         isScanning={isScanning}
+                        useReceiptLanguage={useReceiptLanguage}
+                        onUseReceiptLanguageChange={setUseReceiptLanguage}
                     />
                 )}
             </>
@@ -708,6 +717,8 @@ export default function ExpenseFormDialog({
                     }}
                     isScanning={isScanning}
                     onAiScan={handleAiScan}
+                    useReceiptLanguage={useReceiptLanguage}
+                    onUseReceiptLanguageChange={setUseReceiptLanguage}
                 />
 
                 {/* Right Side - Form */}

@@ -83,11 +83,16 @@ export async function deleteExpense(id: string): Promise<void> {
 
 /** AI receipt scanning - synchronous OpenRouter vision API */
 export async function scanExpenseReceipt(
-  media: string[]
+  media: string[],
+  options?: { locale?: string; useReceiptLanguage?: boolean }
 ): Promise<Partial<ExpenseDTO>> {
   return apiRequest<Partial<ExpenseDTO>>('/api/expenses/ai/scan', {
     method: 'POST',
-    data: { media },
+    data: {
+      media,
+      locale: options?.locale,
+      useReceiptLanguage: options?.useReceiptLanguage,
+    },
   });
 }
 

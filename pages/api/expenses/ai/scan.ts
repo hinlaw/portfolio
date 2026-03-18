@@ -8,16 +8,37 @@ export const config = {
 
 const scanBodySchema = z.object({
   media: z.array(z.string()).min(1, 'At least one image is required'),
+  locale: z.string().optional(),
+  useReceiptLanguage: z.boolean().optional(),
 });
 
-const EXTRACT_PROMPT = `你是一個收據解析助手。請從這張收據/發票圖片中提取以下資訊，並以 JSON 回傳：
+const LOCALE_TO_LANGUAGE: Record<string, string> = {
+  en: 'English',
+  zh: 'Simplified Chinese',
+  zh_HK: 'Traditional Chinese',
+};
+
+function getExtractPrompt(locale?: string, useReceiptLanguage?: boolean): string {
+  let outputLangInstruction: string;
+  if (useReceiptLanguage) {
+    outputLangInstruction =
+      'Output merchant name, description, and any text fields in the SAME language as written on the receipt (preserve the original language of the receipt).';
+  } else if (locale && LOCALE_TO_LANGUAGE[locale]) {
+    outputLangInstruction = `Output merchant name, description, and any text fields in ${LOCALE_TO_LANGUAGE[locale]}.`;
+  } else {
+    outputLangInstruction = 'Output merchant name, description, and any text fields in English.';
+  }
+
+  return `You are a receipt/invoice parsing assistant. Extract the following information from this receipt/invoice image and return as JSON:
 {
-  "merchant": "商家名稱（字串，若無法辨識則為空字串）",
-  "amount": 金額數字（number，若無法辨識則為 0），
-  "date": "YYYY-MM-DD 格式日期（若無法辨識則為今日）",
-  "description": "項目描述（字串，可為空）"
+  "merchant": "merchant name (string, empty string if unknown)",
+  "amount": amount as number (0 if unknown),
+  "date": "date in YYYY-MM-DD format (today if unknown)",
+  "description": "item description (string, can be empty)"
 }
-只回傳 JSON，不要其他文字或 markdown。`;
+${outputLangInstruction}
+Return ONLY valid JSON, no other text or markdown.`;
+}
 
 function parseJsonFromContent(content: string): Record<string, unknown> | null {
   const trimmed = content.trim();
@@ -52,7 +73,7 @@ export default async function handler(
       return res.status(400).json({ error: parsed.error.issues[0]?.message ?? 'Invalid request body' });
     }
 
-    const { media } = parsed.data;
+    const { media, locale, useReceiptLanguage } = parsed.data;
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: 'OPENROUTER_API_KEY is not configured' });
@@ -76,7 +97,7 @@ export default async function handler(
           {
             role: 'user',
             content: [
-              { type: 'text', text: EXTRACT_PROMPT },
+              { type: 'text', text: getExtractPrompt(locale, useReceiptLanguage) },
               { type: 'image_url', image_url: { url: imageUrl } },
             ],
           },

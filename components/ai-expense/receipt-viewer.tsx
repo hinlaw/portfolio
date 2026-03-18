@@ -15,6 +15,8 @@ interface ReceiptViewerProps {
     onDone?: () => void;
     onAiScan?: (imageIndex?: number) => void;
     isScanning?: boolean;
+    useReceiptLanguage?: boolean;
+    onUseReceiptLanguageChange?: (value: boolean) => void;
 }
 
 export default function ReceiptViewer({
@@ -23,7 +25,9 @@ export default function ReceiptViewer({
     onClose,
     onDone,
     onAiScan,
-    isScanning = false
+    isScanning = false,
+    useReceiptLanguage = false,
+    onUseReceiptLanguageChange,
 }: ReceiptViewerProps) {
     const t = useTranslations('aiExpense');
     const [isVisible, setIsVisible] = useState(false);
@@ -213,35 +217,52 @@ export default function ReceiptViewer({
                     {t('cancel')}
                 </button>
                 <div className="flex items-center gap-6">
-                    {/* AI Scan button */}
+                    {/* Use Receipt Language & AI Scan button */}
                     {files.length > 0 && onAiScan && (
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onAiScan(selectedImageIndex);
-                                // Close dialog after starting scan
-                                onClose();
-                            }}
-                            className={cn(
-                                "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
-                                isScanning
-                                    ? "bg-blue-600/80 text-white"
-                                    : "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
+                        <>
+                            {onUseReceiptLanguageChange && (
+                                <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-white/80">
+                                    <input
+                                        type="checkbox"
+                                        checked={useReceiptLanguage}
+                                        onChange={(e) => {
+                                            e.stopPropagation();
+                                            onUseReceiptLanguageChange(e.target.checked);
+                                        }}
+                                        disabled={isScanning}
+                                        className="h-4 w-4 rounded border-white/50"
+                                    />
+                                    <span>{t('use receipt language')}</span>
+                                </label>
                             )}
-                            disabled={isScanning || files.length === 0}
-                        >
-                            {isScanning ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    <span>{t('scanning')}</span>
-                                </>
-                            ) : (
-                                <>
-                                    <Scan className="h-4 w-4" />
-                                    <span>{t('ai scan')}</span>
-                                </>
-                            )}
-                        </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onAiScan(selectedImageIndex);
+                                    // Close dialog after starting scan
+                                    onClose();
+                                }}
+                                className={cn(
+                                    "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                                    isScanning
+                                        ? "bg-blue-600/80 text-white"
+                                        : "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
+                                )}
+                                disabled={isScanning || files.length === 0}
+                            >
+                                {isScanning ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        <span>{t('scanning')}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Scan className="h-4 w-4" />
+                                        <span>{t('ai scan')}</span>
+                                    </>
+                                )}
+                            </button>
+                        </>
                     )}
                     {/* Delete button */}
                     {files.length > 0 && (
