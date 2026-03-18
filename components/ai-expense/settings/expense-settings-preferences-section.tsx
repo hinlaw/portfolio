@@ -11,6 +11,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { ReceiptLanguageOption } from '@/lib/ai-expense-settings';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
+import { SUPPORTED_CURRENCIES } from '@/lib/currency';
 
 interface ExpenseSettingsPreferencesSectionProps {
     receiptLanguage: ReceiptLanguageOption;
@@ -28,6 +30,7 @@ export default function ExpenseSettingsPreferencesSection({
     isSaving = false,
 }: ExpenseSettingsPreferencesSectionProps) {
     const t = useTranslations('aiExpense');
+    const { baseCurrency } = useWorkspace();
 
     return (
         <section>
@@ -51,9 +54,24 @@ export default function ExpenseSettingsPreferencesSection({
                         </SelectContent>
                     </Select>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                    {t('base currency per workspace hint')}
-                </p>
+                <div>
+                    <Label htmlFor="workspace-currency" className="block mb-3">{t('base currency')}</Label>
+                    <Select value={baseCurrency} disabled>
+                        <SelectTrigger id="workspace-currency" className="w-full max-w-xs">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {SUPPORTED_CURRENCIES.map((code) => (
+                                <SelectItem key={code} value={code}>
+                                    {code}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                        {t('base currency per workspace hint')}
+                    </p>
+                </div>
                 <Button
                     onClick={onSave}
                     disabled={isLoading || isSaving}
