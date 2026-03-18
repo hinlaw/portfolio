@@ -8,6 +8,7 @@ import { updateExpense } from '@/api/client/expenses';
 import { ArrowLeft, ChevronLeft, ChevronRight, Edit, Loader2, Paperclip, Plus, Star, Trash2, X } from 'lucide-react';
 import { formatDateLong, dayjs } from '@/lib/date';
 import { useCurrencyFormatter, formatCurrencyWithCode } from '@/lib/currency';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import ImageViewer from '@/components/ai-expense/image-viewer';
 import { isPdfUrl, isImageUrl } from '@/components/ai-expense/file-utils';
 import { toast } from 'sonner';
@@ -34,7 +35,7 @@ export default function ExpenseDetailsPane({
     onListReload,
 }: ExpenseDetailsPaneProps) {
     const formatCurrency = useCurrencyFormatter();
-    const workspaceCurrency = 'USD';
+    const { baseCurrency } = useWorkspace();
     const [selectedMediaIndex, setSelectedMediaIndex] = useState<number>(0);
     const [uploadingMedia, setUploadingMedia] = useState(false);
     const [imageViewerOpen, setImageViewerOpen] = useState(false);
@@ -99,7 +100,7 @@ export default function ExpenseDetailsPane({
                     merchant: expense.merchant ?? undefined,
                     description: expense.description || '',
                     original_amount: expense.original_amount || expense.amount,
-                    currency: expense.currency || workspaceCurrency,
+                    currency: expense.currency || baseCurrency,
                     exchange_rate: expense.exchange_rate || 1,
                     amount: expense.amount,
                     media: newMedia,
@@ -153,7 +154,7 @@ export default function ExpenseDetailsPane({
                 merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
-                currency: expense.currency || workspaceCurrency,
+                currency: expense.currency || baseCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
                     media: newMedia,
@@ -187,7 +188,7 @@ export default function ExpenseDetailsPane({
                 merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
-                currency: expense.currency || workspaceCurrency,
+                currency: expense.currency || baseCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
                     media: newMedia,
@@ -229,7 +230,7 @@ export default function ExpenseDetailsPane({
                 merchant: expense.merchant ?? undefined,
                 description: expense.description || '',
                 original_amount: expense.original_amount || expense.amount,
-                currency: expense.currency || workspaceCurrency,
+                currency: expense.currency || baseCurrency,
                 exchange_rate: expense.exchange_rate || 1,
                 amount: expense.amount,
                     media: newMedia,
@@ -342,15 +343,15 @@ export default function ExpenseDetailsPane({
                                                 <div className="text-4xl font-semibold tracking-tight text-slate-900">
                                                     {formatCurrencyWithCode(expense.original_amount ?? expense.amount, expense.currency)}
                                                 </div>
-                                                {expense.currency !== workspaceCurrency && expense.amount !== expense.original_amount && (
+                                                {expense.currency !== baseCurrency && expense.amount !== expense.original_amount && (
                                                     <div className="text-lg text-slate-500">
-                                                        equals {formatCurrencyWithCode(expense.amount, workspaceCurrency)}
+                                                        equals {formatCurrencyWithCode(expense.amount, baseCurrency)}
                                                     </div>
                                                 )}
                                             </div>
                                         ) : (
                                             <div className="text-4xl font-semibold tracking-tight text-slate-900">
-                                                {formatCurrencyWithCode(expense.amount, workspaceCurrency)}
+                                                {formatCurrencyWithCode(expense.amount, baseCurrency)}
                                             </div>
                                         )}
                                     </div>
@@ -553,7 +554,7 @@ export default function ExpenseDetailsPane({
                                                                 merchant: expense.merchant ?? undefined,
                                                                 description: expense.description || '',
                                                                 original_amount: expense.original_amount || expense.amount,
-                                                                currency: expense.currency || workspaceCurrency,
+                                                                currency: expense.currency || baseCurrency,
                                                                 exchange_rate: expense.exchange_rate || 1,
                                                                 amount: expense.amount,
                     media: newMedia,
@@ -725,15 +726,15 @@ export default function ExpenseDetailsPane({
                                                     <div className="text-3xl text-primary">
                                                         {formatCurrencyWithCode(expense.original_amount ?? expense.amount, expense.currency)}
                                                     </div>
-                                                    {expense.currency !== workspaceCurrency && expense.amount !== expense.original_amount && (
+                                                    {expense.currency !== baseCurrency && expense.amount !== expense.original_amount && (
                                                         <div className="text-base text-muted-foreground">
-                                                            equals {formatCurrencyWithCode(expense.amount, workspaceCurrency)}
+                                                            equals {formatCurrencyWithCode(expense.amount, baseCurrency)}
                                                         </div>
                                                     )}
                                                 </div>
                                             ) : (
                                                 <div className="text-3xl text-primary">
-                                                    {formatCurrencyWithCode(expense.amount, workspaceCurrency)}
+                                                    {formatCurrencyWithCode(expense.amount, baseCurrency)}
                                                 </div>
                                             )}
                                         </div>

@@ -1,9 +1,13 @@
-import type { ReceiptLanguageOption } from '@/schemas/ai-expense-settings.schema';
+import type {
+  ReceiptLanguageOption,
+  BaseCurrencyOption,
+} from '@/schemas/ai-expense-settings.schema';
 
-export type { ReceiptLanguageOption };
+export type { ReceiptLanguageOption, BaseCurrencyOption };
 
 export interface AiExpenseSettingsResponse {
   receipt_language: string;
+  base_currency?: string;
   preferences?: Record<string, unknown>;
 }
 
@@ -15,6 +19,7 @@ export async function fetchAiExpenseSettings(): Promise<AiExpenseSettingsRespons
 
 export async function updateAiExpenseSettings(body: {
   receipt_language?: ReceiptLanguageOption;
+  base_currency?: BaseCurrencyOption;
   preferences?: Record<string, unknown>;
 }): Promise<AiExpenseSettingsResponse> {
   const res = await fetch('/api/ai-expense/settings', {
@@ -32,3 +37,6 @@ export function getDefaultReceiptLanguage(fallbackLocale: string): ReceiptLangua
     ? (fallbackLocale as ReceiptLanguageOption)
     : 'en';
 }
+
+/** Fallback base currency when not yet set (before first save). */
+export const DEFAULT_BASE_CURRENCY: BaseCurrencyOption = 'USD';

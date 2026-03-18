@@ -14,6 +14,16 @@ export function getExchangeRateToUsd(currency: string): number {
 }
 
 /**
+ * Get exchange rate from currency A to currency B (amount_A * rate = amount_B)
+ * Uses USD as intermediary for cross rates
+ */
+export function getExchangeRate(fromCurrency: string, toCurrency: string): number {
+    const fromToUsd = EXCHANGE_RATES_TO_USD[fromCurrency] ?? 1;
+    const toToUsd = EXCHANGE_RATES_TO_USD[toCurrency] ?? 1;
+    return fromToUsd / toToUsd;
+}
+
+/**
  * Format currency with a specific currency code
  * Returns formatted amount with currency code appended (e.g., "100.00 USD")
  * Note: Removes the currency symbol prefix to avoid duplication with currency code
@@ -38,11 +48,13 @@ export function formatCurrencyWithCode(amount: number, currencyCode: string): st
     }
 }
 
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
+
 /**
- * Hook to format currency based on workspace currency (USD)
- * @returns A function to format amounts as currency
+ * Hook to format currency based on active workspace's base currency
+ * @returns A function to format amounts as currency (amounts are assumed to be in base currency)
  */
 export function useCurrencyFormatter(): (amount: number) => string {
-    const currency = 'USD';
-    return (amount: number) => formatCurrencyWithCode(amount, currency);
+    const { baseCurrency } = useWorkspace();
+    return (amount: number) => formatCurrencyWithCode(amount, baseCurrency);
 }

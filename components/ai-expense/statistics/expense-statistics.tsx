@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getExpenseStatistics } from '@/api/client/expenses';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import { ExpenseStatisticItem } from '@/api/types/expense';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,6 +36,7 @@ interface ExpenseStatisticsProps {
 export default function ExpenseStatistics({ showFilters = false, onToggleFilters }: ExpenseStatisticsProps) {
     const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
+    const { activeWorkspaceId } = useWorkspace();
     const [statistics, setStatistics] = useState<ExpenseStatisticItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [fromDate, setFromDate] = useState(() => dayjs().subtract(1, 'month').format('YYYY-MM-DD'));
@@ -73,6 +75,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     }, [isMobile, dateRangePreset]);
 
     const loadStatistics = useCallback(async () => {
+        if (!activeWorkspaceId) return;
         if (!fromDate || !toDate) {
             toast.error(t('toast.please select both from and to dates'));
             return;
@@ -90,7 +93,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
             const fromTimestamp = from.startOf('day').unix();
             const toTimestamp = to.endOf('day').unix();
 
-            const response = await getExpenseStatistics(fromTimestamp, toTimestamp, rangeType);
+            const response = await getExpenseStatistics(activeWorkspaceId, fromTimestamp, toTimestamp, rangeType);
             setStatistics(response.data || []);
         } catch (error: any) {
             console.error('Failed to load statistics:', error);
@@ -98,7 +101,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
         } finally {
             setLoading(false);
         }
-    }, [fromDate, toDate, rangeType, t]);
+    }, [activeWorkspaceId, fromDate, toDate, rangeType, t]);
 
     useEffect(() => {
         loadStatistics();

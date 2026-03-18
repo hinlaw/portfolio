@@ -14,6 +14,7 @@ import {
     getDefaultReceiptLanguage,
     type ReceiptLanguageOption,
 } from '@/lib/ai-expense-settings';
+import { useAiExpenseSettings } from '@/components/ai-expense/ai-expense-settings-provider';
 import ExpenseSettingsMobileHeader from '@/components/ai-expense/settings/expense-settings-mobile-header';
 import ExpenseSettingsPreferencesSection from '@/components/ai-expense/settings/expense-settings-preferences-section';
 
@@ -21,6 +22,7 @@ export default function AiExpenseSettingsPage() {
     const router = useRouter();
     const t = useTranslations('aiExpense');
     const locale = useLocale();
+    const { refreshSettings } = useAiExpenseSettings();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [receiptLanguage, setReceiptLanguage] = useState<ReceiptLanguageOption>('en');
     const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +38,9 @@ export default function AiExpenseSettingsPage() {
                     setReceiptLanguage(getDefaultReceiptLanguage(locale));
                 }
             })
-            .catch(() => setReceiptLanguage(getDefaultReceiptLanguage(locale)))
+            .catch(() => {
+                setReceiptLanguage(getDefaultReceiptLanguage(locale));
+            })
             .finally(() => setIsLoading(false));
     }, [locale]);
 
@@ -47,7 +51,10 @@ export default function AiExpenseSettingsPage() {
     const handleSave = async () => {
         setIsSaving(true);
         try {
-            await updateAiExpenseSettings({ receipt_language: receiptLanguage });
+            await updateAiExpenseSettings({
+                receipt_language: receiptLanguage,
+            });
+            await refreshSettings();
             toast.success(t('settings saved'));
         } catch {
             toast.error(t('toast.failed to save settings'));

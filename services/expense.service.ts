@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { prismaToDTO, timestampToDate } from '@/services/expense-mappers';
 import { NotFoundError } from '@/lib/errors';
 import { processMediaForStorage } from '@/lib/storage-upload';
+import { WorkspaceService } from '@/services/workspace.service';
 import type { ExpenseDTO } from '@/api/types/expense';
 import type {
   GetExpensesQuery,
@@ -10,6 +11,8 @@ import type {
   GetStatisticsQuery,
 } from '@/schemas/expense.schema';
 
+const DEFAULT_OWNER_ID = 'default';
+
 export class ExpenseService {
   static async getExpenses(
     filters: GetExpensesQuery
@@ -17,10 +20,15 @@ export class ExpenseService {
     data: ExpenseDTO[];
     page: { total: number; page: number; size: number };
   }> {
-    const { page, size, keyword, from_date, to_date, min_amount, max_amount, field, asc } =
+    const { workspace_id, page, size, keyword, from_date, to_date, min_amount, max_amount, field, asc } =
       filters;
 
     const where: Record<string, unknown> = {};
+    if (workspace_id) {
+      where.workspaceId = workspace_id;
+    } else {
+      where.workspaceId = null;
+    }
     if (keyword) {
       where.OR = [
         { merchant: { contains: keyword, mode: 'insensitive' as const } },
@@ -70,17 +78,23 @@ export class ExpenseService {
       media = await processMediaForStorage(body.media.slice(0, 10), 'expenses');
     }
 
+    const workspace = await WorkspaceService.getWorkspaceById(body.workspace_id, DEFAULT_OWNER_ID);
+    if (!workspace) {
+      throw new NotFoundError('Workspace not found');
+    }
+    const defaultCurrency = workspace.base_currency;
+
     const created = await prisma.expense.create({
       data: {
         merchant: body.merchant ?? null,
         amount: body.amount ?? 0,
         originalAmount: body.original_amount ?? null,
         date: dateStr,
-        currency: body.currency ?? 'USD',
+        currency: body.currency ?? defaultCurrency,
         exchangeRate: body.exchange_rate ?? 1,
         media,
         description: body.description ?? null,
-        workspaceId: body.workspace_id ?? null,
+        workspaceId: body.workspace_id,
       },
     });
 
@@ -103,7 +117,14 @@ export class ExpenseService {
     if (body.amount !== undefined) data.amount = body.amount ?? 0;
     if (body.original_amount !== undefined) data.originalAmount = body.original_amount ?? null;
     if (body.date !== undefined) data.date = timestampToDate(body.date);
-    if (body.currency !== undefined) data.currency = body.currency ?? 'USD';
+    if (body.currency !== undefined) {
+      let defaultCurrency = 'USD';
+      if (exists.workspaceId) {
+        const workspace = await WorkspaceService.getWorkspaceById(exists.workspaceId, DEFAULT_OWNER_ID);
+        if (workspace) defaultCurrency = workspace.base_currency;
+      }
+      data.currency = body.currency ?? defaultCurrency;
+    }
     if (body.exchange_rate !== undefined) data.exchangeRate = body.exchange_rate ?? 1;
     if (body.media !== undefined) {
       const processed =
@@ -141,14 +162,21 @@ export class ExpenseService {
   static async getStatistics(
     filters: GetStatisticsQuery
   ): Promise<{ data: Array<{ date: string; amount: number; count: number; transactions: number }> }> {
-    const { from_date, to_date, range_type } = filters;
+    const { workspace_id, from_date, to_date, range_type } = filters;
     const fromDate = timestampToDate(from_date);
     const toDate = timestampToDate(to_date);
 
+    const where: Record<string, unknown> = {
+      date: { gte: fromDate, lte: toDate },
+    };
+    if (workspace_id) {
+      where.workspaceId = workspace_id;
+    } else {
+      where.workspaceId = null;
+    }
+
     const expenses = await prisma.expense.findMany({
-      where: {
-        date: { gte: fromDate, lte: toDate },
-      },
+      where,
       select: { date: true, amount: true },
     });
 

@@ -2,14 +2,17 @@ import "@/styles/globals.css";
 import type { AppProps, AppContext } from "next/app";
 import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "sonner";
+import { WorkspaceProvider } from "@/components/ai-expense/workspace-provider";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { messages, locale = "en" } = pageProps;
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages ?? {}}>
-      <Component {...pageProps} />
-      <Toaster position="bottom-left" />
+      <WorkspaceProvider>
+        <Component {...pageProps} />
+        <Toaster position="bottom-left" />
+      </WorkspaceProvider>
     </NextIntlClientProvider>
   );
 }

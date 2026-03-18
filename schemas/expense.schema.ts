@@ -23,6 +23,10 @@ const rangeTypeSchema = z.enum(['day', 'month', 'quarter']).default('day');
 
 /** Schema for GET /api/expenses query params */
 export const getExpensesQuerySchema = z.object({
+  workspace_id: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((v) => (typeof v === 'string' ? v : v?.[0])?.trim() || undefined),
   page: queryNumber(1).pipe(z.number().min(1)),
   size: queryNumber(10).pipe(z.number().min(1).max(50)),
   keyword: z
@@ -59,7 +63,7 @@ export const createExpenseBodySchema = z.object({
   exchange_rate: z.coerce.number().positive().default(1),
   media: z.array(z.string()).optional(),
   description: z.string().optional(),
-  workspace_id: z.string().optional(),
+  workspace_id: z.string().min(1, 'Workspace is required'),
 });
 
 export type CreateExpenseBody = z.infer<typeof createExpenseBodySchema>;
@@ -85,6 +89,10 @@ export const getExpenseByIdParamsSchema = z.object({
 
 /** Schema for GET /api/expenses/statistics query params */
 export const getStatisticsQuerySchema = z.object({
+  workspace_id: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((v) => (typeof v === 'string' ? v : v?.[0])?.trim() || undefined),
   from_date: z.preprocess(
     (v) => (Array.isArray(v) ? v[0] : v),
     z.union([z.string(), z.number()]).transform((x) => Number(x)).pipe(z.number().finite())

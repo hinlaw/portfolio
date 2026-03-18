@@ -25,6 +25,7 @@ import {
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Plus, Loader2 } from 'lucide-react';
 import { formatDateShort, parseToTimestamp, dayjs } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import { Badge } from '@/components/ui/badge';
 import FileThumbnail from '../file-thumbnail';
 import { isPdfUrl, isImageUrl } from '../file-utils';
@@ -55,7 +56,7 @@ export default function ExpenseList({
 }: ExpenseListProps) {
     const router = useRouter();
     const formatCurrency = useCurrencyFormatter();
-    const workspaceCurrency = 'USD';
+    const { activeWorkspaceId, baseCurrency } = useWorkspace();
     const [expenses, setExpenses] = useState<ExpenseDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -73,6 +74,7 @@ export default function ExpenseList({
     const maxAmount = externalMaxAmount;
 
     const loadExpenses = useCallback(async () => {
+        if (!activeWorkspaceId) return;
         // Don't load if date range is invalid
         if (fromDate && toDate && dayjs(fromDate).isAfter(dayjs(toDate))) {
             return;
@@ -108,6 +110,7 @@ export default function ExpenseList({
             if (filters.maxAmount !== undefined && filters.maxAmount !== null) params.append('max_amount', filters.maxAmount.toString());
 
             const response = await listExpenses({
+                workspace_id: activeWorkspaceId,
                 page,
                 size,
                 keyword: keyword.trim() || undefined,
@@ -126,7 +129,7 @@ export default function ExpenseList({
         } finally {
             setLoading(false);
         }
-    }, [page, size, keyword, fromDate, toDate, minAmount, maxAmount]);
+    }, [activeWorkspaceId, page, size, keyword, fromDate, toDate, minAmount, maxAmount]);
 
 
     // Reset to page 1 when filters change (immediate, no debounce)
@@ -138,7 +141,7 @@ export default function ExpenseList({
     useEffect(() => {
         loadExpenses();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [page, activeWorkspaceId]);
 
     // Debounce API calls when filter inputs change (500ms) - skip initial mount to avoid duplicate load
     const isFirstFilterLoad = useRef(true);
@@ -241,7 +244,7 @@ export default function ExpenseList({
                     merchant: expense.merchant ?? undefined,
                     description: expense.description || '',
                     original_amount: expense.original_amount || expense.amount,
-                    currency: expense.currency || workspaceCurrency,
+                    currency: expense.currency || baseCurrency,
                     exchange_rate: expense.exchange_rate || 1,
                     amount: expense.amount,
                     media: newMedia,

@@ -26,7 +26,7 @@ export interface ApiExpenseCreateRequest {
   exchange_rate?: number;
   media?: string[];
   description?: string;
-  workspace_id?: string;
+  workspace_id: string;
 }
 
 export interface ApiExpenseUpdateRequest {

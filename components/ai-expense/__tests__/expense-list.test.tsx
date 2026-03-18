@@ -11,6 +11,15 @@ jest.mock('next/router', () => ({
     query: {},
   }),
 }));
+jest.mock('@/components/ai-expense/workspace-provider', () => ({
+  useWorkspace: () => ({
+    activeWorkspaceId: 'ws-mock-1',
+    baseCurrency: 'USD',
+    workspaces: [{ id: 'ws-mock-1', name: 'Personal', base_currency: 'USD' }],
+    setActiveWorkspaceId: jest.fn(),
+    refreshWorkspaces: jest.fn(),
+  }),
+}));
 
 describe('ExpenseList', () => {
   const defaultProps = {
@@ -59,6 +68,7 @@ describe('ExpenseList', () => {
     await waitFor(() => {
       expect(apiMocks.listExpenses).toHaveBeenCalledWith(
         expect.objectContaining({
+          workspace_id: 'ws-mock-1',
           page: 1,
           size: 15,
           field: 'date',

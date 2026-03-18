@@ -16,11 +16,13 @@ import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
 import { FileWithPreview } from '@/components/ai-expense/file-upload';
 import { toast } from 'sonner';
 import { listExpenses } from '@/api/client/expenses';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import FirstExpenseLanding from '@/components/ai-expense/first-expense-landing';
 
 export default function AiExpenseListPage() {
     const router = useRouter();
     const t = useTranslations('aiExpense');
+    const { activeWorkspaceId } = useWorkspace();
     const [showFilters, setShowFilters] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [showFullscreenForm, setShowFullscreenForm] = useState(false);
@@ -50,11 +52,18 @@ export default function AiExpenseListPage() {
 
 
     useEffect(() => {
+        if (!activeWorkspaceId) return;
         let cancelled = false;
 
         (async () => {
             try {
-                const response = await listExpenses({ page: 1, size: 1, field: 'date', asc: 0 });
+                const response = await listExpenses({
+                    workspace_id: activeWorkspaceId,
+                    page: 1,
+                    size: 1,
+                    field: 'date',
+                    asc: 0,
+                });
                 const total = response.page?.total ?? response.data.length ?? 0;
                 if (!cancelled) {
                     setHasAnyExpenses(total > 0);
@@ -69,7 +78,7 @@ export default function AiExpenseListPage() {
         return () => {
             cancelled = true;
         };
-    }, []);
+    }, [activeWorkspaceId]);
 
     const convertFileToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {

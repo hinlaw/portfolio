@@ -6,6 +6,7 @@ import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layou
 import { buttonVariants } from '@/components/ui/button';
 import { ExpenseDTO } from '@/api/types/expense';
 import { getExpense, deleteExpense, listExpenses } from '@/api/client/expenses';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import DeleteExpenseDialog from '@/components/ai-expense/delete-expense-dialog';
 import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
 import { toast } from 'sonner';
@@ -15,6 +16,7 @@ import ExpenseDetailsPane from '@/components/ai-expense/detail/expense-details-p
 export default function ExpenseDetailPage() {
     const router = useRouter();
     const { id } = router.query;
+    const { activeWorkspaceId } = useWorkspace();
     const [expense, setExpense] = useState<ExpenseDTO | null>(null);
     const [expenses, setExpenses] = useState<ExpenseDTO[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,9 +47,11 @@ export default function ExpenseDetailPage() {
     };
 
     const loadExpenses = useCallback(async () => {
+        if (!activeWorkspaceId) return;
         setListLoading(true);
         try {
             const response = await listExpenses({
+                workspace_id: activeWorkspaceId,
                 page: listPage,
                 size: listSize,
                 field: 'date',
@@ -60,7 +64,7 @@ export default function ExpenseDetailPage() {
         } finally {
             setListLoading(false);
         }
-    }, [listPage, listSize]);
+    }, [activeWorkspaceId, listPage, listSize]);
 
     useEffect(() => {
         loadExpense();

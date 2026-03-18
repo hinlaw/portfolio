@@ -4,6 +4,7 @@ import ProductLayout from '@/components/layouts/product.layout';
 import ExpenseSidebar from './expense-sidebar';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
+import { AiExpenseSettingsProvider } from '@/components/ai-expense/ai-expense-settings-provider';
 type ProductInfo = {
     name: string;
     icon: string;
@@ -54,24 +55,26 @@ export default function ExpensePageLayout({
     };
 
     return (
-        <ProductLayout
-            title={title || 'Expenses'}
-            description={description || 'Manage your expenses with AI'}
-            product={product}
-        >
-            <div className="h-full flex flex-col overflow-hidden">
-                <div className="flex flex-1 overflow-hidden">
-                    {/* Sidebar - Desktop only */}
-                    <div className="hidden md:block">
-                        <ExpenseSidebar currentPath={currentPath} />
-                    </div>
+        <AiExpenseSettingsProvider>
+            <ProductLayout
+                title={title || 'Expenses'}
+                description={description || 'Manage your expenses with AI'}
+                product={product}
+            >
+                <div className="h-full flex flex-col overflow-hidden">
+                    <div className="flex flex-1 overflow-hidden">
+                        {/* Sidebar - Desktop only */}
+                        <div className="hidden md:block">
+                            <ExpenseSidebar currentPath={currentPath} />
+                        </div>
 
-                    {/* Main Content */}
-                    <main className="flex-1 overflow-y-auto">
-                        {children}
-                    </main>
+                        {/* Main Content */}
+                        <main className="flex-1 overflow-y-auto">
+                            {children}
+                        </main>
+                    </div>
                 </div>
-            </div>
-        </ProductLayout>
+            </ProductLayout>
+        </AiExpenseSettingsProvider>
     );
 }

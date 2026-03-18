@@ -7,6 +7,7 @@ import { BarChart3, Plus, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { IoReceiptOutline } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
+import WorkspaceSwitcher from './workspace-switcher';
 
 interface ExpenseSidebarProps {
     currentPath: string;
@@ -42,6 +43,9 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                 variant === 'sidebar' ? "w-64 border-r border-slate-200" : "w-full"
             )}
         >
+            <div className="p-4 border-b border-slate-200">
+                <WorkspaceSwitcher variant={variant} />
+            </div>
             <nav className={cn("flex-1 p-4 space-y-1", variant === 'sheet' ? "pb-6" : undefined)}>
                 {/* Expenses Item */}
                 <div className="group">

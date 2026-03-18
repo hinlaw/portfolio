@@ -17,6 +17,7 @@ export default withApiHandler({
     const result = await AiExpenseSettingsService.updateSettings(
       {
         receipt_language: body.receipt_language as ReceiptLanguageOption | undefined,
+        base_currency: body.base_currency,
         preferences: body.preferences,
       },
       DEFAULT_OWNER_ID

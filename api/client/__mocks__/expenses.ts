@@ -45,7 +45,8 @@ export function resetMockExpenses() {
 }
 
 export const listExpenses = jest.fn(
-  async (params?: {
+  async (params: {
+    workspace_id: string;
     page?: number;
     size?: number;
     keyword?: string;
@@ -125,6 +126,7 @@ export const scanExpenseReceipt = jest.fn(
 
 export const getExpenseStatistics = jest.fn(
   async (
+    _workspaceId: string,
     _fromTimestamp: number,
     _toTimestamp: number,
     _rangeType: 'day' | 'month' | 'quarter'

@@ -16,7 +16,8 @@ import { createExpenseSchema, ExpenseFormData } from './form/schema';
 import ExpenseForm from './expense-form';
 import ReceiptViewer from './receipt-viewer';
 import ExpenseMediaUpload from './expense-media-upload';
-import { SUPPORTED_CURRENCIES, getExchangeRateToUsd } from '@/lib/currency';
+import { SUPPORTED_CURRENCIES, getExchangeRate } from '@/lib/currency';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import { fetchAiExpenseSettings, getDefaultReceiptLanguage } from '@/lib/ai-expense-settings';
 
 interface ExpenseFormDialogProps {
@@ -58,15 +59,22 @@ export default function ExpenseFormDialog({
 }: ExpenseFormDialogProps) {
     const t = useTranslations('aiExpense');
     const locale = useLocale();
+    const { baseCurrency, activeWorkspaceId } = useWorkspace();
 
     const detectedIsMobile = useIsMobile();
     // Use prop if provided, otherwise detect automatically
     const isMobile = isMobileProp !== undefined ? isMobileProp : detectedIsMobile;
     const [isVisible, setIsVisible] = useState(false);
 
-    // Currency and exchange rate state
-    const workspaceCurrency = 'USD';
-    const [selectedCurrency, setSelectedCurrency] = useState<string>(workspaceCurrency);
+    // Currency and exchange rate state (baseCurrency = workspace base, amounts stored in this)
+    const [selectedCurrency, setSelectedCurrency] = useState<string>(baseCurrency);
+
+    // Sync selectedCurrency to baseCurrency when creating new expense (baseCurrency may load async)
+    useEffect(() => {
+        if (!expense) {
+            setSelectedCurrency(baseCurrency);
+        }
+    }, [baseCurrency, expense]);
     const [exchangeRate, setExchangeRate] = useState<number>(1);
     const [manualExchangeRate, setManualExchangeRate] = useState<string>('');
     const supportedCurrencies = [...SUPPORTED_CURRENCIES];
@@ -94,15 +102,15 @@ export default function ExpenseFormDialog({
 
     // Use hardcoded exchange rate when currency changes (no API)
     useEffect(() => {
-        if (selectedCurrency === workspaceCurrency) {
+        if (selectedCurrency === baseCurrency) {
             setExchangeRate(1);
             setManualExchangeRate('');
             return;
         }
-        const rate = getExchangeRateToUsd(selectedCurrency);
+        const rate = getExchangeRate(selectedCurrency, baseCurrency);
         setExchangeRate(rate);
         setManualExchangeRate(rate.toFixed(6));
-    }, [selectedCurrency, workspaceCurrency]);
+    }, [selectedCurrency, baseCurrency]);
 
     // Filter currencies based on search keyword
     const filteredCurrencies = useMemo(() => {
@@ -212,12 +220,12 @@ export default function ExpenseFormDialog({
         });
         setFiles([]);
         setInitialFilesRef([]);
-        // Reset currency to workspace currency
-        setSelectedCurrency(workspaceCurrency);
+        // Reset currency to base currency
+        setSelectedCurrency(baseCurrency);
         setExchangeRate(1);
         setManualExchangeRate('');
         setCurrencySearchKeyword('');
-    }, [reset, workspaceCurrency]);
+    }, [reset, baseCurrency]);
 
     // Handle manual exchange rate change
     const handleManualExchangeRateChange = (value: string) => {
@@ -245,12 +253,18 @@ export default function ExpenseFormDialog({
             // Calculate original amount and converted amount
             const originalAmount = data.amount; // Amount in selected currency
             const currency = selectedCurrency;
-            const rate = selectedCurrency !== workspaceCurrency && exchangeRate > 0 ? exchangeRate : 1;
-            const finalAmount = selectedCurrency !== workspaceCurrency && exchangeRate > 0
+            const rate = selectedCurrency !== baseCurrency && exchangeRate > 0 ? exchangeRate : 1;
+            const finalAmount = selectedCurrency !== baseCurrency && exchangeRate > 0
                 ? data.amount * exchangeRate
                 : data.amount; // Amount in workspace currency
 
+            if (!activeWorkspaceId) {
+                toast.error(t('toast.failed to save expense'));
+                return false;
+            }
+
             const request: ApiExpenseCreateRequest = {
+                workspace_id: activeWorkspaceId,
                 date: dateTimestamp,
                 merchant: data.merchant,
                 description: data.description || '',
@@ -600,7 +614,7 @@ export default function ExpenseFormDialog({
                             errors={errors}
                             isScanning={isScanning}
                             selectedCurrency={selectedCurrency}
-                            workspaceCurrency={workspaceCurrency}
+                            workspaceCurrency={baseCurrency}
                             exchangeRate={exchangeRate}
                             manualExchangeRate={manualExchangeRate}
                             supportedCurrencies={supportedCurrencies}
@@ -761,7 +775,7 @@ export default function ExpenseFormDialog({
                         errors={errors}
                         isScanning={isScanning}
                         selectedCurrency={selectedCurrency}
-                        workspaceCurrency={workspaceCurrency}
+                        workspaceCurrency={baseCurrency}
                         exchangeRate={exchangeRate}
                         manualExchangeRate={manualExchangeRate}
                         supportedCurrencies={supportedCurrencies}

@@ -10,6 +10,7 @@ import type {
 import type { PaginatedResponse } from './types';
 
 export interface ListExpensesParams {
+  workspace_id: string;
   page?: number;
   size?: number;
   keyword?: string;
@@ -22,9 +23,10 @@ export interface ListExpensesParams {
 }
 
 export async function listExpenses(
-  params?: ListExpensesParams
+  params: ListExpensesParams
 ): Promise<Response<ExpenseDTO[]>> {
   const q = buildQuery({
+    workspace_id: params.workspace_id,
     page: params?.page,
     size: params?.size,
     keyword: params?.keyword,
@@ -98,11 +100,13 @@ export async function scanExpenseReceipt(
 
 /** Returns { data: ExpenseStatisticItem[] } - unified format */
 export async function getExpenseStatistics(
+  workspaceId: string,
   fromTimestamp: number,
   toTimestamp: number,
   rangeType: 'day' | 'month' | 'quarter'
 ): Promise<{ data: ExpenseStatisticItem[] }> {
   const q = buildQuery({
+    workspace_id: workspaceId,
     from_date: fromTimestamp,
     to_date: toTimestamp,
     range_type: rangeType,

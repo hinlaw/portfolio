@@ -7,6 +7,12 @@ jest.mock('@/api/client/expenses', () => require('@/api/client/__mocks__/expense
 jest.mock('next/router', () => ({
   useRouter: () => ({ push: jest.fn(), pathname: '/apps/ai-expense/statistics' }),
 }));
+jest.mock('@/components/ai-expense/workspace-provider', () => ({
+  useWorkspace: () => ({
+    activeWorkspaceId: 'ws-mock-1',
+    baseCurrency: 'USD',
+  }),
+}));
 
 describe('ExpenseStatistics', () => {
   beforeEach(() => {
@@ -43,6 +49,7 @@ describe('ExpenseStatistics', () => {
 
     await waitFor(() => {
       expect(apiMocks.getExpenseStatistics).toHaveBeenCalledWith(
+        'ws-mock-1',
         expect.any(Number),
         expect.any(Number),
         expect.stringMatching(/day|month|quarter/)
