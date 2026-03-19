@@ -112,8 +112,8 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     // Format currency for chart display (no decimals)
     const formatCurrencyForChart = (value: number) => {
         const formatted = formatCurrency(value);
-        // Remove decimal part if it's .00
-        return formatted.replace(/\.00$/, '');
+        // Remove decimal part when it's .00 (e.g. "1,000.00 USD" -> "1,000 USD")
+        return formatted.replace(/\.00(?=\s|$)/, '');
     };
 
     const chartConfig: ChartConfig = {
@@ -356,6 +356,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
                                             tick={{ fontSize: isMobile ? 10 : 12 }}
                                         />
                                         <YAxis
+                                            allowDecimals={false}
                                             width={isMobile ? 50 : 80}
                                             tick={{ fontSize: isMobile ? 10 : 12 }}
                                         />
