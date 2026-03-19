@@ -192,11 +192,7 @@ export default function AccountTypes() {
                                 </li>
                             </ul>
                             <button className={`w-full bg-[#000635] text-white py-3 rounded-full text-lg font-bold cursor-pointer ${styles.accountTypesButton}`} style={{ fontFamily: 'var(--font-open-sans), var(--font-noto-sans-jp), sans-serif', fontWeight: 700 }}
-                                onClick={() => {
-                                    if (typeof window !== 'undefined' && window.LiveChatWidget) {
-                                        window.LiveChatWidget.call('maximize');
-                                    }
-                                }}
+                                onClick={() => { router.push('https://clientportal.wcgmarkets-apac.in/register/trader?link_id=2f2dv6td&referrer_id=PLUS'); }}
                             >
                                 {t('pro.cta')}
                             </button>
@@ -352,11 +348,7 @@ export default function AccountTypes() {
                             </ul>
                             <div className="flex justify-center">
                                 <button className={`bg-[#000635] text-white py-3 rounded-full text-lg font-bold px-12 cursor-pointer ${styles.accountTypesButton}`}
-                                    onClick={() => {
-                                        if (typeof window !== 'undefined' && window.LiveChatWidget) {
-                                            window.LiveChatWidget.call('maximize');
-                                        }
-                                    }}
+                                    onClick={() => { router.push('https://clientportal.wcgmarkets-apac.in/register/trader?link_id=2f2dv6td&referrer_id=PLUS'); }}
                                 >
                                     {t('pro.cta')}
                                 </button>
