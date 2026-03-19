@@ -62,6 +62,7 @@ export default function ExpensePageLayout({
                 title={title || 'Expenses'}
                 description={description || 'Manage your expenses with AI'}
                 product={product}
+                hideHeaderOnMobile
             >
                 <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
                     <div className="flex min-h-0 flex-1 overflow-hidden">

@@ -15,6 +15,8 @@ interface ProductLayoutProps {
   title?: string;
   description?: string;
   product?: ProductInfo;
+  /** When true, hides the header on mobile (md and up shows it) */
+  hideHeaderOnMobile?: boolean;
 }
 
 export default function ProductLayout({
@@ -22,12 +24,13 @@ export default function ProductLayout({
   title,
   description,
   product,
+  hideHeaderOnMobile,
 }: ProductLayoutProps) {
   return (
     <div className="flex h-screen flex-col bg-background">
-      {/* Header */}
+      {/* Header - hidden on mobile when hideHeaderOnMobile */}
       {product && (
-        <div className="shrink-0 border-b">
+        <div className={hideHeaderOnMobile ? 'hidden md:block shrink-0 border-b' : 'shrink-0 border-b'}>
           <div className="px-6 py-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

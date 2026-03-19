@@ -7,6 +7,8 @@ import { BarChart3, Plus, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { IoReceiptOutline } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import LocaleSelector from '@/components/locale-selector';
 import WorkspaceSwitcher from './workspace-switcher';
 
 interface ExpenseSidebarProps {
@@ -39,14 +41,14 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
     return (
         <aside
             className={cn(
-                "bg-white flex flex-col h-[calc(100vh-64px)]",
-                variant === 'sidebar' ? "w-64 border-r border-slate-200" : "w-full"
+                "bg-white flex flex-col",
+                variant === 'sidebar' ? "w-64 border-r border-slate-200 h-[calc(100vh-64px)]" : "w-full flex-1 min-h-0"
             )}
         >
-            <div className="p-4 border-b border-slate-200">
+            <div className="p-4 border-b border-slate-200 shrink-0">
                 <WorkspaceSwitcher variant={variant} />
             </div>
-            <nav className={cn("flex-1 p-4 space-y-1", variant === 'sheet' ? "pb-6" : undefined)}>
+            <nav className={cn("flex-1 p-4 space-y-1 overflow-y-auto", variant === 'sheet' ? "pb-4" : undefined)}>
                 {/* Expenses Item */}
                 <div className="group">
                     <div
@@ -103,6 +105,18 @@ export default function ExpenseSidebar({ currentPath, variant = 'sidebar', onNav
                     <span>{t('my settings')}</span>
                 </Link>
             </nav>
+            {variant === 'sheet' && (
+                <div className="shrink-0 p-4 pt-0 border-t border-slate-200 space-y-3">
+                    <LocaleSelector className="w-full" />
+                    <Link
+                        href="/"
+                        onClick={() => onNavigate?.()}
+                        className={cn(buttonVariants({ variant: 'outline', size: 'default' }), "w-full justify-center")}
+                    >
+                        Back to home
+                    </Link>
+                </div>
+            )}
         </aside>
     );
 }

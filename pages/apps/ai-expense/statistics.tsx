@@ -47,7 +47,7 @@ export default function AiExpenseStatisticsPage() {
 
             {/* Mobile Sheet for Sidebar */}
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetContent side="left" className="w-64 p-0 pt-12">
+                <SheetContent side="left" className="w-64 p-0 pt-12 flex flex-col">
                     <ExpenseSidebar
                         currentPath={router.pathname}
                         variant="sheet"

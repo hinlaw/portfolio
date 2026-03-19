@@ -9,12 +9,11 @@ import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layou
 import ExpenseSidebar from '@/components/ai-expense/layout/expense-sidebar';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
-    fetchAiExpenseSettings,
-    updateAiExpenseSettings,
     getDefaultReceiptLanguage,
-    type ReceiptLanguageOption,
 } from '@/lib/ai-expense-settings';
-import { useAiExpenseSettings } from '@/components/ai-expense/ai-expense-settings-provider';
+import { useWorkspace } from '@/components/ai-expense/workspace-provider';
+import { updateWorkspace } from '@/api/client/workspaces';
+import type { ReceiptLanguageOption } from '@/api/types/workspace';
 import ExpenseSettingsMobileHeader from '@/components/ai-expense/settings/expense-settings-mobile-header';
 import ExpenseSettingsPreferencesSection from '@/components/ai-expense/settings/expense-settings-preferences-section';
 
@@ -22,39 +21,41 @@ export default function AiExpenseSettingsPage() {
     const router = useRouter();
     const t = useTranslations('aiExpense');
     const locale = useLocale();
-    const { refreshSettings } = useAiExpenseSettings();
+    const { activeWorkspaceId, activeWorkspace, refreshWorkspaces } = useWorkspace();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [receiptLanguage, setReceiptLanguage] = useState<ReceiptLanguageOption>('en');
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        fetchAiExpenseSettings()
-            .then((data) => {
-                const lang = data.receipt_language;
-                if (lang === 'en' || lang === 'zh' || lang === 'zh_HK' || lang === 'receipt') {
-                    setReceiptLanguage(lang as ReceiptLanguageOption);
-                } else {
-                    setReceiptLanguage(getDefaultReceiptLanguage(locale));
-                }
-            })
-            .catch(() => {
-                setReceiptLanguage(getDefaultReceiptLanguage(locale));
-            })
-            .finally(() => setIsLoading(false));
-    }, [locale]);
+        if (!activeWorkspace) {
+            setIsLoading(false);
+            return;
+        }
+        const lang = activeWorkspace.receipt_language;
+        if (lang === 'en' || lang === 'zh' || lang === 'zh_HK' || lang === 'receipt') {
+            setReceiptLanguage(lang);
+        } else {
+            setReceiptLanguage(getDefaultReceiptLanguage(locale));
+        }
+        setIsLoading(false);
+    }, [activeWorkspace?.id, activeWorkspace?.receipt_language, locale]);
 
     const handleReceiptLanguageChange = (value: ReceiptLanguageOption) => {
         setReceiptLanguage(value);
     };
 
     const handleSave = async () => {
+        if (!activeWorkspaceId) {
+            toast.error(t('toast.failed to save settings'));
+            return;
+        }
         setIsSaving(true);
         try {
-            await updateAiExpenseSettings({
+            await updateWorkspace(activeWorkspaceId, {
                 receipt_language: receiptLanguage,
             });
-            await refreshSettings();
+            await refreshWorkspaces();
             toast.success(t('settings saved'));
         } catch {
             toast.error(t('toast.failed to save settings'));
@@ -107,7 +108,7 @@ export default function AiExpenseSettingsPage() {
             </ExpensePageLayout>
 
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetContent side="left" className="w-64 p-0 pt-12">
+                <SheetContent side="left" className="w-64 p-0 pt-12 flex flex-col">
                     <ExpenseSidebar
                         currentPath={router.pathname}
                         variant="sheet"
