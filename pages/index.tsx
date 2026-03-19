@@ -12,7 +12,7 @@ export default function Home() {
             AI 記帳展示
           </Button>
         </Link>
-        <Link href="/apps/figma-showcase">
+        <Link href="/website/wcg">
           <Button size="lg" variant="default" className="min-w-[200px]">
             Figma 設計網站展示
           </Button>
