@@ -327,7 +327,7 @@ export default function ExpenseList({
                 {/* Results Count - Only show when filters are active */}
                 {!loading && hasActiveFilters && (
                     <div className="text-sm text-muted-foreground">
-                        {total === 1 ? '1 result' : `${total} results`}
+                        {total === 1 ? t('resultCount', { count: 1 }) : t('resultCount', { count: total })}
                     </div>
                 )}
 
@@ -336,9 +336,9 @@ export default function ExpenseList({
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[300px]">Expense details</TableHead>
-                                <TableHead>Merchant</TableHead>
-                                <TableHead className="text-right">Amount</TableHead>
+                                <TableHead className="w-[300px]">{t('expenseDetails')}</TableHead>
+                                <TableHead>{t('merchant')}</TableHead>
+                                <TableHead className="text-right">{t('amount')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -377,7 +377,10 @@ export default function ExpenseList({
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
                                                     {/* Thumbnail */}
-                                                    <div className="relative flex-shrink-0 thumbnail-container">
+                                                    <div
+                                                        className="relative flex-shrink-0 thumbnail-container"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
                                                         {/* Hidden file input */}
                                                         <input
                                                             ref={(el) => {
@@ -486,7 +489,7 @@ export default function ExpenseList({
                 {totalPages > 1 && (
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-muted-foreground">
-                            {`Showing ${(page - 1) * size + 1} to ${Math.min(page * size, total)} of ${total} expenses`}
+                            {t('paginationRange', { from: (page - 1) * size + 1, to: Math.min(page * size, total), total })}
                         </div>
                         <div className="flex gap-2">
                             <Button
@@ -496,7 +499,7 @@ export default function ExpenseList({
                                 disabled={page === 1}
                             >
                                 <ChevronLeft className="h-4 w-4" />
-                                Previous
+                                {t('previous')}
                             </Button>
                             <Button
                                 variant="outline"
@@ -504,7 +507,7 @@ export default function ExpenseList({
                                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                                 disabled={page === totalPages}
                             >
-                                Next
+                                {t('next')}
                                 <ChevronRight className="h-4 w-4" />
                             </Button>
                         </div>
@@ -529,7 +532,7 @@ export default function ExpenseList({
                             const additionalCount = getAdditionalMediaCount(expense.media);
                             const hasMedia = expense.media && expense.media.length > 0;
                             const isUploading = uploadingExpenseId === expense.id;
-                            const primaryTitle = expense.description || 'Expense';
+                            const primaryTitle = expense.description || t('expense');
                             const secondaryTitle = expense.merchant || '';
 
                             return (
@@ -537,11 +540,14 @@ export default function ExpenseList({
                                     key={expense.id}
                                     type="button"
                                     className="w-full text-left px-4 py-4 bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors"
-                                    onClick={() => handleRowClick(expense)}
+                                    onClick={(e) => {
+                                        if ((e.target as HTMLElement).closest('.thumbnail-container')) return;
+                                        handleRowClick(expense);
+                                    }}
                                 >
                                     <div className="flex gap-4 items-center">
                                         {/* Thumbnail / Add receipt */}
-                                        <div className="relative flex-shrink-0">
+                                        <div className="relative flex-shrink-0 thumbnail-container" onClick={(e) => e.stopPropagation()}>
                                             <input
                                                 ref={(el) => {
                                                     fileInputRefs.current[expense.id] = el;
@@ -626,7 +632,7 @@ export default function ExpenseList({
                 {totalPages > 1 && (
                     <div className="px-4 py-3 border-t border-slate-200 bg-white flex items-center justify-between">
                         <div className="text-xs text-slate-500">
-                            {`Showing ${(page - 1) * size + 1} to ${Math.min(page * size, total)} of ${total} expenses`}
+                            {t('paginationRange', { from: (page - 1) * size + 1, to: Math.min(page * size, total), total })}
                         </div>
                         <div className="flex gap-2">
                             <Button
