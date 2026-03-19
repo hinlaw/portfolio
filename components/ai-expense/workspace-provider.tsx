@@ -9,7 +9,7 @@ import {
     type ReactNode,
 } from 'react';
 import { listWorkspaces } from '@/api/client/workspaces';
-import type { WorkspaceDTO } from '@/api/types/workspace';
+import type { WorkspaceDTO, ReceiptLanguageOption } from '@/api/types/workspace';
 
 const STORAGE_KEY = 'ai-expense-active-workspace-id';
 
@@ -18,6 +18,7 @@ interface WorkspaceContextValue {
     activeWorkspaceId: string | null;
     activeWorkspace: WorkspaceDTO | null;
     baseCurrency: string;
+    receiptLanguage: ReceiptLanguageOption;
     isLoading: boolean;
     setActiveWorkspaceId: (id: string) => void;
     refreshWorkspaces: () => Promise<void>;
@@ -81,12 +82,14 @@ export function WorkspaceProvider({ children }: WorkspaceProviderProps) {
         : null;
 
     const baseCurrency = activeWorkspace?.base_currency ?? 'USD';
+    const receiptLanguage = (activeWorkspace?.receipt_language as ReceiptLanguageOption | undefined) ?? 'en';
 
     const value: WorkspaceContextValue = {
         workspaces,
         activeWorkspaceId,
         activeWorkspace,
         baseCurrency,
+        receiptLanguage,
         isLoading,
         setActiveWorkspaceId,
         refreshWorkspaces,

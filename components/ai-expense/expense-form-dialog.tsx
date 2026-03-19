@@ -18,7 +18,7 @@ import ReceiptViewer from './receipt-viewer';
 import ExpenseMediaUpload from './expense-media-upload';
 import { SUPPORTED_CURRENCIES, getExchangeRate } from '@/lib/currency';
 import { useWorkspace } from '@/components/ai-expense/workspace-provider';
-import { fetchAiExpenseSettings, getDefaultReceiptLanguage } from '@/lib/ai-expense-settings';
+import { getDefaultReceiptLanguage } from '@/lib/ai-expense-settings';
 
 interface ExpenseFormDialogProps {
     expense?: ExpenseDTO;
@@ -59,7 +59,7 @@ export default function ExpenseFormDialog({
 }: ExpenseFormDialogProps) {
     const t = useTranslations('aiExpense');
     const locale = useLocale();
-    const { baseCurrency, activeWorkspaceId } = useWorkspace();
+    const { baseCurrency, activeWorkspaceId, receiptLanguage: workspaceReceiptLanguage } = useWorkspace();
 
     const detectedIsMobile = useIsMobile();
     // Use prop if provided, otherwise detect automatically
@@ -451,16 +451,9 @@ export default function ExpenseFormDialog({
             toast.success(t('toast.ai scan started'));
 
             const media = [currentFile.base64];
-            let receiptLangPref: 'en' | 'zh' | 'zh_HK' | 'receipt';
-            try {
-                const settings = await fetchAiExpenseSettings();
-                const lang = settings.receipt_language;
-                receiptLangPref = (lang === 'en' || lang === 'zh' || lang === 'zh_HK' || lang === 'receipt')
-                    ? lang
-                    : getDefaultReceiptLanguage(locale);
-            } catch {
-                receiptLangPref = getDefaultReceiptLanguage(locale);
-            }
+            const receiptLangPref = (workspaceReceiptLanguage === 'en' || workspaceReceiptLanguage === 'zh' || workspaceReceiptLanguage === 'zh_HK' || workspaceReceiptLanguage === 'receipt')
+                ? workspaceReceiptLanguage
+                : getDefaultReceiptLanguage(locale);
             const extracted = await scanExpenseReceipt(media, {
                 locale: receiptLangPref === 'receipt' ? undefined : receiptLangPref,
                 useReceiptLanguage: receiptLangPref === 'receipt',

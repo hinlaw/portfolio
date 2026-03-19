@@ -293,7 +293,7 @@ export default function AiExpenseListPage() {
                                     <Input
                                         value={keyword}
                                         onChange={(e) => setKeyword(e.target.value)}
-                                        placeholder={t('search merchant, description...')}
+                                        placeholder={t('searchPlaceholder')}
                                         className="h-12 rounded-full pl-12 pr-4 bg-slate-100 border-slate-200 focus-visible:ring-slate-300"
                                     />
                                 </div>

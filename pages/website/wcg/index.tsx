@@ -58,7 +58,7 @@ const inter = Inter({
 });
 
 export default function WCGPage() {
-    const [activeConcept, setActiveConcept] = useState(0);
+    const [activeConcept, setActiveConcept] = useState(2);
 
     return (
         <>

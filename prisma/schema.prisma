@@ -19,15 +19,16 @@ model AiExpenseSettings {
   updatedAt   DateTime @updatedAt
 }
 
-// Workspace - 每個 workspace 有獨立的基礎幣別與單據
+// Workspace - 每個 workspace 有獨立的基礎幣別、收據輸出語言與單據
 model Workspace {
-  id          String   @id @default(cuid())
-  name        String   // 顯示名稱
-  baseCurrency String  @default("USD") // USD | CNY | HKD
-  ownerId     String   @default("default") // 未來可接 Clerk userId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  expenses    Expense[]
+  id              String   @id @default(cuid())
+  name            String   // 顯示名稱
+  baseCurrency    String   @default("USD") // USD | CNY | HKD
+  receiptLanguage String?  @default("en")   // en | zh | zh_HK | receipt
+  ownerId         String   @default("default") // 未來可接 Clerk userId
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  expenses        Expense[]
 
   @@index([ownerId])
 }

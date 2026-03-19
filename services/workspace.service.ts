@@ -7,10 +7,13 @@ import type {
 
 const DEFAULT_OWNER_ID = 'default';
 
+export type ReceiptLanguageOption = 'en' | 'zh' | 'zh_HK' | 'receipt';
+
 export interface WorkspaceDTO {
   id: string;
   name: string;
   base_currency: string;
+  receipt_language: ReceiptLanguageOption;
   owner_id: string;
   created_at: string;
   updated_at: string;
@@ -20,14 +23,19 @@ function prismaToDTO(row: {
   id: string;
   name: string;
   baseCurrency: string;
+  receiptLanguage: string | null;
   ownerId: string;
   createdAt: Date;
   updatedAt: Date;
 }): WorkspaceDTO {
+  const validLang = (row.receiptLanguage === 'en' || row.receiptLanguage === 'zh' || row.receiptLanguage === 'zh_HK' || row.receiptLanguage === 'receipt')
+    ? row.receiptLanguage
+    : 'en';
   return {
     id: row.id,
     name: row.name,
     base_currency: row.baseCurrency,
+    receipt_language: validLang as ReceiptLanguageOption,
     owner_id: row.ownerId,
     created_at: row.createdAt.toISOString(),
     updated_at: row.updatedAt.toISOString(),
@@ -57,6 +65,7 @@ export class WorkspaceService {
         data: {
           name: 'Personal',
           baseCurrency: 'USD',
+          receiptLanguage: 'en',
           ownerId,
         },
       });
@@ -80,6 +89,7 @@ export class WorkspaceService {
       data: {
         name: body.name,
         baseCurrency: body.base_currency,
+        receiptLanguage: body.receipt_language ?? 'en',
         ownerId,
       },
     });
@@ -111,6 +121,7 @@ export class WorkspaceService {
     const data: Record<string, unknown> = {};
     if (body.name !== undefined) data.name = body.name;
     if (body.base_currency !== undefined) data.baseCurrency = body.base_currency;
+    if (body.receipt_language !== undefined) data.receiptLanguage = body.receipt_language;
 
     if (Object.keys(data).length === 0) {
       return prismaToDTO(exists);
