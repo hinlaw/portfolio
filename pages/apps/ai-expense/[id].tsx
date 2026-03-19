@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ExpensePageLayout from '@/components/ai-expense/layout/expense-page-layout';
-import { buttonVariants } from '@/components/ui/button';
 import { ExpenseDTO } from '@/api/types/expense';
 import { getExpense, deleteExpense, listExpenses } from '@/api/client/expenses';
 import { useWorkspace } from '@/components/ai-expense/workspace-provider';
@@ -118,21 +116,7 @@ export default function ExpenseDetailPage() {
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
             </Head>
 
-            <ExpensePageLayout
-                title="Expenses"
-                product={{
-                    actions: (
-                        <div className="flex items-center gap-3">
-                            <Link
-                                href="/apps/ai-expense/new"
-                                className={buttonVariants({ variant: 'default', size: 'default' })}
-                            >
-                                New expense
-                            </Link>
-                        </div>
-                    ),
-                }}
-            >
+            <ExpensePageLayout title="Expenses">
                 <div className="h-full flex overflow-hidden">
                     {/* Left Pane - Expense List */}
                     <ExpenseListPane
