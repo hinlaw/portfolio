@@ -46,6 +46,11 @@ export function todayTimestamp(): number {
 
 /** Format timestamp for chart by range type (timestamp can be Unix seconds or date string) */
 export function formatChartDate(value: number | string, rangeType: 'day' | 'month' | 'quarter'): string {
+    // Quarter keys from API are "YYYY-Qn" (e.g. "2026-Q1") - dayjs cannot parse these
+    if (rangeType === 'quarter' && typeof value === 'string' && /^\d{4}-Q\d$/.test(value)) {
+        const [, year, q] = value.match(/^(\d{4})-Q(\d)$/) ?? [];
+        return q && year ? `Q${q} ${year}` : value;
+    }
     const d = typeof value === 'number' ? dayjs.unix(value) : dayjs(value);
     switch (rangeType) {
         case 'day':
