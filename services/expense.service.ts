@@ -13,6 +13,57 @@ import type {
 
 const DEFAULT_OWNER_ID = 'default';
 
+function generateDateKeys(
+  fromDate: string,
+  toDate: string,
+  rangeType: 'day' | 'month' | 'quarter'
+): string[] {
+  const keys: string[] = [];
+  const from = new Date(fromDate + 'T00:00:00Z');
+  const to = new Date(toDate + 'T00:00:00Z');
+
+  if (rangeType === 'day') {
+    const curr = new Date(from);
+    while (curr <= to) {
+      keys.push(curr.toISOString().slice(0, 10));
+      curr.setUTCDate(curr.getUTCDate() + 1);
+    }
+  } else if (rangeType === 'month') {
+    let y = from.getUTCFullYear();
+    let m = from.getUTCMonth() + 1;
+    const endY = to.getUTCFullYear();
+    const endM = to.getUTCMonth() + 1;
+    while (y < endY || (y === endY && m <= endM)) {
+      keys.push(`${y}-${String(m).padStart(2, '0')}`);
+      m += 1;
+      if (m > 12) {
+        m = 1;
+        y += 1;
+      }
+    }
+  } else {
+    let y = from.getUTCFullYear();
+    let m = from.getUTCMonth() + 1;
+    const endY = to.getUTCFullYear();
+    const endM = to.getUTCMonth() + 1;
+    const seen = new Set<string>();
+    while (y < endY || (y === endY && m <= endM)) {
+      const q = Math.ceil(m / 3);
+      const key = `${y}-Q${q}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        keys.push(key);
+      }
+      m += 1;
+      if (m > 12) {
+        m = 1;
+        y += 1;
+      }
+    }
+  }
+  return keys;
+}
+
 export class ExpenseService {
   static async getExpenses(
     filters: GetExpensesQuery
@@ -198,14 +249,16 @@ export class ExpenseService {
       groupBy[key].count += 1;
     }
 
-    const data = Object.entries(groupBy)
-      .map(([date, { amount, count }]) => ({
+    const allKeys = generateDateKeys(fromDate, toDate, range_type);
+    const data = allKeys.map((date) => {
+      const g = groupBy[date];
+      return {
         date,
-        amount: Math.round(amount * 100) / 100,
-        count,
-        transactions: count,
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+        amount: g ? Math.round(g.amount * 100) / 100 : 0,
+        count: g?.count ?? 0,
+        transactions: g?.count ?? 0,
+      };
+    });
 
     return { data };
   }
