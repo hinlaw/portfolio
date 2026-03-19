@@ -9,6 +9,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    SelectSeparator,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useWorkspace } from '@/components/ai-expense/workspace-provider';
@@ -22,6 +23,7 @@ export default function WorkspaceSwitcher({ variant = 'sidebar' }: WorkspaceSwit
     const t = useTranslations('aiExpense');
     const { workspaces, activeWorkspaceId, activeWorkspace, setActiveWorkspaceId, isLoading } = useWorkspace();
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectOpen, setSelectOpen] = useState(false);
 
     if (isLoading || workspaces.length === 0) {
         return (
@@ -31,12 +33,21 @@ export default function WorkspaceSwitcher({ variant = 'sidebar' }: WorkspaceSwit
         );
     }
 
+    const handleAddWorkspaceClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setSelectOpen(false);
+        setDialogOpen(true);
+    };
+
     return (
         <>
-            <div className="space-y-1">
+            <div>
                 <Select
                     value={activeWorkspaceId ?? ''}
                     onValueChange={(v) => v && setActiveWorkspaceId(v)}
+                    open={selectOpen}
+                    onOpenChange={setSelectOpen}
                 >
                     <SelectTrigger
                         className={variant === 'sheet' ? 'w-full' : 'w-full max-w-[220px]'}
@@ -51,17 +62,20 @@ export default function WorkspaceSwitcher({ variant = 'sidebar' }: WorkspaceSwit
                                 {w.name} ({w.base_currency})
                             </SelectItem>
                         ))}
+                        <SelectSeparator />
+                        <div className="p-1">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full justify-start text-slate-600 h-8"
+                                onClick={handleAddWorkspaceClick}
+                            >
+                                <Plus className="h-4 w-4 mr-2" />
+                                {t('add workspace')}
+                            </Button>
+                        </div>
                     </SelectContent>
                 </Select>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start text-slate-600"
-                    onClick={() => setDialogOpen(true)}
-                >
-                    <Plus className="h-4 w-4 mr-2" />
-                    {t('add workspace')}
-                </Button>
             </div>
             <WorkspaceDialog
                 open={dialogOpen}
