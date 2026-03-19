@@ -17,7 +17,7 @@ describe('FirstExpenseLanding', () => {
   it('renders heading and description', () => {
     render(<FirstExpenseLanding {...defaultProps} />);
     expect(screen.getByText(/create your first expense/i)).toBeInTheDocument();
-    expect(screen.getByText(/start by adding one manually/i)).toBeInTheDocument();
+    expect(screen.getByText('firstExpenseHint')).toBeInTheDocument();
   });
 
   it('renders AI Create and Manual Create buttons', () => {

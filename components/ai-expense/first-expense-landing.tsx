@@ -34,7 +34,7 @@ export default function FirstExpenseLanding({
                             {t('create your first expense')}
                         </h1>
                         <p className="mt-3 text-slate-600">
-                            {t('start by adding one manually, or scan a receipt with ai to auto-fill the form.')}
+                            {t('firstExpenseHint')}
                         </p>
 
                         <div className="mt-6 flex flex-col sm:flex-row gap-3">
@@ -74,7 +74,7 @@ export default function FirstExpenseLanding({
                                         {t('drag & drop receipts or click here to upload')}
                                     </div>
                                     <div className="text-sm text-slate-500">
-                                        {t('we will auto-scan and open the expense form for you.')}
+                                        {t('uploadReceiptHint')}
                                     </div>
                                 </div>
                             </div>
