@@ -140,5 +140,416 @@
       "from date must be less than or equal to to date": "開始日期須早於或等於結束日期",
       "failed to load statistics": "無法載入統計"
     }
+  },
+  "hero": {
+    "headline": {
+      "main": "香港持牌黃金交易",
+      "sub": "真正$0佣金·$0門檻"
+    },
+    "subheadline": {
+      "line1": "限時免費升級 PLUS 帳戶「免最低注資」即享【0.1 起極低點差】",
+      "line2": "入場成本比銀行低 90%！（原最低注資： $10,000 美金）"
+    },
+    "cta": {
+      "openAccount": "立即開戶",
+      "upgradePlus": "免費升級 PLUS"
+    },
+    "badges": {
+      "hkgx": "香港金銀業貿易場 參與者：HKGX 行員編號：12",
+      "customs": "香港海關A類註冊",
+      "award": "2024 亞太區最佳黃金交易商"
+    },
+    "mobile": {
+      "breakRule": "打破行規 !",
+      "wholesale": "WCG PLUS「批發價」$0 門檻極速",
+      "tradeGold": "交易黃金 !"
+    }
+  },
+  "floatingCard": {
+    "newCustomer": "新客限時",
+    "professionalAccount": "PLUS 專業帳戶",
+    "threshold": "$0 門檻",
+    "openApplication": "開放申請中"
+  },
+  "promotionalBanner": {
+    "title": {
+      "part1": "5 分鐘開戶",
+      "part2": "捕捉黃金浪潮！"
+    },
+    "subtitle": "限時 PLUS 專業帳戶，$0 注資門檻 + 點差回贈！",
+    "cta": "立即開戶"
+  },
+  "marketTrendBanner": {
+    "title": {
+      "part1": "您需要的一個安全、低成本的工具：",
+      "part2": "WCG PLUS ",
+      "part3": "帳戶"
+    },
+    "content": {
+      "line1": "市場趨勢已經確立！",
+      "line2": "機構、央行正積極部署黃金儲備"
+    },
+    "cta": "立即 $0 門檻入場黃金交易"
+  },
+  "platformComparison": {
+    "title": {
+      "part1": "雙劍合璧：",
+      "part2": "專業深度與極速體驗"
+    },
+    "labels": {
+      "positioning": "定位",
+      "advantages": "優勢",
+      "targetAudience": "適合對象"
+    },
+    "mt5": {
+      "badge": "國際標準",
+      "name": "MetaTrader 5 (MT5)",
+      "positioning": "全球 90% 專業交易員首選",
+      "advantages": "支援 EA 智能交易系統、38 種技術指標、21 種時間週期",
+      "targetAudience": "習慣圖表分析、使用程式交易的進階玩家",
+      "cta": "立即下載"
+    },
+    "wcgApp": {
+      "badge": "自主研發",
+      "name": "WCG App (全新升級)",
+      "positioning": "專為香港投資者打造的「一站式」交易神器",
+      "advantages": {
+        "line1": "極簡介面：3 秒下單，直觀易用",
+        "line2": "帳戶管理：App 內直接入金、提款、查看報表",
+        "line3": "市場資訊：內置實時金市新聞與策略推送",
+        "line4": "淨點差 0.1 起"
+      },
+      "targetAudience": "隨時隨地想快速交易、管理資金的用戶",
+      "cta": "即將推出"
+    }
+  },
+  "accountTypes": {
+    "title": {
+      "part1": "量身打造，",
+      "part2": "滿足不同階段的交易需求"
+    },
+    "subtitle": "無論您是入門新手還是資深大戶，WCG 都有適合您的方案。",
+    "std": {
+      "name": "STD 標準帳戶",
+      "badge": "入門體驗首選",
+      "minDeposit": "最低注資",
+      "target": "一般投資者/新手",
+      "targetBadge": "小資金測試市場",
+      "spread": "0.4起",
+      "spreadBadge": "標準市場點差",
+      "promotion": "優惠詳情與您的顧問查詢",
+      "leverage": "固定 1:50",
+      "leverageBadge": "穩健操作",
+      "lotSize": "0.01手 - 20手",
+      "cta": "開設 STD 帳戶"
+    },
+    "plus": {
+      "promoBanner": "🔥限時優惠升級・最高性價比",
+      "name": "PLUS 專業帳戶",
+      "minDeposit": "最低注資",
+      "originalPrice": "$10,000 USD",
+      "target": "專業投資者/",
+      "targetBadge": "尋求低成本與高槓桿平衡",
+      "target2": "追求利潤者",
+      "spread": "淨點差 0.1起",
+      "spreadBadge": "原 0.25 - 0.15 點差回贈",
+      "noFee": "無手續費",
+      "noFeeBadge": "0佣金交易",
+      "leverage": "彈性 1:50-500",
+      "leverageBadge": "靈活配置，以小博大",
+      "lotSize": "0.01手 - 20手",
+      "cta": "立即免費升級 PLUS"
+    },
+    "pro": {
+      "name": "PRO 機構帳戶",
+      "badge": "極致原始點差",
+      "minDeposit": "最低注資",
+      "target": "機構/高淨值大戶",
+      "targetBadge": "超大額資金交易",
+      "spread": "0.12起",
+      "spreadBadge": "原始極低點差",
+      "noFee": "無手續費",
+      "noFeeBadge": "0佣金交易",
+      "leverage": "彈性 1:50-500",
+      "leverageBadge": "靈活配置",
+      "lotSize": "0.1手 - 20手",
+      "cta": "諮詢 PRO 服務"
+    }
+  },
+  "steps": {
+    "title": "5 分鐘，開啟您的黃金投資之旅",
+    "step1": {
+      "title": "註冊開戶",
+      "description": "填寫手機號碼，選擇 「PLUS 帳戶」，上傳身份證，最快 3 分鐘通過審核。"
+    },
+    "step2": {
+      "title": "注資激活",
+      "description": "透過本地銀行轉帳存入資金，無最低金額限制，想存多少由您定。"
+    },
+    "step3": {
+      "title": "開始交易",
+      "description": "下載 WCG App 或 MT5，把握金價波動，立即下單獲利！"
+    },
+    "cta": "立即 5 分鐘開戶"
+  },
+  "features": {
+    "title": "立足香港，雙重監管，信心保證",
+    "items": {
+      "dualRegulation": {
+        "title": "香港雙重監管",
+        "desc": "HKGX + 海關A類牌照，信心保證。"
+      },
+      "fastAccess": {
+        "title": "點對點 極速存取",
+        "desc": "支援 轉數快 FPS 及多種方式，資金調動靈活。"
+      },
+      "flexibleLeverage": {
+        "title": "1:500 靈活槓桿",
+        "desc": "按需自選槓桿，小資金撬動大行情。"
+      },
+      "zeroCommission": {
+        "title": "$0 佣金 + 極低點差",
+        "desc": "真正 0 佣，點差低至 0.1，成本更低。"
+      },
+      "negativeBalance": {
+        "title": "負餘額保護",
+        "desc": "風險可控，最大損失僅限本金，安心交易。"
+      },
+      "tradingHours": {
+        "title": "24 小時交易",
+        "desc": "T+0 隨時買賣，緊貼國際市場。"
+      }
+    },
+    "bottomText": "資金獨立託管，絕無對賭，WCG 與客戶利益一致",
+    "cta": "立即安全開戶買賣黃金"
+  },
+  "comparison": {
+    "title": {
+      "part1": "打破行規 !",
+      "part2": "WCG PLUS「批發價」$0 門檻極速",
+      "part3": "交易黃金 !"
+    },
+    "generalPlatform": {
+      "name": "一般平台 / 銀行",
+      "items": {
+        "highThreshold": "門檻高",
+        "wideSpread": "點差闊（平均 1.99 - 3.30）",
+        "expensive": "成本貴",
+        "lowLeverage": "低槓桿",
+        "timeLimit": "有交易與存取時限",
+        "interest": "或含有利息追加"
+      }
+    },
+    "wcgPlus": {
+      "name": "WCG PLUS",
+      "badge": "限時版",
+      "items": {
+        "noThreshold": "限時免最低注資 (原 $10,000 美金)",
+        "spreadRebate": "點差回贈 0.15 (淨點差 0.1 起)",
+        "zeroCommission": "$0 佣金",
+        "highLeverage": "槓桿高達 1:500",
+        "fastAccess": "極速存取入金出金 FPS 即時到帳",
+        "negativeBalance": "負餘額保護 風險可控"
+      }
+    }
+  },
+  "market": {
+    "title": {
+      "part1": "金價歷史新高，",
+      "part2": "波動即是機遇！"
+    }
+  },
+  "marketUrgency": {
+    "title": {
+      "part1": "金價狂歡！",
+      "part2": "華爾街巨頭正在搶籌 !"
+    },
+    "subtitle": "環球局勢動盪，央行瘋狂掃貨。分析師預測金價將挑戰 $5,000 大關",
+    "news": {
+      "item1": {
+        "title": "中國央行連續 18 個月增持黃金",
+        "desc": "世界黃金協會 (WGC) 數據顯示，全球央行正以創紀錄速度囤積黃金，去美元化趨勢確立黃金長牛基礎。",
+        "source": "Bloomberg"
+      },
+      "item2": {
+        "title": "摩通私人銀行︰到2026年底 金價可能達到 5000 美元以上",
+        "desc": "摩通分析師指出「黃金進入不可動搖的牛市」，建議投資者立即配置貴金屬以對抗通脹與地緣風險。",
+        "source": "HK01"
+      },
+      "item3": {
+        "title": "地緣局勢升溫，避險資金湧入",
+        "desc": "中東局勢緊張，資金瘋狂湧入黃金避險。歷史數據顯示，戰爭與動盪期間，黃金回報率遠超股市。",
+        "source": "VanEck"
+      }
+    },
+    "bottomText": "無論是地緣局勢升溫，還是減息預期，黃金正處於歷史性的波動窗口。使用 WCG 的 PLUS 帳戶，您可以利用雙向交易優勢，漲跌皆有獲利機會！使用 PLUS 帳戶【零入場門檻】的 1:500 槓桿，金價每升 $10，您的一手交易潛在獲利可達 $1,000！",
+    "cta": "開戶查看今日金市分析"
+  },
+  "followSmartMoney": {
+    "title": "Follow Smart Money：跟隨聰明的錢流向！",
+    "items": {
+      "bloomberg": {
+        "source": "Bloomberg (彭博)",
+        "quote": "Gold rallies to record as traders bet on rate cuts.",
+        "quoteZh": "(黃金因減息預期反彈至歷史新高)"
+      },
+      "reuters": {
+        "source": "Reuters (路透)",
+        "quote": "Central banks continue gold buying spree in 2025.",
+        "quoteZh": "(央行持續搶購黃金)"
+      },
+      "ufAwards": {
+        "source": "UF Awards",
+        "quote": "WCG Markets - 2024 Best Bullion Broker (APAC)"
+      }
+    }
+  },
+  "comparisonTable": {
+    "title": {
+      "part1": "創新 ",
+      "part2": "x",
+      "part3": " 安全 ",
+      "part4": "x",
+      "part5": " 門檻：完勝市場"
+    },
+    "columns": {
+      "wcgPlus": "PLUS 帳戶",
+      "traditional": "傳統銀行 / 金行",
+      "offshore": "一般離岸交易商"
+    },
+    "rows": {
+      "regulation": {
+        "label": "監管與安全",
+        "wcg": "🇭🇰 香港雙重監管 (HKGX+海關)",
+        "wcgBadge": "資金本地託管，信心之選",
+        "traditional": "🇭🇰 香港監管",
+        "traditionalBadge": "安全但門檻高",
+        "offshore": "🏝️ 離岸監管 (瓦努阿圖/開曼)",
+        "offshoreBadge": "跨境追索困難，風險較高"
+      },
+      "cost": {
+        "label": "交易成本",
+        "wcg": "💰 極低 (淨點差 0.1 起)",
+        "wcgBadge": "由 $0 佣金 + 回贈直接實現",
+        "traditional": "💸 極高",
+        "traditionalBadge": "買賣差價闊，回本難",
+        "offshore": "一般",
+        "offshoreBadge": "低點差通常需高額佣金"
+      },
+      "threshold": {
+        "label": "入場門檻",
+        "wcg": "🎁 $0 (限時優惠)",
+        "wcgBadge": "原 $10,000 美金，限時豁免！",
+        "traditional": "🔒 高",
+        "traditionalBadge": "需全額資金買入",
+        "offshore": "中等",
+        "offshoreBadge": "低點差帳戶通常有注資要求"
+      },
+      "leverage": {
+        "label": "資金槓桿",
+        "wcg": "🚀 1:500 (安全靈活)",
+        "wcgBadge": "小資金撬動大收益 + 負餘額保護",
+        "traditional": "❌ 無 (1:1)",
+        "traditionalBadge": "資金佔用大",
+        "offshore": "🚀 1:500+",
+        "offshoreBadge": "槓桿雖高但缺乏本地保障"
+      },
+      "access": {
+        "label": "存取款速度",
+        "wcg": "⚡ 極速 (不多於 10 分鐘)",
+        "wcgBadge": "支援本地銀行 FPS 轉帳",
+        "traditional": "🐢 慢",
+        "traditionalBadge": "受銀行營業時間限制",
+        "offshore": "🐢 慢/繁瑣",
+        "offshoreBadge": "跨境電匯或需時 1-3 天"
+      }
+    }
+  },
+  "faq": {
+    "title": "常見黃金交易問題",
+    "items": {
+      "q1": "1. 可以 $0 門檻開通 PLUS 帳戶嗎？",
+      "a1": "是的，針對新客戶推廣，只需透過本頁面註冊，系統將自動豁免原有的 $10,000 美金注資要求，讓您直接享受專業級別點差。",
+      "q2": "2.「點差回贈」與「0.1 點差」是什麼意思？",
+      "a2": "PLUS 帳戶享有每手 $15 的現金回贈。假設市場原始點差為 0.25，扣除回贈後，您的實際淨交易成本僅約 0.1。這比市面上絕大多數平台都更優惠。",
+      "q3": "3.「點差回贈」是如何運作的？",
+      "a3": "交易時您會看到標準點差，但在交易結算後，我們會將每手 $15 (即 0.15 點差) 的現金直接回贈到您的帳戶。這意味著您的實際淨成本低至 0.1。",
+      "q4": "4. 我是新手，1:500 槓桿會不會太危險？",
+      "a4": "槓桿只是工具。PLUS 帳戶提供 1:50至1:500 的彈性槓桿。新手可以從低槓桿開始，而且我們提供負餘額保護，確保您的虧損絕不會超過本金。",
+      "q5": "5. WCG App 和 MT5 我該用哪個？",
+      "a5": "兩者帳戶通用！如果您在戶外或需要快速操作，推薦使用 WCG App；如果您在家進行深度圖表分析，推薦使用 MT5。",
+      "q6": "6. 資金安全嗎？",
+      "a6": "絕對安全。WCG 受香港黃金交易所 (HKGX) 及香港海關嚴格監管，資金與公司營運分離。我們更提供負餘額保護，承諾客戶虧損不會超過本金。",
+      "q7": "7. 出入金支援什麼方式？",
+      "a7": "我們支援香港本地銀行轉帳及轉數快，資金最快 10 分鐘到帳，獲利隨時提取。"
+    }
+  },
+  "finalCta": {
+    "title": "別錯過黃金牛市！",
+    "subtitle": {
+      "part1": "限時 ",
+      "part2": "豁免 $10,000",
+      "part3": " 門檻，即享 ",
+      "part4": "0.1",
+      "part5": " 起淨點差"
+    },
+    "cta": "立即開通 PLUS 帳戶"
+  },
+  "award": {
+    "badge": "安全合規",
+    "title": "亞太區最佳黃金交易商，實力毋庸置疑",
+    "description": "WCG 榮獲 2024年「UF AWARDS 亞太區最佳貴金屬經紀商」(UF AWARDS 2024 BEST BULLION BROKER - APAC) 殊榮，由 Ultimate Fintech 主辦的年度獎項，旨在表彰線上交易和金融科技領域的頂尖品牌。WCG 同時為香港金銀業貿易場 (HKGX) 12 號參與者及香港海關 A 類持牌商，為投資者提供穩健、安全、高效的貴金屬交易服務。",
+    "cta": "立即體驗持牌平台"
+  },
+  "keyConcepts": {
+    "concept1": {
+      "title": "關鍵概念 1",
+      "items": {
+        "item1": "門檻取消：$10,000 美金 > $0 美金",
+        "item2": "全民入場交易黃金，資本市場民主化！"
+      },
+      "cta": {
+        "openAccount": "立即開戶",
+        "upgradePlus": "免費升級 PLUS"
+      }
+    },
+    "concept2": {
+      "title": "關鍵概念 2",
+      "items": {
+        "item1": "回本速度對決：甚麼「點差 0.1」？",
+        "item2": "點差（Pip）即交易資產 買入價（Ask）和 賣出價（Bid）之間的差額"
+      },
+      "table": {
+        "label": "買賣方式",
+        "row1": "點差範圍",
+        "row2": "回本獲利速度",
+        "wcgPlus": "WCG PLUS 帳戶",
+        "wcgRow1": "淨點差 0.1 + $0 佣金",
+        "wcgRow2": "金價只需升 $0.1",
+        "traditional": "傳統銀行買紙黃金",
+        "traditionalRow1": "高點差 + 佣金",
+        "traditionalRow2": "金價需升 $3 - $5",
+        "physical": "實體金行買金",
+        "physicalRow1": "高浮動點差 + 行政費",
+        "physicalRow2": "金價需升 $300 以上"
+      },
+      "description": "交易 1 盎司黃金，您的交易成本僅需約 $0.1 美元 (約 HK$0.78)！幾乎零成本進場。",
+      "cta": {
+        "openAccount": "立即開戶",
+        "upgradePlus": "免費升級 PLUS"
+      }
+    },
+    "concept3": {
+      "title": "關鍵概念 3",
+      "items": {
+        "item1": "安全利潤放大：槓桿高達 1:500",
+        "item2": "按個人風險評估，自選 1:50 - 1:500 槓桿",
+        "item3": "配合【負餘額保護】風險可控，最大損失僅限本金，安心交易。"
+      },
+      "cta": {
+        "openAccount": "立即開戶",
+        "upgradePlus": "免費升級 PLUS"
+      }
+    }
   }
 }

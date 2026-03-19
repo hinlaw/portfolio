@@ -20,7 +20,12 @@ export default function App({ Component, pageProps }: AppProps) {
 App.getInitialProps = async (context: AppContext) => {
   const ctx = context.ctx as { locale?: string; router?: { locale?: string } };
   const locale = ctx.locale ?? ctx.router?.locale ?? "en";
-  const messages = (await import(`../messages/${locale}.json`)).default;
+  let messages;
+  try {
+    messages = (await import(`../messages/${locale}.json`)).default;
+  } catch {
+    messages = (await import("../messages/en.json")).default;
+  }
   const pageProps = await (context.Component as any)?.getInitialProps?.(context.ctx) ?? {};
   return {
     pageProps: { ...pageProps, messages, locale },
