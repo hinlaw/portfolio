@@ -375,42 +375,6 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
                                 </ChartContainer>
                             </div>
                         </Card>
-
-                        {/* Combined Chart - Hidden on mobile */}
-                        {!isMobile && (
-                            <Card className="p-4">
-                                <h3 className="text-lg font-semibold mb-4">{t('amount and transactions')}</h3>
-                                <ChartContainer config={chartConfig} className="h-[400px]">
-                                    <BarChart data={chartData}>
-                                        <CartesianGrid />
-                                        <XAxis dataKey="date" />
-                                        <YAxis yAxisId="left" tickFormatter={formatCurrencyForChart} />
-                                        <YAxis yAxisId="right" orientation="right" />
-                                        <ChartTooltip content={<ChartTooltipContent hideIndicator />} />
-                                        <ChartLegend
-                                            content={<ChartLegendContent payload={[
-                                                { dataKey: 'amount', type: 'rect', value: 'amount', color: '#a855f7' },
-                                                { dataKey: 'transactions', type: 'rect', value: 'transactions', color: '#ec4899' },
-                                            ]} />}
-                                        />
-                                        <Bar
-                                            yAxisId="left"
-                                            dataKey="amount"
-                                            name="amount"
-                                            fill="#a855f7"
-                                            radius={[8, 8, 0, 0]}
-                                        />
-                                        <Bar
-                                            yAxisId="right"
-                                            dataKey="transactions"
-                                            name="transactions"
-                                            fill="#ec4899"
-                                            radius={[8, 8, 0, 0]}
-                                        />
-                                    </BarChart>
-                                </ChartContainer>
-                            </Card>
-                        )}
                     </div>
                 )}
             </Card>
