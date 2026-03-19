@@ -31,6 +31,7 @@ import { Badge } from '@/components/ui/badge';
 import FileThumbnail from '../file-thumbnail';
 import { isPdfUrl, isImageUrl } from '../file-utils';
 import ImageViewer from '../image-viewer';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ExpenseListProps {
     onViewStatistics?: () => void;
@@ -343,11 +344,25 @@ export default function ExpenseList({
                         </TableHeader>
                         <TableBody>
                             {loading ? (
-                                <TableRow>
-                                    <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
-                                        {t('loading')}
-                                    </TableCell>
-                                </TableRow>
+                                Array.from({ length: 8 }).map((_, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell>
+                                            <div className="flex items-center gap-3">
+                                                <Skeleton className="h-16 w-16 rounded flex-shrink-0" />
+                                                <div className="flex flex-col gap-2 flex-1">
+                                                    <Skeleton className="h-4 w-20" />
+                                                    <Skeleton className="h-3 w-32" />
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Skeleton className="h-4 w-24" />
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <Skeleton className="h-4 w-16 ml-auto" />
+                                        </TableCell>
+                                    </TableRow>
+                                ))
                             ) : expenses.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
@@ -519,9 +534,18 @@ export default function ExpenseList({
             <div className="md:hidden">
                 <div className="divide-y divide-slate-200 rounded-2xl border border-slate-200 overflow-hidden bg-white">
                     {loading ? (
-                        <div className="py-10 text-center text-slate-500 text-sm">
-                            {t('loading')}
-                        </div>
+                        <>
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <div key={i} className="flex gap-4 items-center px-4 py-4">
+                                    <Skeleton className="h-14 w-14 rounded flex-shrink-0" />
+                                    <div className="flex-1 min-w-0 space-y-2">
+                                        <Skeleton className="h-4 w-3/4" />
+                                        <Skeleton className="h-3 w-1/2" />
+                                        <Skeleton className="h-4 w-16" />
+                                    </div>
+                                </div>
+                            ))}
+                        </>
                     ) : expenses.length === 0 ? (
                         <div className="py-10 text-center text-slate-500 text-sm">
                             {t('no expenses found')}

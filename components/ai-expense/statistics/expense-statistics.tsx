@@ -22,11 +22,12 @@ import {
 } from '@/components/ui/chart';
 import { dayjs, formatChartDate } from '@/lib/date';
 import { toast } from 'sonner';
-import { Loader2, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCurrencyFormatter } from '@/lib/currency';
 import ExpenseStatisticsFilterBar from './expense-statistics-filter-bar';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ExpenseStatisticsProps {
     showFilters?: boolean;
@@ -240,38 +241,64 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
 
                 {/* Current Time Range Display */}
                 <div className="flex items-center justify-center gap-2 px-1">
-                    <span className="inline-flex items-center rounded-md px-3 py-1 text-sm md:text-base font-semibold text-foreground font-mono tracking-wide">
-                        {fromDate}
-                    </span>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                    <span className="inline-flex items-center rounded-md px-3 py-1 text-sm md:text-base font-semibold text-foreground font-mono tracking-wide">
-                        {toDate}
-                    </span>
+                    {loading ? (
+                        <>
+                            <Skeleton className="h-8 w-24 rounded-md" />
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <Skeleton className="h-8 w-24 rounded-md" />
+                        </>
+                    ) : (
+                        <>
+                            <span className="inline-flex items-center rounded-md px-3 py-1 text-sm md:text-base font-semibold text-foreground font-mono tracking-wide">
+                                {fromDate}
+                            </span>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <span className="inline-flex items-center rounded-md px-3 py-1 text-sm md:text-base font-semibold text-foreground font-mono tracking-wide">
+                                {toDate}
+                            </span>
+                        </>
+                    )}
                 </div>
 
                 {/* Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* No card UI for these two */}
                     <div className="px-1 py-2 text-center">
                         <div className="text-sm text-muted-foreground">{t('total amount')}</div>
-                        <div className="text-2xl font-bold mt-1">{formatCurrency(totalAmount)}</div>
+                        {loading ? (
+                            <Skeleton className="h-8 w-24 mx-auto mt-1 rounded-md" />
+                        ) : (
+                            <div className="text-2xl font-bold mt-1">{formatCurrency(totalAmount)}</div>
+                        )}
                     </div>
                     <div className="px-1 py-2 text-center">
                         <div className="text-sm text-muted-foreground">{t('total transactions')}</div>
-                        <div className="text-2xl font-bold mt-1">{totalTransactions}</div>
+                        {loading ? (
+                            <Skeleton className="h-8 w-16 mx-auto mt-1 rounded-md" />
+                        ) : (
+                            <div className="text-2xl font-bold mt-1">{totalTransactions}</div>
+                        )}
                     </div>
-
                     <div className="px-1 py-2 text-center">
                         <div className="text-sm text-muted-foreground">{t('average amount')}</div>
-                        <div className="text-2xl font-bold mt-1">{formatCurrency(averageAmount)}</div>
+                        {loading ? (
+                            <Skeleton className="h-8 w-24 mx-auto mt-1 rounded-md" />
+                        ) : (
+                            <div className="text-2xl font-bold mt-1">{formatCurrency(averageAmount)}</div>
+                        )}
                     </div>
                 </div>
 
                 {/* Charts */}
                 {loading ? (
-                    <div className="p-8 text-center">
-                        <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
-                        <p className="mt-2 text-muted-foreground">{t('loadingStatistics')}</p>
+                    <div className="space-y-6 px-0 pb-6 md:px-4">
+                        <Card className="p-2 md:p-4 overflow-hidden">
+                            <Skeleton className="h-6 w-48 mb-4 rounded-md" />
+                            <Skeleton className="w-full h-[300px] rounded-md" />
+                        </Card>
+                        <Card className="p-2 md:p-4 overflow-hidden">
+                            <Skeleton className="h-6 w-56 mb-4 rounded-md" />
+                            <Skeleton className="w-full h-[300px] rounded-md" />
+                        </Card>
                     </div>
                 ) : statistics.length === 0 || chartData.length === 0 ? (
                     <div className="p-8 text-center text-muted-foreground">

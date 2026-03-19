@@ -9,7 +9,7 @@ import ExpenseListMobileHeader from '@/components/ai-expense/list/expense-list-m
 import ExpenseListDesktopView from '@/components/ai-expense/list/expense-list-desktop-view';
 import ExpenseListMobileView from '@/components/ai-expense/list/expense-list-mobile-view';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { Search, Plus, Loader2 } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ExpenseFormDialog from '@/components/ai-expense/expense-form-dialog';
@@ -18,6 +18,10 @@ import { toast } from 'sonner';
 import { listExpenses } from '@/api/client/expenses';
 import { useWorkspace } from '@/components/ai-expense/workspace-provider';
 import FirstExpenseLanding from '@/components/ai-expense/first-expense-landing';
+import {
+    ExpenseListDesktopSkeleton,
+    ExpenseListMobileSkeleton,
+} from '@/components/ai-expense/list/expense-list-skeleton';
 
 export default function AiExpenseListPage() {
     const router = useRouter();
@@ -220,31 +224,21 @@ export default function AiExpenseListPage() {
                     />
                 ) : hasAnyExpenses === null ? (
                     <>
-                        {/* Desktop: Header + centered loading */}
+                        {/* Desktop: Header + skeleton */}
                         <div className="hidden md:block">
                             <ExpenseListDesktopHeader
                                 onNewExpenseClick={() => router.push('/apps/ai-expense/new')}
                                 onFilterClick={() => setShowFilters(!showFilters)}
                             />
-                            <div className="flex items-center justify-center min-h-[40vh] py-12">
-                                <div className="flex flex-col items-center gap-3">
-                                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                                    <p className="text-sm text-muted-foreground">{t('loading')}</p>
-                                </div>
-                            </div>
+                            <ExpenseListDesktopSkeleton />
                         </div>
-                        {/* Mobile: Header + centered loading */}
+                        {/* Mobile: Header + skeleton */}
                         <div className="md:hidden">
                             <ExpenseListMobileHeader
                                 onMenuClick={() => setIsSheetOpen(true)}
                                 onCameraClick={handleClick}
                             />
-                            <div className="flex items-center justify-center min-h-[40vh] py-12 px-4">
-                                <div className="flex flex-col items-center gap-3">
-                                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                                    <p className="text-sm text-muted-foreground">{t('loading')}</p>
-                                </div>
-                            </div>
+                            <ExpenseListMobileSkeleton />
                         </div>
                     </>
                 ) : (
