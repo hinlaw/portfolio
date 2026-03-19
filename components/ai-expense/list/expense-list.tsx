@@ -26,6 +26,7 @@ import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Plus, Loader2 } f
 import { formatDateShort, parseToTimestamp, dayjs } from '@/lib/date';
 import { useCurrencyFormatter } from '@/lib/currency';
 import { useWorkspace } from '@/components/ai-expense/workspace-provider';
+import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import FileThumbnail from '../file-thumbnail';
 import { isPdfUrl, isImageUrl } from '../file-utils';
@@ -54,6 +55,7 @@ export default function ExpenseList({
     minAmount: externalMinAmount = '',
     maxAmount: externalMaxAmount = '',
 }: ExpenseListProps) {
+    const t = useTranslations('aiExpense');
     const router = useRouter();
     const formatCurrency = useCurrencyFormatter();
     const { activeWorkspaceId, baseCurrency } = useWorkspace();
@@ -343,13 +345,13 @@ export default function ExpenseList({
                             {loading ? (
                                 <TableRow>
                                     <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
-                                        Loading...
+                                        {t('loading')}
                                     </TableCell>
                                 </TableRow>
                             ) : expenses.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
-                                        No expenses found
+                                        {t('no expenses found')}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -515,11 +517,11 @@ export default function ExpenseList({
                 <div className="divide-y divide-slate-200 rounded-2xl border border-slate-200 overflow-hidden bg-white">
                     {loading ? (
                         <div className="py-10 text-center text-slate-500 text-sm">
-                            Loading...
+                            {t('loading')}
                         </div>
                     ) : expenses.length === 0 ? (
                         <div className="py-10 text-center text-slate-500 text-sm">
-                            No expenses found
+                            {t('no expenses found')}
                         </div>
                     ) : (
                         expenses.map((expense) => {

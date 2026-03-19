@@ -271,7 +271,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
                 {loading ? (
                     <div className="p-8 text-center">
                         <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
-                        <p className="mt-2 text-muted-foreground">{t('loading statistics...')}</p>
+                        <p className="mt-2 text-muted-foreground">{t('loadingStatistics')}</p>
                     </div>
                 ) : statistics.length === 0 || chartData.length === 0 ? (
                     <div className="p-8 text-center text-muted-foreground">

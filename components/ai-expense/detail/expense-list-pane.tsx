@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { ExpenseDTO } from '@/api/types/expense';
 import { formatDateLong } from '@/lib/date';
@@ -28,6 +29,7 @@ export default function ExpenseListPane({
     total,
     onPageChange,
 }: ExpenseListPaneProps) {
+    const t = useTranslations('aiExpense');
     const formatCurrency = useCurrencyFormatter();
 
     const formatDate = (timestamp: number) => formatDateLong(timestamp);
@@ -53,7 +55,7 @@ export default function ExpenseListPane({
                     </div>
                 ) : expenses.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground text-sm">
-                        No expenses found
+                        {t('no expenses found')}
                     </div>
                 ) : (
                     <>
