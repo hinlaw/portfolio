@@ -20,14 +20,13 @@ export default function AiExpenseStatisticsPage() {
             </Head>
 
             <ExpensePageLayout title="Reports">
-                {/* Desktop */}
-                <div className="hidden md:block">
-                    {/* Desktop Header */}
+                {/* Desktop - header fixed, only report content scrolls */}
+                <div className="hidden min-h-0 flex-1 flex-col md:flex">
                     <ExpenseStatisticsDesktopHeader />
-
-                    {/* Filter Bar - No padding between header and filter bar */}
-                    <div className="max-w-7xl mx-auto">
-                        <ExpenseStatistics />
+                    <div className="min-h-0 flex-1 overflow-y-auto">
+                        <div className="mx-auto max-w-7xl">
+                            <ExpenseStatistics />
+                        </div>
                     </div>
                 </div>
 

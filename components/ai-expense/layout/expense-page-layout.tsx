@@ -61,15 +61,15 @@ export default function ExpensePageLayout({
                 description={description || 'Manage your expenses with AI'}
                 product={product}
             >
-                <div className="h-full flex flex-col overflow-hidden">
-                    <div className="flex flex-1 overflow-hidden">
+                <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                    <div className="flex min-h-0 flex-1 overflow-hidden">
                         {/* Sidebar - Desktop only */}
-                        <div className="hidden md:block">
+                        <div className="hidden shrink-0 md:block">
                             <ExpenseSidebar currentPath={currentPath} />
                         </div>
 
                         {/* Main Content */}
-                        <main className="flex-1 overflow-y-auto">
+                        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">
                             {children}
                         </main>
                     </div>
