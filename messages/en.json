@@ -1,6 +1,11 @@
 {
   "common": {
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "locales": {
+      "en": "English",
+      "zh": "简体中文",
+      "zh_HK": "繁體中文"
+    }
   },
   "aiExpense": {
     "title": "Expenses",

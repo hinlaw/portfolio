@@ -5,6 +5,7 @@ import ExpenseSidebar from './expense-sidebar';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { AiExpenseSettingsProvider } from '@/components/ai-expense/ai-expense-settings-provider';
+import LocaleSelector from '@/components/locale-selector';
 type ProductInfo = {
     name: string;
     icon: string;
@@ -37,6 +38,7 @@ export default function ExpensePageLayout({
         accent: 'from-emerald-500 to-teal-500',
         actions: (
             <div className="flex items-center gap-3">
+                <LocaleSelector className="w-[140px]" />
                 <Link
                     href="/"
                     className={buttonVariants({ variant: 'outline', size: 'default' })}
