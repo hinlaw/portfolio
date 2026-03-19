@@ -220,7 +220,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 pb-6">
             <ExpenseStatisticsFilterBar
                 dateRangePreset={dateRangePreset}
                 onDateRangePresetChange={applyDateRangePreset}
@@ -278,7 +278,7 @@ export default function ExpenseStatistics({ showFilters = false, onToggleFilters
                         {t('no data available for the selected date range')}
                     </div>
                 ) : (
-                    <div className="space-y-6 px-0 md:px-4">
+                    <div className="space-y-6 px-0 pb-6 md:px-4">
                         {/* Amount Chart */}
                         <Card className="p-2 md:p-4 overflow-hidden">
                             <h3 className="text-lg font-semibold mb-4">{t('expense amount over time')}</h3>
